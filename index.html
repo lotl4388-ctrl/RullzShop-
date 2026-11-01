@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RullzShop - Marketplace Aplikasi & Digital Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        neonOrange: '#FF5722',
+                        neonPurple: '#6C5CE7',
+                        neonGreen: '#00B894',
+                        darkBg: '#0E1117',
+                        darkCard: '#1E222D',
+                        darkBorder: '#2E3545',
+                        lightBg: '#F4F6F9',
+                        lightCard: '#FFFFFF',
+                        lightBorder: '#E2E8F0'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* Scrollbar aesthetics */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #FF5722; border-radius: 9999px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-lightBg text-slate-800 dark:bg-darkBg dark:text-slate-100 min-h-screen flex flex-col pb-20 md:pb-0">
+
+    <!-- TOAST NOTIFICATION STACK -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- MANDATORY AUTHENTICATION GUARD OVERLAY -->
+    <div id="authGuardOverlay" class="fixed inset-0 z-[90] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl relative transition-all">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-neonOrange to-amber-400 flex items-center justify-center text-white text-3xl font-black mx-auto mb-3 shadow-lg shadow-orange-500/30">
+                    R
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white">RullzShop Marketplace</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Masuk atau Buat Akun Baru untuk Membuka Aplikasi</p>
+            </div>
+
+            <!-- Auth Mode Switcher Tabs -->
+            <div class="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl mb-6 text-xs font-bold">
+                <button id="authTabLoginBtn" type="button" onclick="switchAuthMode('login')" class="flex-1 py-2.5 rounded-xl bg-neonOrange text-white shadow-md transition-all">Masuk (Login)</button>
+                <button id="authTabRegisterBtn" type="button" onclick="switchAuthMode('register')" class="flex-1 py-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">Daftar Akun Baru</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="guardLoginForm" onsubmit="handleGuardLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Username Akun</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" id="guardLoginUsername" required placeholder="Masukkan username" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="password" id="guardLoginPassword" required placeholder="••••••••" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-neonOrange to-amber-500 hover:opacity-95 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-orange-500/25 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+                </button>
+            </form>
+
+            <!-- REGISTER FORM (SIMPLIFIED: Username, Password, Phone) -->
+            <form id="guardRegisterForm" onsubmit="handleGuardRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Username Baru *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user-plus absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" id="guardRegUsername" required placeholder="Buat username unik" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Password *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="password" id="guardRegPassword" required minlength="4" placeholder="Minimal 4 karakter" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor HP / WhatsApp *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-phone absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" id="guardRegPhone" required placeholder="08XXXXXXXXXX" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 pl-9 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-neonOrange to-amber-500 hover:opacity-95 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-orange-500/25 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-user-check"></i> Daftar Akun & Langsung Masuk
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-b border-slate-200 dark:border-darkBorder shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-3">
+                <!-- App Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonOrange via-amber-500 to-neonPurple flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-orange-500/20">
+                        R
+                    </div>
+                    <div>
+                        <span class="text-xl font-black tracking-wider bg-gradient-to-r from-neonOrange via-amber-400 to-neonPurple bg-clip-text text-transparent">RullzShop</span>
+                        <span class="block text-[9px] text-slate-400 font-bold uppercase tracking-widest">Marketplace Digital</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Search -->
+                <div class="hidden md:flex flex-1 max-w-md mx-6">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cari aplikasi, script, preset digital..." 
+                            class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full py-2 pl-10 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-slate-100">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Header Actions & Controls -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Theme Toggle Switcher Button -->
+                    <button onclick="toggleThemeMode()" title="Ganti Mode Terang / Malam" class="p-2.5 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-amber-300 rounded-xl border border-slate-200 dark:border-slate-800 transition-all hover:scale-105">
+                        <i id="themeToggleIcon" class="fa-solid fa-moon text-sm"></i>
+                    </button>
+
+                    <!-- Inbox Notification Bell -->
+                    <button onclick="openNotificationModal()" class="relative p-2.5 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 transition-all">
+                        <i class="fa-solid fa-bell text-sm"></i>
+                        <span id="unreadNotifBadge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-md">0</span>
+                    </button>
+
+                    <!-- Premium VIP Banner Button -->
+                    <button onclick="openPremiumModal()" class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-neonOrange text-slate-950 font-black text-xs shadow-md transition-all hover:opacity-90">
+                        <i class="fa-solid fa-crown text-amber-950"></i>
+                        <span>Langganan VIP</span>
+                    </button>
+
+                    <!-- Current User Nav Section -->
+                    <div id="userNavSection" class="flex items-center gap-2">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden">
+                <div class="relative w-full">
+                    <input type="text" id="searchInputMobile" oninput="handleSearchMobile()" placeholder="Cari aplikasi atau produk digital..." 
+                        class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full py-2 pl-10 pr-4 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-slate-100">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTENT VIEW CONTAINERS -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- HERO BRAND BANNER -->
+        <section id="bannerSection" class="mb-8">
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-orange-950 border border-orange-500/20 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div class="space-y-3 max-w-xl text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold">
+                        <i class="fa-solid fa-bolt text-amber-400"></i> Platform Jual Beli Aplikasi No #1
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-black text-white leading-tight">
+                        Jual & Beli Aplikasi Orang atau Produk Sendiri!
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-300">
+                        Upload foto produk & QRIS langsung dari Galeri HP. Pembayaran lengkap via DANA, OVO, GoPay, ShopeePay, LinkAja, & QRIS Penjual.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
+                        <button onclick="switchTab('sell')" class="px-5 py-2.5 bg-neonOrange hover:bg-orange-600 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-orange-500/30 transition-all">
+                            <i class="fa-solid fa-plus-circle mr-1.5"></i> Jual Produk Sendiri
+                        </button>
+                        <button onclick="openPremiumModal()" class="px-5 py-2.5 bg-slate-800/80 hover:bg-slate-700 text-amber-400 border border-amber-500/40 text-xs sm:text-sm font-bold rounded-xl transition-all">
+                            <i class="fa-solid fa-crown mr-1.5"></i> Langganan VIP (50rb/Bln)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Premium Feature Highlights -->
+                <div class="w-full md:w-72 bg-slate-950/80 border border-slate-700 rounded-2xl p-4 shadow-2xl backdrop-blur-sm">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                        <span class="text-xs font-bold text-white">Benefit Akun Premium VIP</span>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-md font-bold">PRO</span>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Post Produk Tanpa Batas (Unlimited)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Tarik Uang Potongan Rp 0</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-sky-400"></i> Lencana Centang Biru Terverifikasi</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Kapasitas Dompet Tanpa Batas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 1: HOME MARKETPLACE -->
+        <section id="tab-home" class="tab-content">
+            <!-- Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar">
+                <button onclick="filterCategory('all')" class="cat-btn active bg-neonOrange text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition-all shadow-md">
+                    <i class="fa-solid fa-border-all mr-1"></i> Semua Produk
+                </button>
+                <button onclick="filterCategory('Aplikasi / Software')" class="cat-btn bg-white dark:bg-darkCard hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-darkBorder px-4 py-2 rounded-xl text-xs font-semibold shrink-0 transition-all">
+                    <i class="fa-solid fa-mobile-screen mr-1 text-neonOrange"></i> Aplikasi / Software
+                </button>
+                <button onclick="filterCategory('Produk Digital / Barang')" class="cat-btn bg-white dark:bg-darkCard hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-darkBorder px-4 py-2 rounded-xl text-xs font-semibold shrink-0 transition-all">
+                    <i class="fa-solid fa-box-open mr-1 text-neonPurple"></i> Digital & Barang
+                </button>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-neonOrange"></i> Katalog Terbaru RullzShop
+                </h2>
+                <span id="productCountBadge" class="text-xs text-slate-500 font-semibold">Menampilkan 0 produk</span>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically Rendered -->
+            </div>
+
+            <div id="emptyState" class="hidden text-center py-16 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl">
+                <i class="fa-solid fa-box-open text-4xl text-slate-400 mb-3"></i>
+                <h3 class="text-slate-700 dark:text-slate-300 font-bold">Produk Tidak Ditemukan</h3>
+                <p class="text-xs text-slate-500 mt-1">Coba cari kata kunci lain atau pilih kategori berbeda.</p>
+            </div>
+        </section>
+
+        <!-- TAB 2: POST / SELL PRODUCT FORM -->
+        <section id="tab-sell" class="tab-content hidden max-w-2xl mx-auto">
+            <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-8 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkBorder pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle text-neonOrange"></i> Upload & Jual Produk Baru
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Unggah foto produk langsung dari galeri HP Anda.</p>
+                    </div>
+                    <div id="limitPostBadge">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+
+                <form onsubmit="handlePostProduct(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Produk / Aplikasi *</label>
+                        <input type="text" id="postTitle" required placeholder="Contoh: Aplikasi Kasir Mobile Android Full Version" 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Harga Produk (Rp) *</label>
+                            <input type="number" id="postPrice" required min="1000" placeholder="50000" 
+                                class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Kategori *</label>
+                            <select id="postCategory" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                                <option value="Aplikasi / Software">Aplikasi / Software</option>
+                                <option value="Produk Digital / Barang">Produk Digital / Barang</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Deskripsi Produk *</label>
+                        <textarea id="postDescription" required rows="3" placeholder="Jelaskan spesifikasi, kelebihan, dan cara pakai produk..." 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange"></textarea>
+                    </div>
+
+                    <!-- GALLERY IMAGE FILE UPLOAD FOR PRODUCT BANNER -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Foto Sampul Produk (Ambil dari Galeri HP) *</label>
+                        <input type="file" id="postImageFile" accept="image/*" required onchange="previewFileImage(this, 'postImagePreview')"
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-2 text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-500/10 file:text-neonOrange">
+                        <div class="mt-2">
+                            <img id="postImagePreview" class="w-full h-40 object-cover rounded-xl hidden border border-slate-300 dark:border-slate-700">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Link File / Akses Pembeli *</label>
+                        <input type="url" id="postDownloadUrl" required placeholder="https://drive.google.com/..." 
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                    </div>
+
+                    <!-- SELLER E-WALLET & QRIS DISPLAY -->
+                    <div class="border-t border-slate-200 dark:border-darkBorder pt-4 mt-2">
+                        <h3 class="text-xs font-black uppercase text-neonOrange mb-3 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wallet"></i> Metode E-Wallet & QRIS Pembayaran Anda
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor Kontak WhatsApp / HP *</label>
+                                <input type="text" id="postPhone" required placeholder="085189022148" 
+                                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jenis E-Wallet Utama *</label>
+                                <select id="postEwalletType" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                                    <option value="DANA">DANA</option>
+                                    <option value="OVO">OVO</option>
+                                    <option value="GoPay">GoPay</option>
+                                    <option value="ShopeePay">ShopeePay</option>
+                                    <option value="LinkAja">LinkAja</option>
+                                    <option value="QRIS">QRIS Barcode Kustom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor Rekening / No E-Wallet *</label>
+                                <input type="text" id="postEwalletNum" required placeholder="0851XXXXXX a/n Nama" 
+                                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Foto Kode QRIS Penjual (Opsional)</label>
+                                <input type="file" id="postQrisFile" accept="image/*" onchange="previewFileImage(this, 'postQrisPreview')"
+                                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-2 text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-500/10 file:text-neonOrange">
+                                <div class="mt-2">
+                                    <img id="postQrisPreview" class="w-28 h-28 object-contain rounded-xl hidden border border-slate-300 dark:border-slate-700 p-1 bg-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 mt-4 bg-gradient-to-r from-neonOrange to-amber-500 hover:opacity-95 text-white font-extrabold rounded-xl shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Publikasikan Produk Sekarang
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 3: CHAT ROOM -->
+        <section id="tab-chat" class="tab-content hidden max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row h-[580px]">
+                
+                <!-- Chat Users Sidebar -->
+                <div class="w-full md:w-1/3 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-darkBorder flex flex-col">
+                    <div class="p-4 border-b border-slate-200 dark:border-darkBorder">
+                        <h2 class="text-xs font-black uppercase text-slate-700 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-neonOrange"></i> Ruang Chat Obrolan
+                        </h2>
+                    </div>
+                    <div id="chatUserList" class="flex-1 overflow-y-auto divide-y divide-slate-200 dark:divide-slate-800">
+                        <!-- Dynamic User Threads -->
+                    </div>
+                </div>
+
+                <!-- Chat Conversation Window -->
+                <div class="flex-1 flex flex-col bg-white dark:bg-darkCard">
+                    <div id="chatActiveHeader" class="p-4 border-b border-slate-200 dark:border-darkBorder flex items-center gap-3">
+                        <p class="text-xs text-slate-500">Pilih salah satu penjual/pembeli dari daftar untuk mengobrol.</p>
+                    </div>
+
+                    <div id="chatMessagesBox" class="flex-1 p-4 overflow-y-auto space-y-3">
+                        <div class="text-center py-16 text-slate-400 text-xs">
+                            <i class="fa-solid fa-comments text-4xl mb-2"></i>
+                            <p>Belum ada percakapan terpilih.</p>
+                        </div>
+                    </div>
+
+                    <form id="chatSendForm" onsubmit="handleSendChatMessage(event)" class="p-3 border-t border-slate-200 dark:border-darkBorder flex items-center gap-2 hidden">
+                        <input type="text" id="chatInputText" required placeholder="Tulis pesan..." 
+                            class="flex-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-neonOrange">
+                        <button type="submit" class="px-4 py-2.5 bg-neonOrange text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: WALLET SALDO & WITHDRAW -->
+        <section id="tab-wallet" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-950 border border-orange-500/20 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+                    <div>
+                        <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Saldo RullzPay Anda</span>
+                        <h2 id="walletBalanceText" class="text-3xl font-black text-amber-400 mt-1">Rp 0</h2>
+                        <div id="walletLimitInfo" class="text-xs text-slate-300 mt-1"></div>
+                    </div>
+                    <button onclick="openWithdrawModal()" class="px-5 py-2.5 bg-neonOrange hover:bg-orange-600 text-white font-bold rounded-xl text-xs shadow-lg shadow-orange-500/30 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-money-bill-transfer"></i> Tarik Uang Saldo
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 shadow-sm">
+                <h3 class="text-sm font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-neonOrange"></i> Riwayat Transaksi Saldo
+                </h3>
+                <div id="txHistoryList" class="space-y-3">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: EDIT PROFILE & E-WALLET QRIS -->
+        <section id="tab-profile" class="tab-content hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl p-6 sm:p-8 shadow-xl">
+                <!-- User Profile Header Summary -->
+                <div class="flex items-center gap-4 pb-6 border-b border-slate-200 dark:border-darkBorder">
+                    <div class="relative">
+                        <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-16 h-16 rounded-full object-cover border-2 border-neonOrange">
+                        <div id="profileBadgeIcon" class="absolute -bottom-1 -right-1 hidden">
+                            <i class="fa-solid fa-circle-check text-sky-400 text-lg bg-white dark:bg-darkBg rounded-full"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 id="profileUsernameText" class="text-xl font-black text-slate-900 dark:text-white">User</h2>
+                        <p id="profilePhoneText" class="text-xs text-slate-400 font-semibold mt-0.5">08XXXXXXXXXX</p>
+                        <div id="profileStatusBadge" class="mt-1"></div>
+                    </div>
+                </div>
+
+                <!-- EDIT PROFILE FORM (All Edit Controls Here) -->
+                <form onsubmit="handleSaveProfile(event)" class="mt-6 space-y-5">
+                    <h3 class="text-xs font-black uppercase tracking-wider text-neonOrange flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-pen"></i> Pengaturan Akun & Rekening Penjual
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Username Baru *</label>
+                            <input type="text" id="editUsername" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor HP / WhatsApp *</label>
+                            <input type="text" id="editPhone" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                        </div>
+                    </div>
+
+                    <!-- GALLERY FILE UPLOAD FOR PROFILE AVATAR -->
+                    <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Foto Profil (Pilih dari Galeri HP)</label>
+                        <input type="file" id="editAvatarFile" accept="image/*" onchange="previewFileImage(this, 'editAvatarPreview')"
+                            class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-2 text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-500/10 file:text-neonOrange">
+                        <div class="mt-3 flex items-center gap-3">
+                            <span class="text-[11px] text-slate-400">Pratinjau Foto Profil:</span>
+                            <img id="editAvatarPreview" class="w-14 h-14 rounded-full object-cover hidden border border-neonOrange">
+                        </div>
+                    </div>
+
+                    <!-- E-WALLET & QRIS CONFIGURATION FOR SELLING -->
+                    <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wallet text-amber-500"></i> Data E-Wallet & Kode QRIS Penjualan
+                        </h4>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jenis E-Wallet Utama</label>
+                                <select id="editEwalletType" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                                    <option value="DANA">DANA</option>
+                                    <option value="OVO">OVO</option>
+                                    <option value="GoPay">GoPay</option>
+                                    <option value="ShopeePay">ShopeePay</option>
+                                    <option value="LinkAja">LinkAja</option>
+                                    <option value="QRIS">QRIS Barcode Kustom</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">No. Rekening / No. E-Wallet</label>
+                                <input type="text" id="editEwalletNum" placeholder="08XXXXXXXXXX a/n Nama" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Upload Kode Barcode QRIS (Dari Galeri HP)</label>
+                            <input type="file" id="editQrisFile" accept="image/*" onchange="previewFileImage(this, 'editQrisPreview')"
+                                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-2 text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-500/10 file:text-neonOrange">
+                            <div class="mt-3 flex items-center gap-3">
+                                <span class="text-[11px] text-slate-400">Pratinjau Kode QRIS:</span>
+                                <img id="editQrisPreview" class="w-24 h-24 object-contain rounded-xl hidden border border-slate-300 dark:border-slate-700 p-1 bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 bg-neonOrange hover:bg-orange-600 text-white font-extrabold rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Perubahan Profil
+                    </button>
+                </form>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 dark:border-darkBorder flex flex-col sm:flex-row gap-3 justify-between items-center">
+                    <button onclick="requestPremiumUpgrade()" class="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-amber-400 to-neonOrange text-slate-950 font-black text-xs rounded-xl flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-crown"></i> Langganan Premium VIP
+                    </button>
+                    <button onclick="handleLogout()" class="w-full sm:w-auto px-4 py-2.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 font-bold text-xs rounded-xl border border-red-500/30 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: PRIVAT SUPER ADMIN PANEL (RullzPreset) -->
+        <section id="tab-admin" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-darkCard border border-amber-500/40 rounded-3xl p-6 sm:p-8 shadow-xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 dark:border-darkBorder pb-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-black text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield"></i> Panel Kontrol Super Admin RullzShop
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantau pengguna pendaftar, password privat, pengajuan VIP, & penggajian.</p>
+                    </div>
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-500 border border-amber-500/40 text-xs font-bold rounded-full">
+                        Admin: RullzPreset
+                    </span>
+                </div>
+
+                <!-- Admin Metrics -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <span class="text-xs text-slate-500 font-bold">Total Pengguna</span>
+                        <p id="adminTotalUsers" class="text-2xl font-black text-slate-900 dark:text-white mt-1">0</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <span class="text-xs text-slate-500 font-bold">Total Member VIP</span>
+                        <p id="adminPremiumUsers" class="text-2xl font-black text-amber-500 mt-1">0</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <span class="text-xs text-slate-500 font-bold">Pengajuan VIP Pending</span>
+                        <p id="adminPendingRequests" class="text-2xl font-black text-neonOrange mt-1">0</p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <span class="text-xs text-slate-500 font-bold">Pengguna Diblokir</span>
+                        <p id="adminBlockedUsers" class="text-2xl font-black text-red-500 mt-1">0</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SECTION 1: PENDING PREMIUM SUBSCRIPTIONS -->
+                <div class="space-y-3 mb-8">
+                    <h3 class="text-xs font-black uppercase text-amber-500 flex items-center justify-between">
+                        <span><i class="fa-solid fa-crown mr-1"></i> Permintaan Langganan Premium VIP (Rp 50.000)</span>
+                    </h3>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 dark:bg-slate-900 text-slate-500 font-bold uppercase border-b border-slate-200 dark:border-slate-800">
+                                <tr>
+                                    <th class="p-3">User Pemohon</th>
+                                    <th class="p-3">Tanggal Pengajuan</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3 text-right">Aksi Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPremiumRequestsBody" class="divide-y divide-slate-200 dark:divide-slate-800">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ADMIN SECTION 2: REGISTERED USERS & PRIVAT PASSWORDS -->
+                <div class="space-y-3 mb-8">
+                    <h3 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300">
+                        Daftar Pengguna & Password Privat
+                    </h3>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 dark:bg-slate-900 text-slate-500 font-bold uppercase border-b border-slate-200 dark:border-slate-800">
+                                <tr>
+                                    <th class="p-3">User</th>
+                                    <th class="p-3">No. HP</th>
+                                    <th class="p-3">Password (Privat)</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Saldo</th>
+                                    <th class="p-3 text-right">Aksi Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUserTableBody" class="divide-y divide-slate-200 dark:divide-slate-800">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ADMIN SECTION 3: PRODUCTS CONTROL -->
+                <div class="space-y-3">
+                    <h3 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300">
+                        Kelola Seluruh Produk Marketplace
+                    </h3>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 dark:bg-slate-900 text-slate-500 font-bold uppercase border-b border-slate-200 dark:border-slate-800">
+                                <tr>
+                                    <th class="p-3">Produk</th>
+                                    <th class="p-3">Penjual</th>
+                                    <th class="p-3">Harga</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminProductTableBody" class="divide-y divide-slate-200 dark:divide-slate-800">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NAVIGATION BAR SELULER (MOBILE BOTTOM NAVBAR) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-darkCard/95 border-t border-slate-200 dark:border-darkBorder md:hidden backdrop-blur-md transition-colors">
+        <div class="grid grid-cols-5 h-16 text-center">
+            <button onclick="switchTab('home')" id="mob-nav-home" class="flex flex-col items-center justify-center text-neonOrange font-bold">
+                <i class="fa-solid fa-store text-lg"></i>
+                <span class="text-[10px] mt-1">Beranda</span>
+            </button>
+            <button onclick="switchTab('sell')" id="mob-nav-sell" class="flex flex-col items-center justify-center text-slate-400 font-bold">
+                <i class="fa-solid fa-plus-circle text-xl text-neonOrange"></i>
+                <span class="text-[10px] mt-1">Jual</span>
+            </button>
+            <button onclick="switchTab('chat')" id="mob-nav-chat" class="flex flex-col items-center justify-center text-slate-400 font-bold">
+                <i class="fa-solid fa-comments text-lg"></i>
+                <span class="text-[10px] mt-1">Chat</span>
+            </button>
+            <button onclick="switchTab('wallet')" id="mob-nav-wallet" class="flex flex-col items-center justify-center text-slate-400 font-bold">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[10px] mt-1">Dompet</span>
+            </button>
+            <button onclick="switchTab('profile')" id="mob-nav-profile" class="flex flex-col items-center justify-center text-slate-400 font-bold">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[10px] mt-1">Profil</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL PRODUCT DETAIL -->
+    <div id="productModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
+            <button onclick="closeProductModal()" class="absolute top-3 right-3 z-10 bg-slate-950/60 text-white hover:bg-slate-950 w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="productModalBody" class="overflow-y-auto p-6 space-y-4">
+                <!-- Dynamic -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CHECKOUT & PIN PEMBAYARAN PEMBELI -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 mb-4 border-b border-slate-200 dark:border-darkBorder pb-3">
+                <i class="fa-solid fa-credit-card text-neonOrange"></i> Pembayaran E-Wallet Pembeli
+            </h3>
+
+            <div class="space-y-4">
+                <div id="checkoutProdSummary" class="bg-slate-50 dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
+                    <!-- Dynamic -->
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Pilih Metode Pembayaran E-Wallet *</label>
+                    <select id="buyerSelectedEwallet" onchange="updateCheckoutSellerInfo()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-neonOrange dark:text-white">
+                        <option value="DANA">DANA E-Wallet</option>
+                        <option value="OVO">OVO Payment</option>
+                        <option value="GoPay">GoPay Instant</option>
+                        <option value="ShopeePay">ShopeePay</option>
+                        <option value="LinkAja">LinkAja Wallet</option>
+                        <option value="QRIS">Kode QRIS Barcode Penjual</option>
+                    </select>
+                </div>
+
+                <div id="sellerPaymentDisplay" class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-orange-500/30 space-y-3">
+                    <!-- Dynamic Seller QRIS & Account info -->
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor HP E-Wallet Pembeli *</label>
+                    <input type="text" id="buyerEwalletAccount" required placeholder="08XXXXXXXXXX" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">PIN Keamanan E-Wallet Pembeli (6 Digit) *</label>
+                    <input type="password" id="buyerEwalletPin" maxlength="6" required placeholder="••••••" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-center font-mono tracking-widest text-slate-900 dark:text-white focus:outline-none focus:border-neonOrange">
+                </div>
+
+                <button onclick="handleBuyerProcessPayment()" class="w-full py-3.5 bg-gradient-to-r from-neonOrange to-amber-500 hover:opacity-95 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Konfirmasi & Bayar Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PREMIUM SUBSCRIPTION -->
+    <div id="premiumModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-white to-orange-50 dark:from-slate-900 dark:to-orange-950 border border-amber-500/40 w-full max-w-md rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closePremiumModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-neonOrange text-slate-950 font-black text-3xl mx-auto flex items-center justify-center mb-2 shadow-lg shadow-orange-500/30">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white">RullzShop Premium VIP</h3>
+                <p class="text-xs text-amber-600 dark:text-amber-300 font-extrabold mt-1">Hanya Rp 50.000 / Bulan</p>
+            </div>
+
+            <div class="bg-white/80 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-3 mb-5">
+                <h4 class="text-xs font-black uppercase text-slate-500 dark:text-slate-400">Keunggulan Eksklusif Premium VIP:</h4>
+                <div class="space-y-2 text-xs text-slate-700 dark:text-slate-200">
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-amber-500 text-sm mt-0.5"></i>
+                        <div>
+                            <strong class="text-slate-900 dark:text-amber-300">1. Unlimited Limit Post Produk:</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Posting produk tanpa batas harian (Akun biasa max 10/hari).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-amber-500 text-sm mt-0.5"></i>
+                        <div>
+                            <strong class="text-slate-900 dark:text-amber-300">2. Tarik Uang Tanpa Potongan:</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Bebas biaya penarikan Rp 0 (Akun biasa dipotong Rp 2.000).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-amber-500 text-sm mt-0.5"></i>
+                        <div>
+                            <strong class="text-slate-900 dark:text-amber-300">3. Verifikasi Lencana Centang Biru:</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Centang biru terverifikasi di profil & postingan produk.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-amber-500 text-sm mt-0.5"></i>
+                        <div>
+                            <strong class="text-slate-900 dark:text-amber-300">4. Limit Penyimpanan Saldo Unlimited:</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Tampung saldo tanpa batas maks (Akun biasa dibatasi 5 JT).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <button onclick="requestPremiumUpgrade()" class="w-full py-3.5 bg-gradient-to-r from-amber-400 to-neonOrange hover:opacity-95 text-slate-950 font-black rounded-xl text-xs shadow-xl shadow-orange-500/30 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Langganan Sekarang (Kirim ke Admin)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTIFIKASI INBOX -->
+    <div id="notifModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <button onclick="closeNotificationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 mb-4 border-b border-slate-200 dark:border-darkBorder pb-3">
+                <i class="fa-solid fa-bell text-neonOrange"></i> Kotak Notifikasi Penjual & Pembeli
+            </h3>
+            <div id="notifListContent" class="space-y-3 max-h-80 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- MODAL WITHDRAW SALDO -->
+    <div id="withdrawModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <button onclick="closeWithdrawModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-money-bill-transfer text-neonOrange"></i> Penarikan Saldo RullzPay
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Transfer saldo ke E-Wallet / Rekening Bank Anda.</p>
+
+            <form onsubmit="handleWithdrawSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Jumlah Penarikan (Rp)</label>
+                    <input type="number" id="withdrawAmount" required min="10000" placeholder="Minimal Rp 10.000" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Tujuan E-Wallet / Bank</label>
+                    <input type="text" id="withdrawTarget" required placeholder="Contoh: DANA 085189022148 a/n Nama" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-neonOrange">
+                </div>
+
+                <div id="withdrawFeeNotice" class="bg-slate-100 dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs"></div>
+
+                <button type="submit" class="w-full py-3.5 bg-neonOrange hover:bg-orange-600 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-orange-500/20 transition-all">
+                    Konfirmasi Penarikan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL GAJI USER BY ADMIN -->
+    <div id="adminGajiModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard border border-amber-500/40 w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <button onclick="closeAdminGajiModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h3 class="text-base font-black text-amber-500 flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Transfer Gaji Pengguna
+            </h3>
+            <p id="adminGajiTargetText" class="text-xs text-slate-600 dark:text-slate-300 mb-4">Target: -</p>
+
+            <form onsubmit="handleAdminGajiSubmit(event)" class="space-y-4">
+                <input type="hidden" id="adminGajiUserId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nominal Gaji / Bonus (Rp)</label>
+                    <input type="number" id="adminGajiAmount" required min="1000" placeholder="100000" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Catatan Admin</label>
+                    <input type="text" id="adminGajiNote" placeholder="Gaji Bulanan / Bonus Seller RullzShop" 
+                        class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-amber-500">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl text-xs transition-all">
+                    Kirim Gaji Sekarang
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CORE ENGINE PERSISTENCE -->
+    <script>
+        // --- CONSTANTS & DEFAULT SEEDS ---
+        const ADMIN_USERNAME = "RullzPreset";
+        const ADMIN_PASSWORD = "jenab123";
+
+        const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+        const DEFAULT_QRIS = "https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=400";
+        const DEFAULT_PROD_IMG = "https://images.unsplash.com/photo-1556742049-0a67914909f2?w=600";
+
+        const initialUsers = [
+            {
+                id: 'u-admin',
+                username: 'RullzPreset',
+                password: 'jenab123',
+                avatar: DEFAULT_AVATAR,
+                isPremium: true,
+                isBlocked: false,
+                balance: 5000000,
+                phone: '085189022148',
+                ewalletType: 'QRIS',
+                ewalletNumber: '085189022148 a/n RullzOfficial',
+                qrisUrl: DEFAULT_QRIS,
+                notifications: [],
+                postsTodayCount: 0,
+                lastPostDate: new Date().toDateString()
+            },
+            {
+                id: 'u-2',
+                username: 'DevStorePro',
+                password: 'user123',
+                avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150',
+                isPremium: true,
+                isBlocked: false,
+                balance: 750000,
+                phone: '081234567890',
+                ewalletType: 'DANA',
+                ewalletNumber: '081234567890 a/n DevStore',
+                qrisUrl: DEFAULT_QRIS,
+                notifications: [],
+                postsTodayCount: 1,
+                lastPostDate: new Date().toDateString()
+            }
+        ];
+
+        const initialProducts = [
+            {
+                id: 'p-1',
+                sellerId: 'u-admin',
+                sellerUsername: 'RullzPreset',
+                title: 'Aplikasi Kasir Minimarket Mobile Android Pro',
+                price: 150000,
+                category: 'Aplikasi / Software',
+                description: 'Aplikasi kasir terlengkap support cetak struk bluetooth, manajemen stok produk, dan laporan omset harian komplit.',
+                imageUrl: DEFAULT_PROD_IMG,
+                downloadUrl: 'https://drive.google.com/file/d/sample-kasir',
+                phone: '085189022148',
+                ewalletType: 'DANA',
+                ewalletNumber: '085189022148 a/n RullzOfficial',
+                qrisUrl: DEFAULT_QRIS,
+                createdAt: '2026-03-01'
+            },
+            {
+                id: 'p-2',
+                sellerId: 'u-2',
+                sellerUsername: 'DevStorePro',
+                title: 'Script Bot WhatsApp Multi-Device Auto Ordering',
+                price: 50000,
+                category: 'Produk Digital / Barang',
+                description: 'Script bot WA paling efisien hemat RAM, responsif 24 jam, support fitur auto respon pesan, push kontak, & broadcast.',
+                imageUrl: 'https://images.unsplash.com/photo-1614680376593-902f749f7edc?w=600',
+                downloadUrl: 'https://mediafire.com/file/sample-bot',
+                phone: '081234567890',
+                ewalletType: 'GoPay',
+                ewalletNumber: '081234567890 a/n DevStore',
+                qrisUrl: DEFAULT_QRIS,
+                createdAt: '2026-03-02'
+            }
+        ];
+
+        // --- LOCAL STORAGE STATE MANAGEMENT (`RULLZSHOP_DATA_V4`) ---
+        let storageData = JSON.parse(localStorage.getItem('RULLZSHOP_DATA_V4')) || {
+            users: initialUsers,
+            products: initialProducts,
+            transactions: [],
+            chats: [],
+            premiumRequests: [],
+            currentUserId: null,
+            themeMode: 'dark'
+        };
+
+        function saveState() {
+            localStorage.setItem('RULLZSHOP_DATA_V4', JSON.stringify(storageData));
+        }
+
+        function getCurrentUser() {
+            if (!storageData.currentUserId) return null;
+            return storageData.users.find(u => u.id === storageData.currentUserId) || null;
+        }
+
+        // --- LIGHT / DARK MODE TOGGLE ---
+        function applyThemeMode() {
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('themeToggleIcon');
+            if (storageData.themeMode === 'light') {
+                htmlEl.classList.remove('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-sun text-sm text-amber-500';
+            } else {
+                htmlEl.classList.add('dark');
+                if (iconEl) iconEl.className = 'fa-solid fa-moon text-sm text-amber-300';
+            }
+        }
+
+        function toggleThemeMode() {
+            storageData.themeMode = storageData.themeMode === 'light' ? 'dark' : 'light';
+            saveState();
+            applyThemeMode();
+            showToast(`Mode tampilan diubah ke ${storageData.themeMode === 'light' ? 'Terang' : 'Malam'}`);
+        }
+
+        // --- NATIVE FILE READER HELPER (BASE64 FROM GALLERY) ---
+        function previewFileImage(inputEl, previewImgId) {
+            if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
+            const file = inputEl.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById(previewImgId);
+                if (img) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function getBase64FromFile(inputEl) {
+            return new Promise((resolve) => {
+                if (!inputEl || !inputEl.files || !inputEl.files[0]) {
+                    resolve(null);
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve(e.target.result);
+                };
+                reader.readAsDataURL(inputEl.files[0]);
+            });
+        }
+
+        // --- TOAST SYSTEM ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-600' : type === 'info' ? 'bg-sky-600' : 'bg-emerald-600';
+            const icon = type === 'error' ? 'fa-circle-exclamation' : type === 'info' ? 'fa-circle-info' : 'fa-circle-check';
+
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-2xl shadow-xl flex items-center justify-between text-xs font-extrabold transition-all duration-300 pointer-events-auto transform translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid ${icon} text-base"></i>
+                    <span>${message}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white ml-3">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // --- APP INITIALIZATION ---
+        window.onload = function() {
+            applyThemeMode();
+            checkAuthGuard();
+            renderUserHeader();
+            renderProducts();
+            updateNotifBadge();
+        };
+
+        // --- AUTH GUARD SYSTEM ---
+        function checkAuthGuard() {
+            const user = getCurrentUser();
+            const guardOverlay = document.getElementById('authGuardOverlay');
+            if (!user) {
+                guardOverlay.classList.remove('hidden');
+            } else {
+                guardOverlay.classList.add('hidden');
+            }
+        }
+
+        function switchAuthMode(mode) {
+            const loginBtn = document.getElementById('authTabLoginBtn');
+            const regBtn = document.getElementById('authTabRegisterBtn');
+            const loginForm = document.getElementById('guardLoginForm');
+            const regForm = document.getElementById('guardRegisterForm');
+
+            if (mode === 'login') {
+                loginBtn.className = 'flex-1 py-2.5 rounded-xl bg-neonOrange text-white shadow-md transition-all';
+                regBtn.className = 'flex-1 py-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all';
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            } else {
+                regBtn.className = 'flex-1 py-2.5 rounded-xl bg-neonOrange text-white shadow-md transition-all';
+                loginBtn.className = 'flex-1 py-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all';
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function handleGuardLogin(e) {
+            e.preventDefault();
+            const uname = document.getElementById('guardLoginUsername').value.trim();
+            const pass = document.getElementById('guardLoginPassword').value.trim();
+
+            const found = storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase() && u.password === pass);
+            if (!found) {
+                showToast("Username atau Password salah!", "error");
+                return;
+            }
+
+            if (found.isBlocked) {
+                showToast("Akun Anda sedang diblokir oleh Admin!", "error");
+                return;
+            }
+
+            storageData.currentUserId = found.id;
+            saveState();
+            checkAuthGuard();
+            renderUserHeader();
+            updateNotifBadge();
+            showToast(`Selamat datang kembali, @${found.username}!`);
+
+            if (found.username === ADMIN_USERNAME) switchTab('admin');
+            else switchTab('home');
+        }
+
+        function handleGuardRegister(e) {
+            e.preventDefault();
+            const uname = document.getElementById('guardRegUsername').value.trim();
+            const pass = document.getElementById('guardRegPassword').value.trim();
+            const phone = document.getElementById('guardRegPhone').value.trim();
+
+            if (uname.length < 3) {
+                showToast("Username minimal 3 karakter!", "error");
+                return;
+            }
+
+            if (storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase())) {
+                showToast("Username sudah dipakai, pilih username lain!", "error");
+                return;
+            }
+
+            const newUser = {
+                id: 'u-' + Date.now(),
+                username: uname,
+                password: pass,
+                phone: phone,
+                avatar: DEFAULT_AVATAR,
+                isPremium: false,
+                isBlocked: false,
+                balance: 0,
+                ewalletType: 'DANA',
+                ewalletNumber: phone ? `${phone} a/n ${uname}` : '',
+                qrisUrl: DEFAULT_QRIS,
+                notifications: [],
+                postsTodayCount: 0,
+                lastPostDate: new Date().toDateString()
+            };
+
+            storageData.users.push(newUser);
+            storageData.currentUserId = newUser.id;
+            saveState();
+
+            checkAuthGuard();
+            renderUserHeader();
+            updateNotifBadge();
+            showToast(`Akun berhasil dibuat! Selamat datang @${uname}`);
+            switchTab('home');
+        }
+
+        function handleLogout() {
+            storageData.currentUserId = null;
+            saveState();
+            checkAuthGuard();
+            renderUserHeader();
+            showToast("Anda telah keluar dari akun.");
+        }
+
+        // --- TAB SWITCHER ---
+        let activeTab = 'home';
+        let currentCategoryFilter = 'all';
+
+        function switchTab(tabName) {
+            const user = getCurrentUser();
+
+            if (!user) {
+                checkAuthGuard();
+                return;
+            }
+
+            if (tabName === 'admin' && user.username !== ADMIN_USERNAME) {
+                showToast("Akses ditolak! Khusus Super Admin RullzPreset.", "error");
+                return;
+            }
+
+            activeTab = tabName;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+
+            const activeEl = document.getElementById(`tab-${tabName}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            const banner = document.getElementById('bannerSection');
+            if (tabName === 'home') banner.classList.remove('hidden');
+            else banner.classList.add('hidden');
+
+            // Mobile Nav update
+            const navItems = ['home', 'sell', 'chat', 'wallet', 'profile'];
+            navItems.forEach(item => {
+                const btn = document.getElementById(`mob-nav-${item}`);
+                if (btn) {
+                    if (item === tabName) {
+                        btn.classList.add('text-neonOrange');
+                        btn.classList.remove('text-slate-400');
+                    } else {
+                        btn.classList.remove('text-neonOrange');
+                        btn.classList.add('text-slate-400');
+                    }
+                }
+            });
+
+            if (tabName === 'home') renderProducts();
+            if (tabName === 'sell') updateSellLimitView();
+            if (tabName === 'chat') renderChatTab();
+            if (tabName === 'wallet') renderWalletView();
+            if (tabName === 'profile') renderProfileView();
+            if (tabName === 'admin') renderAdminView();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderUserHeader() {
+            const user = getCurrentUser();
+            const container = document.getElementById('userNavSection');
+            if (!container) return;
+
+            if (!user) {
+                container.innerHTML = ``;
+                return;
+            }
+
+            const isVerified = user.isPremium || user.username === ADMIN_USERNAME;
+            const badgeHtml = isVerified ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs" title="Centang Biru VIP"></i>` : '';
+            const adminBtn = user.username === ADMIN_USERNAME ? `
+                <button onclick="switchTab('admin')" class="px-2.5 py-1.5 bg-amber-500/20 text-amber-500 border border-amber-500/40 text-xs font-bold rounded-xl hover:bg-amber-500/30">
+                    <i class="fa-solid fa-shield-halved"></i> <span class="hidden sm:inline">Admin</span>
+                </button>
+            ` : '';
+
+            container.innerHTML = `
+                ${adminBtn}
+                <button onclick="switchTab('wallet')" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-900 text-amber-500 border border-slate-200 dark:border-slate-800 text-xs font-bold rounded-xl flex items-center gap-1.5">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Rp ${formatRupiah(user.balance)}</span>
+                </button>
+                <div onclick="switchTab('profile')" class="flex items-center gap-2 cursor-pointer bg-slate-100 dark:bg-slate-900 p-1 pr-2.5 rounded-full border border-slate-200 dark:border-slate-800">
+                    <img src="${user.avatar || DEFAULT_AVATAR}" class="w-7 h-7 rounded-full object-cover border border-neonOrange">
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 hidden sm:inline-block">${escapeHtml(user.username)}</span>
+                    ${badgeHtml}
+                </div>
+            `;
+        }
+
+        // --- MARKETPLACE RENDERING ---
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = (document.getElementById('searchInput')?.value || document.getElementById('searchInputMobile')?.value || '').toLowerCase();
+
+            let filtered = storageData.products.filter(p => {
+                const matchCategory = currentCategoryFilter === 'all' || p.category === currentCategoryFilter;
+                const matchSearch = p.title.toLowerCase().includes(searchVal) || p.description.toLowerCase().includes(searchVal) || p.sellerUsername.toLowerCase().includes(searchVal);
+                return matchCategory && matchSearch;
+            });
+
+            document.getElementById('productCountBadge').innerText = `Menampilkan ${filtered.length} produk`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(p => {
+                const sellerObj = storageData.users.find(u => u.id === p.sellerId) || { isPremium: false };
+                const isSellerVerified = sellerObj.isPremium || p.sellerUsername === ADMIN_USERNAME;
+
+                return `
+                    <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl overflow-hidden hover:border-neonOrange/50 transition-all group flex flex-col justify-between shadow-sm">
+                        <div>
+                            <div class="relative h-40 w-full overflow-hidden bg-slate-900">
+                                <img src="${p.imageUrl}" onerror="this.src='${DEFAULT_PROD_IMG}'" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+                                <span class="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md text-neonOrange text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-500/30">
+                                    ${escapeHtml(p.category)}
+                                </span>
+                            </div>
+
+                            <div class="p-3.5 space-y-2">
+                                <div class="flex items-center justify-between text-[11px] text-slate-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <i class="fa-solid fa-store text-slate-400"></i>
+                                        <span class="font-bold text-slate-700 dark:text-slate-300 truncate">${escapeHtml(p.sellerUsername)}</span>
+                                        ${isSellerVerified ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs" title="Terverifikasi Centang Biru"></i>` : ''}
+                                    </div>
+                                </div>
+
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-neonOrange transition-colors">
+                                    ${escapeHtml(p.title)}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 pt-0 space-y-2">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-[10px] text-slate-400 uppercase font-bold">Harga</span>
+                                <span class="text-base font-black text-amber-500">Rp ${formatRupiah(p.price)}</span>
+                            </div>
+                            <button onclick="openProductModal('${p.id}')" class="w-full py-2 bg-orange-500/10 hover:bg-neonOrange text-neonOrange hover:text-white border border-orange-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-cart-shopping"></i> Detail & Beli
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategoryFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === 'all' && btn.innerText.includes('Semua'))) {
+                    btn.className = 'cat-btn active bg-neonOrange text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition-all shadow-md';
+                } else {
+                    btn.className = 'cat-btn bg-white dark:bg-darkCard hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-darkBorder px-4 py-2 rounded-xl text-xs font-semibold shrink-0 transition-all';
+                }
+            });
+            renderProducts();
+        }
+
+        function handleSearch() { renderProducts(); }
+        function handleSearchMobile() { renderProducts(); }
+
+        // --- PRODUCT DETAIL & CHECKOUT PROCESS ---
+        function openProductModal(productId) {
+            const product = storageData.products.find(p => p.id === productId);
+            if (!product) return;
+
+            const sellerObj = storageData.users.find(u => u.id === product.sellerId) || { isPremium: false };
+            const isSellerVerified = sellerObj.isPremium || product.sellerUsername === ADMIN_USERNAME;
+
+            const modalBody = document.getElementById('productModalBody');
+            modalBody.innerHTML = `
+                <div class="relative h-56 rounded-2xl overflow-hidden bg-slate-950">
+                    <img src="${product.imageUrl}" onerror="this.src='${DEFAULT_PROD_IMG}'" class="w-full h-full object-cover">
+                    <div class="absolute bottom-2 left-2 bg-slate-950/90 px-3 py-1 rounded-full text-xs font-bold text-neonOrange border border-orange-500/30">
+                        ${escapeHtml(product.category)}
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="${sellerObj.avatar || DEFAULT_AVATAR}" class="w-8 h-8 rounded-full border border-neonOrange">
+                            <div>
+                                <div class="flex items-center gap-1 text-xs font-bold text-slate-900 dark:text-slate-100">
+                                    <span>${escapeHtml(product.sellerUsername)}</span>
+                                    ${isSellerVerified ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>` : ''}
+                                </div>
+                                <span class="text-[10px] text-slate-400">Reseller Terverifikasi</span>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-amber-500">Rp ${formatRupiah(product.price)}</span>
+                    </div>
+
+                    <h2 class="text-xl font-black text-slate-900 dark:text-white">${escapeHtml(product.title)}</h2>
+
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">
+                        <strong class="block text-slate-400 mb-1">Deskripsi Produk:</strong>
+                        ${escapeHtml(product.description)}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="startChatWithSeller('${product.sellerId}')" class="py-3 bg-slate-100 dark:bg-slate-800 text-neonOrange border border-slate-200 dark:border-slate-700 font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-comments"></i> Chat Reseller
+                        </button>
+                        <button onclick="openCheckoutModal('${product.id}')" class="py-3 bg-gradient-to-r from-neonOrange to-amber-500 text-white font-black rounded-xl text-xs shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i> Beli Sekarang
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        let currentCheckoutProduct = null;
+
+        function openCheckoutModal(productId) {
+            closeProductModal();
+            const user = getCurrentUser();
+            if (!user) {
+                checkAuthGuard();
+                return;
+            }
+
+            const product = storageData.products.find(p => p.id === productId);
+            if (!product) return;
+            currentCheckoutProduct = product;
+
+            document.getElementById('checkoutProdSummary').innerHTML = `
+                <div class="flex items-center gap-3">
+                    <img src="${product.imageUrl}" class="w-12 h-12 rounded-xl object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-900 dark:text-white line-clamp-1">${escapeHtml(product.title)}</h4>
+                        <span class="text-[10px] text-slate-400">Penjual: ${escapeHtml(product.sellerUsername)}</span>
+                    </div>
+                    <span class="font-black text-amber-500 text-sm">Rp ${formatRupiah(product.price)}</span>
+                </div>
+            `;
+
+            updateCheckoutSellerInfo();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function updateCheckoutSellerInfo() {
+            if (!currentCheckoutProduct) return;
+            const selectedMethod = document.getElementById('buyerSelectedEwallet').value;
+            const displayBox = document.getElementById('sellerPaymentDisplay');
+
+            displayBox.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400">Target Rekening Penjual:</span>
+                        <span class="font-bold text-neonOrange">${escapeHtml(selectedMethod)}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between bg-white dark:bg-slate-950 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="text-xs font-mono font-bold text-amber-500 truncate">${escapeHtml(currentCheckoutProduct.ewalletNumber || 'Belum diatur penjual')}</span>
+                        <button onclick="copyToClipboard('${escapeHtml(currentCheckoutProduct.ewalletNumber || '')}')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-xs text-slate-700 dark:text-slate-300 font-bold rounded-lg">Salin</button>
+                    </div>
+
+                    ${currentCheckoutProduct.qrisUrl ? `
+                        <div class="text-center pt-2">
+                            <span class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">Barcode QRIS Kustom Penjual:</span>
+                            <div class="inline-block p-2 bg-white rounded-2xl shadow-md border border-slate-200">
+                                <img src="${currentCheckoutProduct.qrisUrl}" onerror="this.src='${DEFAULT_QRIS}'" class="w-36 h-36 object-contain">
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function handleBuyerProcessPayment() {
+            const user = getCurrentUser();
+            if (!user || !currentCheckoutProduct) return;
+
+            const buyerAccount = document.getElementById('buyerEwalletAccount').value.trim();
+            const buyerPin = document.getElementById('buyerEwalletPin').value.trim();
+            const selectedMethod = document.getElementById('buyerSelectedEwallet').value;
+
+            if (!buyerAccount || buyerPin.length < 6) {
+                showToast("Masukkan nomor E-wallet & PIN 6 Digit!", "error");
+                return;
+            }
+
+            // Transfer balance logic to Seller
+            const seller = storageData.users.find(u => u.id === currentCheckoutProduct.sellerId);
+            if (seller) {
+                const MAX_FREE_BAL = 5000000;
+                if (!seller.isPremium && seller.username !== ADMIN_USERNAME && (seller.balance + currentCheckoutProduct.price > MAX_FREE_BAL)) {
+                    seller.balance = MAX_FREE_BAL;
+                } else {
+                    seller.balance += currentCheckoutProduct.price;
+                }
+
+                if (!seller.notifications) seller.notifications = [];
+                seller.notifications.unshift({
+                    id: 'notif-' + Date.now(),
+                    title: `🛒 Pembelian Baru (${currentCheckoutProduct.title})`,
+                    message: `Pembeli @${user.username} telah membayar Rp ${formatRupiah(currentCheckoutProduct.price)} via ${selectedMethod} (${buyerAccount}). Saldo Anda bertambah.`,
+                    date: new Date().toLocaleString('id-ID'),
+                    read: false
+                });
+
+                storageData.transactions.unshift({
+                    id: 'tx-' + Date.now(),
+                    userId: seller.id,
+                    type: 'INCOME',
+                    amount: currentCheckoutProduct.price,
+                    title: `Penjualan: ${currentCheckoutProduct.title}`,
+                    date: new Date().toLocaleString('id-ID')
+                });
+            }
+
+            saveState();
+            closeCheckoutModal();
+
+            // Direct download link modal view
+            document.getElementById('productModalBody').innerHTML = `
+                <div class="text-center py-6 space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 text-3xl mx-auto flex items-center justify-center border border-emerald-500/40">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-black text-slate-900 dark:text-white">Pembayaran Sukses!</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-300 mt-1">Notifikasi telah otomatis masuk ke reseller. Klik tombol di bawah untuk mengunduh produk.</p>
+                    </div>
+
+                    <a href="${currentCheckoutProduct.downloadUrl}" target="_blank" class="block w-full py-3.5 bg-neonOrange hover:bg-orange-600 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-orange-500/30 transition-all">
+                        <i class="fa-solid fa-download mr-1.5"></i> Unduh File Aplikasi
+                    </a>
+
+                    <button onclick="startChatWithSeller('${currentCheckoutProduct.sellerId}')" class="w-full py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700">
+                        <i class="fa-solid fa-comments"></i> Chat Penjual
+                    </button>
+                </div>
+            `;
+            document.getElementById('productModal').classList.remove('hidden');
+            showToast("Pembayaran berhasil! Notifikasi dikirim ke reseller.");
+        }
+
+        // --- POST PRODUCT (GALLERY IMAGE READERS) ---
+        function updateSellLimitView() {
+            const user = getCurrentUser();
+            const badgeEl = document.getElementById('limitPostBadge');
+            if (!user) return;
+
+            const today = new Date().toDateString();
+            if (user.lastPostDate !== today) {
+                user.lastPostDate = today;
+                user.postsTodayCount = 0;
+                saveState();
+            }
+
+            if (user.isPremium || user.username === ADMIN_USERNAME) {
+                badgeEl.innerHTML = `
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-500 border border-amber-500/40 text-xs font-bold rounded-full">
+                        <i class="fa-solid fa-crown"></i> Unlimited Post Limit
+                    </span>
+                `;
+            } else {
+                badgeEl.innerHTML = `
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-900 text-neonOrange border border-orange-500/30 text-xs font-bold rounded-full">
+                        Limit Hari Ini: ${user.postsTodayCount} / 10 Post
+                    </span>
+                `;
+            }
+
+            if (user.phone) document.getElementById('postPhone').value = user.phone;
+            if (user.ewalletType) document.getElementById('postEwalletType').value = user.ewalletType;
+            if (user.ewalletNumber) document.getElementById('postEwalletNum').value = user.ewalletNumber;
+        }
+
+        async function handlePostProduct(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (!user) return;
+
+            const today = new Date().toDateString();
+            if (user.lastPostDate !== today) {
+                user.lastPostDate = today;
+                user.postsTodayCount = 0;
+            }
+
+            if (!user.isPremium && user.username !== ADMIN_USERNAME && user.postsTodayCount >= 10) {
+                showToast("Batas posting gratis (10x/hari) tercapai! Langganan Premium VIP untuk unlimited.", "error");
+                openPremiumModal();
+                return;
+            }
+
+            const title = document.getElementById('postTitle').value.trim();
+            const price = parseInt(document.getElementById('postPrice').value) || 0;
+            const category = document.getElementById('postCategory').value;
+            const description = document.getElementById('postDescription').value.trim();
+            const downloadUrl = document.getElementById('postDownloadUrl').value.trim();
+            const phone = document.getElementById('postPhone').value.trim();
+            const ewalletType = document.getElementById('postEwalletType').value;
+            const ewalletNumber = document.getElementById('postEwalletNum').value.trim();
+
+            const postImgPrev = document.getElementById('postImagePreview');
+            const postQrisPrev = document.getElementById('postQrisPreview');
+
+            let imageBase64 = (postImgPrev && !postImgPrev.classList.contains('hidden') && postImgPrev.src) ? postImgPrev.src : null;
+            if (!imageBase64 || !imageBase64.startsWith('data:image/')) {
+                imageBase64 = await getBase64FromFile(document.getElementById('postImageFile'));
+            }
+            if (!imageBase64) imageBase64 = DEFAULT_PROD_IMG;
+
+            let qrisBase64 = (postQrisPrev && !postQrisPrev.classList.contains('hidden') && postQrisPrev.src) ? postQrisPrev.src : null;
+            if (!qrisBase64 || !qrisBase64.startsWith('data:image/')) {
+                qrisBase64 = await getBase64FromFile(document.getElementById('postQrisFile'));
+            }
+            if (!qrisBase64) qrisBase64 = user.qrisUrl || DEFAULT_QRIS;
+
+            const newProduct = {
+                id: 'p-' + Date.now(),
+                sellerId: user.id,
+                sellerUsername: user.username,
+                title,
+                price,
+                category,
+                description,
+                imageUrl: imageBase64,
+                downloadUrl,
+                phone,
+                ewalletType,
+                ewalletNumber,
+                qrisUrl: qrisBase64,
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
+            storageData.products.unshift(newProduct);
+
+            user.postsTodayCount += 1;
+            user.phone = phone;
+            user.ewalletType = ewalletType;
+            user.ewalletNumber = ewalletNumber;
+            if (qrisBase64 && qrisBase64 !== DEFAULT_QRIS) user.qrisUrl = qrisBase64;
+
+            saveState();
+
+            // Clear inputs & previews after success
+            e.target.reset();
+            if (postImgPrev) postImgPrev.classList.add('hidden');
+            if (postQrisPrev) postQrisPrev.classList.add('hidden');
+
+            showToast("Produk berhasil diunggah & langsung terbit di marketplace!");
+            switchTab('home');
+        }
+
+        // --- NOTIFICATIONS INBOX ---
+        function updateNotifBadge() {
+            const user = getCurrentUser();
+            const badge = document.getElementById('unreadNotifBadge');
+            if (!user || !user.notifications) {
+                if (badge) badge.classList.add('hidden');
+                return;
+            }
+            const unread = user.notifications.filter(n => !n.read).length;
+            if (unread > 0) {
+                badge.innerText = unread;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function openNotificationModal() {
+            const user = getCurrentUser();
+            if (!user) return;
+            const listContent = document.getElementById('notifListContent');
+
+            if (!user.notifications || user.notifications.length === 0) {
+                listContent.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Belum ada notifikasi.</p>`;
+            } else {
+                listContent.innerHTML = user.notifications.map(n => `
+                    <div class="p-3 ${n.read ? 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800' : 'bg-orange-500/10 border-orange-500/40'} border rounded-2xl space-y-1">
+                        <h4 class="text-xs font-bold text-neonOrange">${escapeHtml(n.title)}</h4>
+                        <p class="text-[11px] text-slate-700 dark:text-slate-300">${escapeHtml(n.message)}</p>
+                        <span class="block text-[9px] text-slate-400">${n.date}</span>
+                    </div>
+                `).join('');
+
+                user.notifications.forEach(n => n.read = true);
+                saveState();
+                updateNotifBadge();
+            }
+            document.getElementById('notifModal').classList.remove('hidden');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notifModal').classList.add('hidden');
+        }
+
+        // --- CHAT SYSTEM ---
+        let activeChatUserId = null;
+
+        function startChatWithSeller(sellerId) {
+            closeProductModal();
+            const user = getCurrentUser();
+            if (!user) return;
+            if (user.id === sellerId) {
+                showToast("Anda tidak bisa chat dengan akun sendiri!", "error");
+                return;
+            }
+            activeChatUserId = sellerId;
+            switchTab('chat');
+        }
+
+        function renderChatTab() {
+            const user = getCurrentUser();
+            if (!user) return;
+            const userListEl = document.getElementById('chatUserList');
+            const otherUsers = storageData.users.filter(u => u.id !== user.id);
+
+            userListEl.innerHTML = otherUsers.map(u => {
+                const isActive = u.id === activeChatUserId;
+                const isPrem = u.isPremium || u.username === ADMIN_USERNAME;
+
+                return `
+                    <div onclick="selectChatUser('${u.id}')" class="p-3 flex items-center gap-3 cursor-pointer ${isActive ? 'bg-orange-500/10 border-l-4 border-neonOrange' : 'hover:bg-slate-100 dark:hover:bg-slate-900'} transition-all">
+                        <img src="${u.avatar || DEFAULT_AVATAR}" class="w-9 h-9 rounded-full object-cover border border-slate-300 dark:border-slate-700">
+                        <div class="flex-1 truncate">
+                            <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1">
+                                <span>${escapeHtml(u.username)}</span>
+                                ${isPrem ? `<i class="fa-solid fa-circle-check text-sky-400 text-[10px]"></i>` : ''}
+                            </h4>
+                            <span class="text-[10px] text-slate-400">Klik untuk obrolan</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (activeChatUserId) renderChatMessages();
+        }
+
+        function selectChatUser(userId) {
+            activeChatUserId = userId;
+            renderChatTab();
+        }
+
+        function renderChatMessages() {
+            const user = getCurrentUser();
+            const targetUser = storageData.users.find(u => u.id === activeChatUserId);
+            if (!user || !targetUser) return;
+
+            const activeHeader = document.getElementById('chatActiveHeader');
+            activeHeader.innerHTML = `
+                <img src="${targetUser.avatar || DEFAULT_AVATAR}" class="w-8 h-8 rounded-full border border-neonOrange">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                        <span>${escapeHtml(targetUser.username)}</span>
+                        ${targetUser.isPremium || targetUser.username === ADMIN_USERNAME ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>` : ''}
+                    </h4>
+                    <span class="text-[9px] text-emerald-500 font-semibold">● Online</span>
+                </div>
+            `;
+
+            document.getElementById('chatSendForm').classList.remove('hidden');
+
+            const threadKey = [user.id, targetUser.id].sort().join('_');
+            const chatObj = storageData.chats.find(c => c.threadKey === threadKey) || { messages: [] };
+            const messagesBox = document.getElementById('chatMessagesBox');
+
+            if (chatObj.messages.length === 0) {
+                messagesBox.innerHTML = `<p class="text-xs text-slate-400 text-center py-10">Belum ada obrolan. Mulai sapa @${targetUser.username}!</p>`;
+            } else {
+                messagesBox.innerHTML = chatObj.messages.map(m => {
+                    const isMe = m.senderId === user.id;
+                    return `
+                        <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1">
+                            <div class="max-w-[75%] px-3.5 py-2 rounded-2xl text-xs ${isMe ? 'bg-neonOrange text-white rounded-br-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-none border border-slate-200 dark:border-slate-700'}">
+                                ${escapeHtml(m.text)}
+                            </div>
+                            <span class="text-[9px] text-slate-400 px-1">${m.timestamp}</span>
+                        </div>
+                    `;
+                }).join('');
+                messagesBox.scrollTop = messagesBox.scrollHeight;
+            }
+        }
+
+        function handleSendChatMessage(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            const targetUser = storageData.users.find(u => u.id === activeChatUserId);
+            if (!user || !targetUser) return;
+
+            const textInput = document.getElementById('chatInputText');
+            const text = textInput.value.trim();
+            if (!text) return;
+
+            const threadKey = [user.id, targetUser.id].sort().join('_');
+            let chatObj = storageData.chats.find(c => c.threadKey === threadKey);
+
+            if (!chatObj) {
+                chatObj = { id: 'c-' + Date.now(), threadKey, messages: [] };
+                storageData.chats.push(chatObj);
+            }
+
+            chatObj.messages.push({
+                senderId: user.id,
+                text: text,
+                timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+            });
+
+            textInput.value = '';
+            saveState();
+            renderChatMessages();
+        }
+
+        // --- WALLET & WITHDRAWAL ---
+        function renderWalletView() {
+            const user = getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('walletBalanceText').innerText = `Rp ${formatRupiah(user.balance)}`;
+            const limitInfo = document.getElementById('walletLimitInfo');
+            if (user.isPremium || user.username === ADMIN_USERNAME) {
+                limitInfo.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-infinity"></i> Dompet Unlimited</span>`;
+            } else {
+                limitInfo.innerHTML = `<span>Batas Maks Dompet Free: <strong class="text-amber-400">Rp 5.000.000</strong></span>`;
+            }
+
+            const txList = document.getElementById('txHistoryList');
+            const userTxs = storageData.transactions.filter(t => t.userId === user.id);
+
+            if (userTxs.length === 0) {
+                txList.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Belum ada riwayat transaksi saldo.</p>`;
+                return;
+            }
+
+            txList.innerHTML = userTxs.map(t => {
+                const isIncome = t.type === 'INCOME' || t.type === 'SALARY';
+                return `
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+                                <i class="fa-solid ${t.type === 'SALARY' ? 'fa-hand-holding-dollar text-amber-500' : isIncome ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-red-500'}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(t.title)}</h4>
+                                <span class="text-[10px] text-slate-400">${t.date}</span>
+                            </div>
+                        </div>
+                        <span class="font-black ${isIncome ? 'text-emerald-500' : 'text-red-500'}">${isIncome ? '+' : '-'} Rp ${formatRupiah(t.amount)}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openWithdrawModal() {
+            const user = getCurrentUser();
+            if (!user) return;
+            const feeNotice = document.getElementById('withdrawFeeNotice');
+            if (user.isPremium || user.username === ADMIN_USERNAME) {
+                feeNotice.innerHTML = `<div class="flex justify-between font-bold text-emerald-500"><span>Biaya Penarikan (VIP):</span><span>Rp 0</span></div>`;
+            } else {
+                feeNotice.innerHTML = `<div class="flex justify-between font-bold text-neonOrange"><span>Biaya Penarikan (Free):</span><span>Rp 2.000</span></div>`;
+            }
+            document.getElementById('withdrawModal').classList.remove('hidden');
+        }
+
+        function closeWithdrawModal() { document.getElementById('withdrawModal').classList.add('hidden'); }
+
+        function handleWithdrawSubmit(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (!user) return;
+
+            const amount = parseInt(document.getElementById('withdrawAmount').value) || 0;
+            const target = document.getElementById('withdrawTarget').value.trim();
+            const fee = (user.isPremium || user.username === ADMIN_USERNAME) ? 0 : 2000;
+            const total = amount + fee;
+
+            if (user.balance < total) {
+                showToast(`Saldo tidak cukup! Butuh Rp ${formatRupiah(total)} (Termasuk Biaya)`, "error");
+                return;
+            }
+
+            user.balance -= total;
+            storageData.transactions.unshift({
+                id: 'tx-' + Date.now(),
+                userId: user.id,
+                type: 'WITHDRAW',
+                amount: amount,
+                title: `Penarikan ke ${target} (Fee: Rp ${formatRupiah(fee)})`,
+                date: new Date().toLocaleString('id-ID')
+            });
+
+            saveState();
+            closeWithdrawModal();
+            renderWalletView();
+            renderUserHeader();
+            showToast(`Penarikan Rp ${formatRupiah(amount)} sukses!`);
+        }
+
+        // --- PROFILE VIEW & COMPLETE PROFILE EDIT ---
+        function renderProfileView() {
+            const user = getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('profileUsernameText').innerText = user.username;
+            document.getElementById('profilePhoneText').innerText = user.phone || 'No HP belum diatur';
+            document.getElementById('profileAvatarImg').src = user.avatar || DEFAULT_AVATAR;
+
+            const statusBadge = document.getElementById('profileStatusBadge');
+            const badgeIcon = document.getElementById('profileBadgeIcon');
+
+            if (user.isPremium || user.username === ADMIN_USERNAME) {
+                statusBadge.innerHTML = `<span class="px-2.5 py-0.5 bg-gradient-to-r from-amber-400 to-neonOrange text-slate-950 font-black text-[10px] rounded-full uppercase"><i class="fa-solid fa-crown mr-1"></i> Member VIP Centang Biru</span>`;
+                badgeIcon.classList.remove('hidden');
+            } else {
+                statusBadge.innerHTML = `<span class="px-2.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-[10px] rounded-full uppercase">Akun Gratis</span>`;
+                badgeIcon.classList.add('hidden');
+            }
+
+            // Populate form fields
+            document.getElementById('editUsername').value = user.username;
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editEwalletType').value = user.ewalletType || 'DANA';
+            document.getElementById('editEwalletNum').value = user.ewalletNumber || '';
+
+            const avatarPrev = document.getElementById('editAvatarPreview');
+            if (user.avatar) {
+                avatarPrev.src = user.avatar;
+                avatarPrev.classList.remove('hidden');
+            } else {
+                avatarPrev.src = DEFAULT_AVATAR;
+                avatarPrev.classList.remove('hidden');
+            }
+
+            const qrisPrev = document.getElementById('editQrisPreview');
+            if (user.qrisUrl) {
+                qrisPrev.src = user.qrisUrl;
+                qrisPrev.classList.remove('hidden');
+            }
+        }
+
+        async function handleSaveProfile(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (!user) return;
+
+            const newUname = document.getElementById('editUsername').value.trim();
+            const newPhone = document.getElementById('editPhone').value.trim();
+            const newEwalletType = document.getElementById('editEwalletType').value;
+            const newEwalletNum = document.getElementById('editEwalletNum').value.trim();
+
+            const avatarFileEl = document.getElementById('editAvatarFile');
+            const qrisFileEl = document.getElementById('editQrisFile');
+            const avatarPrev = document.getElementById('editAvatarPreview');
+            const qrisPrev = document.getElementById('editQrisPreview');
+
+            if (newUname.length < 3) {
+                showToast("Username minimal 3 karakter!", "error");
+                return;
+            }
+
+            if (storageData.users.find(u => u.id !== user.id && u.username.toLowerCase() === newUname.toLowerCase())) {
+                showToast("Username sudah digunakan oleh pengguna lain!", "error");
+                return;
+            }
+
+            let newAvatarBase64 = await getBase64FromFile(avatarFileEl);
+            if (!newAvatarBase64 && avatarPrev && !avatarPrev.classList.contains('hidden')) {
+                newAvatarBase64 = avatarPrev.src;
+            }
+
+            let newQrisBase64 = await getBase64FromFile(qrisFileEl);
+            if (!newQrisBase64 && qrisPrev && !qrisPrev.classList.contains('hidden')) {
+                newQrisBase64 = qrisPrev.src;
+            }
+
+            user.username = newUname;
+            user.phone = newPhone;
+            user.ewalletType = newEwalletType;
+            user.ewalletNumber = newEwalletNum;
+
+            if (newAvatarBase64) user.avatar = newAvatarBase64;
+            if (newQrisBase64) user.qrisUrl = newQrisBase64;
+
+            // Sync product seller info across all products
+            storageData.products.forEach(p => {
+                if (p.sellerId === user.id) {
+                    p.sellerUsername = newUname;
+                    p.phone = newPhone;
+                    p.ewalletType = newEwalletType;
+                    p.ewalletNumber = newEwalletNum;
+                    if (newQrisBase64) p.qrisUrl = newQrisBase64;
+                }
+            });
+
+            saveState();
+            renderUserHeader();
+            renderProfileView();
+            renderProducts();
+            showToast("Foto profil & data berhasil diperbarui dari galeri!");
+        }
+
+        // --- PREMIUM UPGRADE & ADMIN APPROVAL SYSTEM ---
+        function openPremiumModal() { document.getElementById('premiumModal').classList.remove('hidden'); }
+        function closePremiumModal() { document.getElementById('premiumModal').classList.add('hidden'); }
+
+        function requestPremiumUpgrade() {
+            const user = getCurrentUser();
+            if (!user) return;
+
+            if (user.isPremium || user.username === ADMIN_USERNAME) {
+                showToast("Akun Anda sudah berstatus Member VIP Premium!", "info");
+                return;
+            }
+
+            const existing = storageData.premiumRequests.find(r => r.userId === user.id && r.status === 'PENDING');
+            if (existing) {
+                showToast("Permohonan VIP Anda sedang menunggu persetujuan Admin RullzPreset.", "info");
+            } else {
+                storageData.premiumRequests.unshift({
+                    id: 'req-' + Date.now(),
+                    userId: user.id,
+                    username: user.username,
+                    date: new Date().toLocaleString('id-ID'),
+                    status: 'PENDING'
+                });
+                saveState();
+                showToast("Pengajuan VIP dikirim ke Admin!");
+            }
+
+            closePremiumModal();
+            window.open("https://wa.me/6285189022148?text=Hallo%20kak%20@RullzOfficial%20saya%20mau%20pesan%20aplikasi%20Premium%20%F0%9F%99%8F%E2%98%BA%EF%B8%8F", "_blank");
+        }
+
+        // --- SUPER ADMIN PANEL (RullzPreset) ---
+        function renderAdminView() {
+            const user = getCurrentUser();
+            if (!user || user.username !== ADMIN_USERNAME) return;
+
+            document.getElementById('adminTotalUsers').innerText = storageData.users.length;
+            document.getElementById('adminPremiumUsers').innerText = storageData.users.filter(u => u.isPremium || u.username === ADMIN_USERNAME).length;
+            document.getElementById('adminPendingRequests').innerText = storageData.premiumRequests.filter(r => r.status === 'PENDING').length;
+            document.getElementById('adminBlockedUsers').innerText = storageData.users.filter(u => u.isBlocked).length;
+
+            // Premium VIP Requests
+            const reqBody = document.getElementById('adminPremiumRequestsBody');
+            if (storageData.premiumRequests.length === 0) {
+                reqBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Belum ada pengajuan.</td></tr>`;
+            } else {
+                reqBody.innerHTML = storageData.premiumRequests.map(r => `
+                    <tr>
+                        <td class="p-3 font-bold text-slate-900 dark:text-white">@${escapeHtml(r.username)}</td>
+                        <td class="p-3 text-slate-400">${r.date}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'PENDING' ? 'bg-orange-500/20 text-orange-500' : r.status === 'APPROVED' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-red-500/20 text-red-500'}">
+                                ${r.status}
+                            </span>
+                        </td>
+                        <td class="p-3 text-right space-x-1">
+                            ${r.status === 'PENDING' ? `
+                                <button onclick="adminApprovePremium('${r.id}')" class="px-2.5 py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg">Setujui</button>
+                                <button onclick="adminRejectPremium('${r.id}')" class="px-2.5 py-1 bg-red-600 text-white font-bold rounded-lg">Tolak</button>
+                            ` : `<span class="text-slate-400 italic">Selesai</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // User Passwords & Blocking Table
+            const userBody = document.getElementById('adminUserTableBody');
+            userBody.innerHTML = storageData.users.map(u => {
+                const isPrem = u.isPremium || u.username === ADMIN_USERNAME;
+                return `
+                    <tr>
+                        <td class="p-3 flex items-center gap-2">
+                            <img src="${u.avatar || DEFAULT_AVATAR}" class="w-6 h-6 rounded-full object-cover">
+                            <span class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(u.username)}</span>
+                            ${isPrem ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>` : ''}
+                        </td>
+                        <td class="p-3 text-slate-400">${escapeHtml(u.phone || '-')}</td>
+                        <td class="p-3 font-mono text-amber-500 font-bold">${escapeHtml(u.password)}</td>
+                        <td class="p-3">
+                            ${u.isBlocked ? `<span class="px-2 py-0.5 bg-red-500/20 text-red-500 rounded font-bold text-[10px]">DIBLOKIR</span>` :
+                              isPrem ? `<span class="px-2 py-0.5 bg-amber-500/20 text-amber-500 rounded font-bold text-[10px]">VIP</span>` :
+                              `<span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-500 rounded font-bold text-[10px]">FREE</span>`}
+                        </td>
+                        <td class="p-3 font-bold text-emerald-500">Rp ${formatRupiah(u.balance)}</td>
+                        <td class="p-3 text-right space-x-1">
+                            ${u.username !== ADMIN_USERNAME ? `
+                                <button onclick="openAdminGajiModal('${u.id}')" class="px-2.5 py-1 bg-amber-500 text-slate-950 font-bold rounded-lg">Gaji</button>
+                                <button onclick="toggleBlockUser('${u.id}')" class="px-2.5 py-1 ${u.isBlocked ? 'bg-emerald-600' : 'bg-red-600'} text-white font-bold rounded-lg">${u.isBlocked ? 'Unblock' : 'Blokir'}</button>
+                            ` : '<span class="text-slate-400 italic">Super Admin</span>'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Products Control Table
+            const prodBody = document.getElementById('adminProductTableBody');
+            prodBody.innerHTML = storageData.products.map(p => `
+                <tr>
+                    <td class="p-3 font-bold text-slate-900 dark:text-slate-200">${escapeHtml(p.title)}</td>
+                    <td class="p-3 text-slate-400">${escapeHtml(p.sellerUsername)}</td>
+                    <td class="p-3 font-bold text-amber-500">Rp ${formatRupiah(p.price)}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="adminDeleteProduct('${p.id}')" class="px-2.5 py-1 bg-red-600 text-white font-bold rounded-lg">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function adminApprovePremium(reqId) {
+            const req = storageData.premiumRequests.find(r => r.id === reqId);
+            if (!req) return;
+            req.status = 'APPROVED';
+            const user = storageData.users.find(u => u.id === req.userId);
+            if (user) {
+                user.isPremium = true;
+                if (!user.notifications) user.notifications = [];
+                user.notifications.unshift({
+                    id: 'notif-' + Date.now(),
+                    title: '🎉 Selamat! Langganan VIP Disetujui!',
+                    message: 'Permohonan langganan VIP Rp 50.000 telah disetujui Admin. Lencana Centang Biru & fitur unlimited telah aktif!',
+                    date: new Date().toLocaleString('id-ID'),
+                    read: false
+                });
+            }
+            saveState();
+            renderAdminView();
+            showToast(`Pengajuan @${req.username} DISETUJUI menjadi VIP!`);
+        }
+
+        function adminRejectPremium(reqId) {
+            const req = storageData.premiumRequests.find(r => r.id === reqId);
+            if (!req) return;
+            req.status = 'REJECTED';
+            saveState();
+            renderAdminView();
+            showToast(`Pengajuan VIP @${req.username} DITOLAK.`);
+        }
+
+        function toggleBlockUser(userId) {
+            const user = storageData.users.find(u => u.id === userId);
+            if (!user) return;
+            user.isBlocked = !user.isBlocked;
+            saveState();
+            renderAdminView();
+            showToast(`Status blokir @${user.username} diperbarui!`);
+        }
+
+        function adminDeleteProduct(prodId) {
+            storageData.products = storageData.products.filter(p => p.id !== prodId);
+            saveState();
+            renderAdminView();
+            renderProducts();
+            showToast("Produk berhasil dihapus.");
+        }
+
+        function openAdminGajiModal(userId) {
+            const user = storageData.users.find(u => u.id === userId);
+            if (!user) return;
+            document.getElementById('adminGajiUserId').value = userId;
+            document.getElementById('adminGajiTargetText').innerText = `Kirim Gaji ke: @${user.username} (Saldo: Rp ${formatRupiah(user.balance)})`;
+            document.getElementById('adminGajiModal').classList.remove('hidden');
+        }
+
+        function closeAdminGajiModal() { document.getElementById('adminGajiModal').classList.add('hidden'); }
+
+        function handleAdminGajiSubmit(e) {
+            e.preventDefault();
+            const userId = document.getElementById('adminGajiUserId').value;
+            const amount = parseInt(document.getElementById('adminGajiAmount').value) || 0;
+            const note = document.getElementById('adminGajiNote').value.trim() || 'Gaji Bulanan RullzShop';
+
+            const user = storageData.users.find(u => u.id === userId);
+            if (!user) return;
+
+            user.balance += amount;
+            if (!user.notifications) user.notifications = [];
+            user.notifications.unshift({
+                id: 'notif-' + Date.now(),
+                title: '💵 Saldo Gaji Diterima!',
+                message: `Anda menerima transfer gaji sebesar Rp ${formatRupiah(amount)} dari Admin RullzPreset (${note}).`,
+                date: new Date().toLocaleString('id-ID'),
+                read: false
+            });
+
+            storageData.transactions.unshift({
+                id: 'tx-' + Date.now(),
+                userId: user.id,
+                type: 'SALARY',
+                amount: amount,
+                title: `[Gaji Admin] ${note}`,
+                date: new Date().toLocaleString('id-ID')
+            });
+
+            saveState();
+            closeAdminGajiModal();
+            renderAdminView();
+            showToast(`Gaji Rp ${formatRupiah(amount)} ditransfer ke @${user.username}!`);
+        }
+
+        // --- UTILS ---
+        function formatRupiah(num) { return new Intl.NumberFormat('id-ID').format(num || 0); }
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+        function copyToClipboard(text) {
+            if (!text) return;
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast("Berhasil disalin ke clipboard!");
+            } catch (err) {
+                showToast("Gagal menyalin text", "error");
+            }
+            document.body.removeChild(ta);
+        }
+    </script>
+</body>
+</html>
