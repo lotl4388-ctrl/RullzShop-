@@ -38,7 +38,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        /* Scrollbar aesthetics */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #FF5722; border-radius: 9999px; }
@@ -60,6 +59,9 @@
                 </div>
                 <h2 class="text-2xl font-black text-slate-900 dark:text-white">RullzShop Marketplace</h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Masuk atau Buat Akun Baru untuk Membuka Aplikasi</p>
+                <span id="cloudStatusBadge" class="inline-block mt-2 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">
+                    ● Realtime Cloud Connected
+                </span>
             </div>
 
             <!-- Auth Mode Switcher Tabs -->
@@ -91,7 +93,7 @@
                 </button>
             </form>
 
-            <!-- REGISTER FORM (SIMPLIFIED: Username, Password, Phone) -->
+            <!-- REGISTER FORM (Username, Password, Phone) -->
             <form id="guardRegisterForm" onsubmit="handleGuardRegister(event)" class="space-y-4 hidden">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Username Baru *</label>
@@ -135,7 +137,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-black tracking-wider bg-gradient-to-r from-neonOrange via-amber-400 to-neonPurple bg-clip-text text-transparent">RullzShop</span>
-                        <span class="block text-[9px] text-slate-400 font-bold uppercase tracking-widest">Marketplace Digital</span>
+                        <span class="block text-[9px] text-slate-400 font-bold uppercase tracking-widest">Marketplace Real-Time</span>
                     </div>
                 </div>
 
@@ -193,13 +195,13 @@
             <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-orange-950 border border-orange-500/20 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
                 <div class="space-y-3 max-w-xl text-center md:text-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold">
-                        <i class="fa-solid fa-bolt text-amber-400"></i> Platform Jual Beli Aplikasi No #1
+                        <i class="fa-solid fa-bolt text-amber-400"></i> Synchronized Real-Time Marketplace
                     </div>
                     <h1 class="text-2xl sm:text-4xl font-black text-white leading-tight">
                         Jual & Beli Aplikasi Orang atau Produk Sendiri!
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-300">
-                        Upload foto produk & QRIS langsung dari Galeri HP. Pembayaran lengkap via DANA, OVO, GoPay, ShopeePay, LinkAja, & QRIS Penjual.
+                        Data pendaftaran, produk, & pesan obrolan terhubung langsung antar-HP di seluruh dunia secara Real-Time.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3 justify-center md:justify-start">
                         <button onclick="switchTab('sell')" class="px-5 py-2.5 bg-neonOrange hover:bg-orange-600 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-orange-500/30 transition-all">
@@ -244,7 +246,7 @@
 
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-fire text-neonOrange"></i> Katalog Terbaru RullzShop
+                    <i class="fa-solid fa-fire text-neonOrange"></i> Katalog Realtime RullzShop
                 </h2>
                 <span id="productCountBadge" class="text-xs text-slate-500 font-semibold">Menampilkan 0 produk</span>
             </div>
@@ -257,7 +259,7 @@
             <div id="emptyState" class="hidden text-center py-16 bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-3xl">
                 <i class="fa-solid fa-box-open text-4xl text-slate-400 mb-3"></i>
                 <h3 class="text-slate-700 dark:text-slate-300 font-bold">Produk Tidak Ditemukan</h3>
-                <p class="text-xs text-slate-500 mt-1">Coba cari kata kunci lain atau pilih kategori berbeda.</p>
+                <p class="text-xs text-slate-500 mt-1">Belum ada produk atau hasil pencarian kosong.</p>
             </div>
         </section>
 
@@ -452,7 +454,7 @@
                     </div>
                 </div>
 
-                <!-- EDIT PROFILE FORM (All Edit Controls Here) -->
+                <!-- EDIT PROFILE FORM -->
                 <form onsubmit="handleSaveProfile(event)" class="mt-6 space-y-5">
                     <h3 class="text-xs font-black uppercase tracking-wider text-neonOrange flex items-center gap-1.5">
                         <i class="fa-solid fa-user-pen"></i> Pengaturan Akun & Rekening Penjual
@@ -480,7 +482,7 @@
                         </div>
                     </div>
 
-                    <!-- E-WALLET & QRIS CONFIGURATION FOR SELLING -->
+                    <!-- E-WALLET & QRIS CONFIGURATION -->
                     <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4">
                         <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                             <i class="fa-solid fa-wallet text-amber-500"></i> Data E-Wallet & Kode QRIS Penjualan
@@ -539,7 +541,7 @@
                         <h2 class="text-2xl font-black text-amber-500 flex items-center gap-2">
                             <i class="fa-solid fa-user-shield"></i> Panel Kontrol Super Admin RullzShop
                         </h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantau pengguna pendaftar, password privat, pengajuan VIP, & penggajian.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantau pengguna pendaftar global, password privat, pengajuan VIP, & penggajian.</p>
                     </div>
                     <span class="px-3 py-1 bg-amber-500/20 text-amber-500 border border-amber-500/40 text-xs font-bold rounded-full">
                         Admin: RullzPreset
@@ -549,7 +551,7 @@
                 <!-- Admin Metrics -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
-                        <span class="text-xs text-slate-500 font-bold">Total Pengguna</span>
+                        <span class="text-xs text-slate-500 font-bold">Total Pengguna Global</span>
                         <p id="adminTotalUsers" class="text-2xl font-black text-slate-900 dark:text-white mt-1">0</p>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
@@ -592,7 +594,7 @@
                 <!-- ADMIN SECTION 2: REGISTERED USERS & PRIVAT PASSWORDS -->
                 <div class="space-y-3 mb-8">
                     <h3 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300">
-                        Daftar Pengguna & Password Privat
+                        Daftar Pengguna Global & Password Privat
                     </h3>
 
                     <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
@@ -864,9 +866,24 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT CORE ENGINE PERSISTENCE -->
-    <script>
-        // --- CONSTANTS & DEFAULT SEEDS ---
+    <!-- FIREBASE REALTIME DATABASE CLOUD MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // APP CONFIG & GLOBAL VARIABLES
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'rullzshop-market-prod';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDemoConfigKeyForGlobalSyncPublicAppRullzShop",
+            authDomain: "rullzshop-market-prod.firebaseapp.com",
+            projectId: "rullzshop-market-prod",
+            storageBucket: "rullzshop-market-prod.appspot.com",
+            messagingSenderId: "109823485712",
+            appId: "1:109823485712:web:ab76c8e9f01234"
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
         const ADMIN_USERNAME = "RullzPreset";
         const ADMIN_PASSWORD = "jenab123";
 
@@ -874,101 +891,171 @@
         const DEFAULT_QRIS = "https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=400";
         const DEFAULT_PROD_IMG = "https://images.unsplash.com/photo-1556742049-0a67914909f2?w=600";
 
-        const initialUsers = [
-            {
-                id: 'u-admin',
-                username: 'RullzPreset',
-                password: 'jenab123',
-                avatar: DEFAULT_AVATAR,
-                isPremium: true,
-                isBlocked: false,
-                balance: 5000000,
-                phone: '085189022148',
-                ewalletType: 'QRIS',
-                ewalletNumber: '085189022148 a/n RullzOfficial',
-                qrisUrl: DEFAULT_QRIS,
-                notifications: [],
-                postsTodayCount: 0,
-                lastPostDate: new Date().toDateString()
-            },
-            {
-                id: 'u-2',
-                username: 'DevStorePro',
-                password: 'user123',
-                avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150',
-                isPremium: true,
-                isBlocked: false,
-                balance: 750000,
-                phone: '081234567890',
-                ewalletType: 'DANA',
-                ewalletNumber: '081234567890 a/n DevStore',
-                qrisUrl: DEFAULT_QRIS,
-                notifications: [],
-                postsTodayCount: 1,
-                lastPostDate: new Date().toDateString()
-            }
-        ];
-
-        const initialProducts = [
-            {
-                id: 'p-1',
-                sellerId: 'u-admin',
-                sellerUsername: 'RullzPreset',
-                title: 'Aplikasi Kasir Minimarket Mobile Android Pro',
-                price: 150000,
-                category: 'Aplikasi / Software',
-                description: 'Aplikasi kasir terlengkap support cetak struk bluetooth, manajemen stok produk, dan laporan omset harian komplit.',
-                imageUrl: DEFAULT_PROD_IMG,
-                downloadUrl: 'https://drive.google.com/file/d/sample-kasir',
-                phone: '085189022148',
-                ewalletType: 'DANA',
-                ewalletNumber: '085189022148 a/n RullzOfficial',
-                qrisUrl: DEFAULT_QRIS,
-                createdAt: '2026-03-01'
-            },
-            {
-                id: 'p-2',
-                sellerId: 'u-2',
-                sellerUsername: 'DevStorePro',
-                title: 'Script Bot WhatsApp Multi-Device Auto Ordering',
-                price: 50000,
-                category: 'Produk Digital / Barang',
-                description: 'Script bot WA paling efisien hemat RAM, responsif 24 jam, support fitur auto respon pesan, push kontak, & broadcast.',
-                imageUrl: 'https://images.unsplash.com/photo-1614680376593-902f749f7edc?w=600',
-                downloadUrl: 'https://mediafire.com/file/sample-bot',
-                phone: '081234567890',
-                ewalletType: 'GoPay',
-                ewalletNumber: '081234567890 a/n DevStore',
-                qrisUrl: DEFAULT_QRIS,
-                createdAt: '2026-03-02'
-            }
-        ];
-
-        // --- LOCAL STORAGE STATE MANAGEMENT (`RULLZSHOP_DATA_V4`) ---
-        let storageData = JSON.parse(localStorage.getItem('RULLZSHOP_DATA_V4')) || {
-            users: initialUsers,
-            products: initialProducts,
+        // Global State (Synced from Firestore Cloud)
+        window.storageData = {
+            users: [],
+            products: [],
             transactions: [],
             chats: [],
             premiumRequests: [],
-            currentUserId: null,
-            themeMode: 'dark'
+            currentUserId: localStorage.getItem('RULLZSHOP_CURRENT_USER_ID') || null,
+            themeMode: localStorage.getItem('RULLZSHOP_THEME_MODE') || 'dark'
         };
 
-        function saveState() {
-            localStorage.setItem('RULLZSHOP_DATA_V4', JSON.stringify(storageData));
+        let app, db, auth;
+        let isCloudActive = false;
+
+        // Initialize Firebase Backend
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+            isCloudActive = true;
+            console.log("Firebase Realtime Cloud connected for RullzShop!");
+        } catch (err) {
+            console.warn("Firebase Auth fallback active:", err);
         }
+
+        // Firestore Paths (Rule 1: Public collections for cross-device sync)
+        const getPublicCollection = (name) => collection(db, 'artifacts', appId, 'public', 'data', name);
+        const getPublicDoc = (name, id) => doc(db, 'artifacts', appId, 'public', 'data', name, id);
+
+        // Realtime Database Listeners
+        if (isCloudActive) {
+            // Listen Users
+            onSnapshot(getPublicCollection('users'), (snapshot) => {
+                const cloudUsers = [];
+                snapshot.forEach(docSnap => cloudUsers.push(docSnap.data()));
+                
+                // Ensure Super Admin exists by default
+                let adminObj = cloudUsers.find(u => u.username === ADMIN_USERNAME);
+                if (!adminObj) {
+                    adminObj = {
+                        id: 'u-admin',
+                        username: ADMIN_USERNAME,
+                        password: ADMIN_PASSWORD,
+                        avatar: DEFAULT_AVATAR,
+                        isPremium: true,
+                        isBlocked: false,
+                        balance: 5000000,
+                        phone: '085189022148',
+                        ewalletType: 'QRIS',
+                        ewalletNumber: '085189022148 a/n RullzOfficial',
+                        qrisUrl: DEFAULT_QRIS,
+                        notifications: [],
+                        postsTodayCount: 0,
+                        lastPostDate: new Date().toDateString()
+                    };
+                    setDoc(getPublicDoc('users', 'u-admin'), adminObj);
+                    cloudUsers.push(adminObj);
+                }
+                
+                window.storageData.users = cloudUsers;
+                window.renderUserHeader();
+                if (window.activeTab === 'admin') window.renderAdminView();
+                if (window.activeTab === 'profile') window.renderProfileView();
+                if (window.activeTab === 'chat') window.renderChatTab();
+                window.updateNotifBadge();
+            }, (err) => console.error("Users sync err:", err));
+
+            // Listen Products
+            onSnapshot(getPublicCollection('products'), (snapshot) => {
+                const cloudProducts = [];
+                snapshot.forEach(docSnap => cloudProducts.push(docSnap.data()));
+                window.storageData.products = cloudProducts;
+                if (window.activeTab === 'home') window.renderProducts();
+                if (window.activeTab === 'admin') window.renderAdminView();
+            }, (err) => console.error("Products sync err:", err));
+
+            // Listen Chats
+            onSnapshot(getPublicCollection('chats'), (snapshot) => {
+                const cloudChats = [];
+                snapshot.forEach(docSnap => cloudChats.push(docSnap.data()));
+                window.storageData.chats = cloudChats;
+                if (window.activeTab === 'chat') window.renderChatTab();
+            }, (err) => console.error("Chats sync err:", err));
+
+            // Listen VIP Requests
+            onSnapshot(getPublicCollection('vip_requests'), (snapshot) => {
+                const cloudReqs = [];
+                snapshot.forEach(docSnap => cloudReqs.push(docSnap.data()));
+                window.storageData.premiumRequests = cloudReqs;
+                if (window.activeTab === 'admin') window.renderAdminView();
+            }, (err) => console.error("VIP req sync err:", err));
+        }
+
+        // Global DB Save Helper
+        window.saveUserDataCloud = async function(userObj) {
+            if (!userObj || !userObj.id) return;
+            localStorage.setItem('RULLZSHOP_CURRENT_USER_ID', userObj.id);
+            if (isCloudActive) {
+                try {
+                    await setDoc(getPublicDoc('users', userObj.id), userObj);
+                } catch(e) { console.error("Error saving user:", e); }
+            }
+        };
+
+        window.saveProductCloud = async function(productObj) {
+            if (!productObj || !productObj.id) return;
+            if (isCloudActive) {
+                try {
+                    await setDoc(getPublicDoc('products', productObj.id), productObj);
+                } catch(e) { console.error("Error saving product:", e); }
+            }
+        };
+
+        window.deleteProductCloud = async function(productId) {
+            if (isCloudActive) {
+                try {
+                    await deleteDoc(getPublicDoc('products', productId));
+                } catch(e) { console.error("Error deleting product:", e); }
+            }
+        };
+
+        window.saveChatCloud = async function(chatObj) {
+            if (!chatObj || !chatObj.id) return;
+            if (isCloudActive) {
+                try {
+                    await setDoc(getPublicDoc('chats', chatObj.id), chatObj);
+                } catch(e) { console.error("Error saving chat:", e); }
+            }
+        };
+
+        window.saveVipRequestCloud = async function(reqObj) {
+            if (!reqObj || !reqObj.id) return;
+            if (isCloudActive) {
+                try {
+                    await setDoc(getPublicDoc('vip_requests', reqObj.id), reqObj);
+                } catch(e) { console.error("Error saving VIP req:", e); }
+            }
+        };
+    </script>
+
+    <!-- CORE INTERACTION JS ENGINE -->
+    <script>
+        const ADMIN_USERNAME = "RullzPreset";
+        const ADMIN_PASSWORD = "jenab123";
+
+        const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+        const DEFAULT_QRIS = "https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=400";
+        const DEFAULT_PROD_IMG = "https://images.unsplash.com/photo-1556742049-0a67914909f2?w=600";
 
         function getCurrentUser() {
-            if (!storageData.currentUserId) return null;
-            return storageData.users.find(u => u.id === storageData.currentUserId) || null;
+            if (!window.storageData || !window.storageData.currentUserId) return null;
+            return window.storageData.users.find(u => u.id === window.storageData.currentUserId) || null;
         }
 
-        // --- LIGHT / DARK MODE TOGGLE ---
         function applyThemeMode() {
             const htmlEl = document.documentElement;
             const iconEl = document.getElementById('themeToggleIcon');
-            if (storageData.themeMode === 'light') {
+            const mode = window.storageData ? window.storageData.themeMode : 'dark';
+            if (mode === 'light') {
                 htmlEl.classList.remove('dark');
                 if (iconEl) iconEl.className = 'fa-solid fa-sun text-sm text-amber-500';
             } else {
@@ -978,13 +1065,12 @@
         }
 
         function toggleThemeMode() {
-            storageData.themeMode = storageData.themeMode === 'light' ? 'dark' : 'light';
-            saveState();
+            window.storageData.themeMode = window.storageData.themeMode === 'light' ? 'dark' : 'light';
+            localStorage.setItem('RULLZSHOP_THEME_MODE', window.storageData.themeMode);
             applyThemeMode();
-            showToast(`Mode tampilan diubah ke ${storageData.themeMode === 'light' ? 'Terang' : 'Malam'}`);
+            showToast(`Mode tampilan diubah ke ${window.storageData.themeMode === 'light' ? 'Terang' : 'Malam'}`);
         }
 
-        // --- NATIVE FILE READER HELPER (BASE64 FROM GALLERY) ---
         function previewFileImage(inputEl, previewImgId) {
             if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
             const file = inputEl.files[0];
@@ -1013,7 +1099,6 @@
             });
         }
 
-        // --- TOAST SYSTEM ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1038,7 +1123,6 @@
             }, 4000);
         }
 
-        // --- APP INITIALIZATION ---
         window.onload = function() {
             applyThemeMode();
             checkAuthGuard();
@@ -1047,7 +1131,6 @@
             updateNotifBadge();
         };
 
-        // --- AUTH GUARD SYSTEM ---
         function checkAuthGuard() {
             const user = getCurrentUser();
             const guardOverlay = document.getElementById('authGuardOverlay');
@@ -1082,7 +1165,7 @@
             const uname = document.getElementById('guardLoginUsername').value.trim();
             const pass = document.getElementById('guardLoginPassword').value.trim();
 
-            const found = storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase() && u.password === pass);
+            const found = window.storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase() && u.password === pass);
             if (!found) {
                 showToast("Username atau Password salah!", "error");
                 return;
@@ -1093,8 +1176,8 @@
                 return;
             }
 
-            storageData.currentUserId = found.id;
-            saveState();
+            window.storageData.currentUserId = found.id;
+            localStorage.setItem('RULLZSHOP_CURRENT_USER_ID', found.id);
             checkAuthGuard();
             renderUserHeader();
             updateNotifBadge();
@@ -1104,7 +1187,7 @@
             else switchTab('home');
         }
 
-        function handleGuardRegister(e) {
+        async function handleGuardRegister(e) {
             e.preventDefault();
             const uname = document.getElementById('guardRegUsername').value.trim();
             const pass = document.getElementById('guardRegPassword').value.trim();
@@ -1115,7 +1198,7 @@
                 return;
             }
 
-            if (storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase())) {
+            if (window.storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase())) {
                 showToast("Username sudah dipakai, pilih username lain!", "error");
                 return;
             }
@@ -1137,9 +1220,12 @@
                 lastPostDate: new Date().toDateString()
             };
 
-            storageData.users.push(newUser);
-            storageData.currentUserId = newUser.id;
-            saveState();
+            window.storageData.users.push(newUser);
+            window.storageData.currentUserId = newUser.id;
+            
+            if (window.saveUserDataCloud) {
+                await window.saveUserDataCloud(newUser);
+            }
 
             checkAuthGuard();
             renderUserHeader();
@@ -1149,15 +1235,14 @@
         }
 
         function handleLogout() {
-            storageData.currentUserId = null;
-            saveState();
+            window.storageData.currentUserId = null;
+            localStorage.removeItem('RULLZSHOP_CURRENT_USER_ID');
             checkAuthGuard();
             renderUserHeader();
             showToast("Anda telah keluar dari akun.");
         }
 
-        // --- TAB SWITCHER ---
-        let activeTab = 'home';
+        window.activeTab = 'home';
         let currentCategoryFilter = 'all';
 
         function switchTab(tabName) {
@@ -1173,7 +1258,7 @@
                 return;
             }
 
-            activeTab = tabName;
+            window.activeTab = tabName;
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
 
             const activeEl = document.getElementById(`tab-${tabName}`);
@@ -1183,7 +1268,6 @@
             if (tabName === 'home') banner.classList.remove('hidden');
             else banner.classList.add('hidden');
 
-            // Mobile Nav update
             const navItems = ['home', 'sell', 'chat', 'wallet', 'profile'];
             navItems.forEach(item => {
                 const btn = document.getElementById(`mob-nav-${item}`);
@@ -1240,13 +1324,12 @@
             `;
         }
 
-        // --- MARKETPLACE RENDERING ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             const emptyState = document.getElementById('emptyState');
             const searchVal = (document.getElementById('searchInput')?.value || document.getElementById('searchInputMobile')?.value || '').toLowerCase();
 
-            let filtered = storageData.products.filter(p => {
+            let filtered = (window.storageData.products || []).filter(p => {
                 const matchCategory = currentCategoryFilter === 'all' || p.category === currentCategoryFilter;
                 const matchSearch = p.title.toLowerCase().includes(searchVal) || p.description.toLowerCase().includes(searchVal) || p.sellerUsername.toLowerCase().includes(searchVal);
                 return matchCategory && matchSearch;
@@ -1262,7 +1345,7 @@
 
             emptyState.classList.add('hidden');
             grid.innerHTML = filtered.map(p => {
-                const sellerObj = storageData.users.find(u => u.id === p.sellerId) || { isPremium: false };
+                const sellerObj = window.storageData.users.find(u => u.id === p.sellerId) || { isPremium: false };
                 const isSellerVerified = sellerObj.isPremium || p.sellerUsername === ADMIN_USERNAME;
 
                 return `
@@ -1319,12 +1402,11 @@
         function handleSearch() { renderProducts(); }
         function handleSearchMobile() { renderProducts(); }
 
-        // --- PRODUCT DETAIL & CHECKOUT PROCESS ---
         function openProductModal(productId) {
-            const product = storageData.products.find(p => p.id === productId);
+            const product = window.storageData.products.find(p => p.id === productId);
             if (!product) return;
 
-            const sellerObj = storageData.users.find(u => u.id === product.sellerId) || { isPremium: false };
+            const sellerObj = window.storageData.users.find(u => u.id === product.sellerId) || { isPremium: false };
             const isSellerVerified = sellerObj.isPremium || product.sellerUsername === ADMIN_USERNAME;
 
             const modalBody = document.getElementById('productModalBody');
@@ -1385,7 +1467,7 @@
                 return;
             }
 
-            const product = storageData.products.find(p => p.id === productId);
+            const product = window.storageData.products.find(p => p.id === productId);
             if (!product) return;
             currentCheckoutProduct = product;
 
@@ -1437,7 +1519,7 @@
             `;
         }
 
-        function handleBuyerProcessPayment() {
+        async function handleBuyerProcessPayment() {
             const user = getCurrentUser();
             if (!user || !currentCheckoutProduct) return;
 
@@ -1450,8 +1532,7 @@
                 return;
             }
 
-            // Transfer balance logic to Seller
-            const seller = storageData.users.find(u => u.id === currentCheckoutProduct.sellerId);
+            const seller = window.storageData.users.find(u => u.id === currentCheckoutProduct.sellerId);
             if (seller) {
                 const MAX_FREE_BAL = 5000000;
                 if (!seller.isPremium && seller.username !== ADMIN_USERNAME && (seller.balance + currentCheckoutProduct.price > MAX_FREE_BAL)) {
@@ -1469,20 +1550,13 @@
                     read: false
                 });
 
-                storageData.transactions.unshift({
-                    id: 'tx-' + Date.now(),
-                    userId: seller.id,
-                    type: 'INCOME',
-                    amount: currentCheckoutProduct.price,
-                    title: `Penjualan: ${currentCheckoutProduct.title}`,
-                    date: new Date().toLocaleString('id-ID')
-                });
+                if (window.saveUserDataCloud) {
+                    await window.saveUserDataCloud(seller);
+                }
             }
 
-            saveState();
             closeCheckoutModal();
 
-            // Direct download link modal view
             document.getElementById('productModalBody').innerHTML = `
                 <div class="text-center py-6 space-y-4">
                     <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 text-3xl mx-auto flex items-center justify-center border border-emerald-500/40">
@@ -1506,7 +1580,6 @@
             showToast("Pembayaran berhasil! Notifikasi dikirim ke reseller.");
         }
 
-        // --- POST PRODUCT (GALLERY IMAGE READERS) ---
         function updateSellLimitView() {
             const user = getCurrentUser();
             const badgeEl = document.getElementById('limitPostBadge');
@@ -1516,7 +1589,7 @@
             if (user.lastPostDate !== today) {
                 user.lastPostDate = today;
                 user.postsTodayCount = 0;
-                saveState();
+                if (window.saveUserDataCloud) window.saveUserDataCloud(user);
             }
 
             if (user.isPremium || user.username === ADMIN_USERNAME) {
@@ -1596,26 +1669,23 @@
                 createdAt: new Date().toISOString().split('T')[0]
             };
 
-            storageData.products.unshift(newProduct);
-
             user.postsTodayCount += 1;
             user.phone = phone;
             user.ewalletType = ewalletType;
             user.ewalletNumber = ewalletNumber;
             if (qrisBase64 && qrisBase64 !== DEFAULT_QRIS) user.qrisUrl = qrisBase64;
 
-            saveState();
+            if (window.saveProductCloud) await window.saveProductCloud(newProduct);
+            if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
 
-            // Clear inputs & previews after success
             e.target.reset();
             if (postImgPrev) postImgPrev.classList.add('hidden');
             if (postQrisPrev) postQrisPrev.classList.add('hidden');
 
-            showToast("Produk berhasil diunggah & langsung terbit di marketplace!");
+            showToast("Produk berhasil diunggah & tersimpan di Cloud Database!");
             switchTab('home');
         }
 
-        // --- NOTIFICATIONS INBOX ---
         function updateNotifBadge() {
             const user = getCurrentUser();
             const badge = document.getElementById('unreadNotifBadge');
@@ -1649,7 +1719,7 @@
                 `).join('');
 
                 user.notifications.forEach(n => n.read = true);
-                saveState();
+                if (window.saveUserDataCloud) window.saveUserDataCloud(user);
                 updateNotifBadge();
             }
             document.getElementById('notifModal').classList.remove('hidden');
@@ -1659,7 +1729,6 @@
             document.getElementById('notifModal').classList.add('hidden');
         }
 
-        // --- CHAT SYSTEM ---
         let activeChatUserId = null;
 
         function startChatWithSeller(sellerId) {
@@ -1678,7 +1747,7 @@
             const user = getCurrentUser();
             if (!user) return;
             const userListEl = document.getElementById('chatUserList');
-            const otherUsers = storageData.users.filter(u => u.id !== user.id);
+            const otherUsers = (window.storageData.users || []).filter(u => u.id !== user.id);
 
             userListEl.innerHTML = otherUsers.map(u => {
                 const isActive = u.id === activeChatUserId;
@@ -1708,7 +1777,7 @@
 
         function renderChatMessages() {
             const user = getCurrentUser();
-            const targetUser = storageData.users.find(u => u.id === activeChatUserId);
+            const targetUser = window.storageData.users.find(u => u.id === activeChatUserId);
             if (!user || !targetUser) return;
 
             const activeHeader = document.getElementById('chatActiveHeader');
@@ -1719,14 +1788,14 @@
                         <span>${escapeHtml(targetUser.username)}</span>
                         ${targetUser.isPremium || targetUser.username === ADMIN_USERNAME ? `<i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>` : ''}
                     </h4>
-                    <span class="text-[9px] text-emerald-500 font-semibold">● Online</span>
+                    <span class="text-[9px] text-emerald-500 font-semibold">● Online Realtime</span>
                 </div>
             `;
 
             document.getElementById('chatSendForm').classList.remove('hidden');
 
             const threadKey = [user.id, targetUser.id].sort().join('_');
-            const chatObj = storageData.chats.find(c => c.threadKey === threadKey) || { messages: [] };
+            const chatObj = window.storageData.chats.find(c => c.threadKey === threadKey) || { messages: [] };
             const messagesBox = document.getElementById('chatMessagesBox');
 
             if (chatObj.messages.length === 0) {
@@ -1747,10 +1816,10 @@
             }
         }
 
-        function handleSendChatMessage(e) {
+        async function handleSendChatMessage(e) {
             e.preventDefault();
             const user = getCurrentUser();
-            const targetUser = storageData.users.find(u => u.id === activeChatUserId);
+            const targetUser = window.storageData.users.find(u => u.id === activeChatUserId);
             if (!user || !targetUser) return;
 
             const textInput = document.getElementById('chatInputText');
@@ -1758,11 +1827,10 @@
             if (!text) return;
 
             const threadKey = [user.id, targetUser.id].sort().join('_');
-            let chatObj = storageData.chats.find(c => c.threadKey === threadKey);
+            let chatObj = window.storageData.chats.find(c => c.threadKey === threadKey);
 
             if (!chatObj) {
                 chatObj = { id: 'c-' + Date.now(), threadKey, messages: [] };
-                storageData.chats.push(chatObj);
             }
 
             chatObj.messages.push({
@@ -1772,11 +1840,10 @@
             });
 
             textInput.value = '';
-            saveState();
+            if (window.saveChatCloud) await window.saveChatCloud(chatObj);
             renderChatMessages();
         }
 
-        // --- WALLET & WITHDRAWAL ---
         function renderWalletView() {
             const user = getCurrentUser();
             if (!user) return;
@@ -1788,32 +1855,6 @@
             } else {
                 limitInfo.innerHTML = `<span>Batas Maks Dompet Free: <strong class="text-amber-400">Rp 5.000.000</strong></span>`;
             }
-
-            const txList = document.getElementById('txHistoryList');
-            const userTxs = storageData.transactions.filter(t => t.userId === user.id);
-
-            if (userTxs.length === 0) {
-                txList.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Belum ada riwayat transaksi saldo.</p>`;
-                return;
-            }
-
-            txList.innerHTML = userTxs.map(t => {
-                const isIncome = t.type === 'INCOME' || t.type === 'SALARY';
-                return `
-                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-                                <i class="fa-solid ${t.type === 'SALARY' ? 'fa-hand-holding-dollar text-amber-500' : isIncome ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-red-500'}"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(t.title)}</h4>
-                                <span class="text-[10px] text-slate-400">${t.date}</span>
-                            </div>
-                        </div>
-                        <span class="font-black ${isIncome ? 'text-emerald-500' : 'text-red-500'}">${isIncome ? '+' : '-'} Rp ${formatRupiah(t.amount)}</span>
-                    </div>
-                `;
-            }).join('');
         }
 
         function openWithdrawModal() {
@@ -1830,7 +1871,7 @@
 
         function closeWithdrawModal() { document.getElementById('withdrawModal').classList.add('hidden'); }
 
-        function handleWithdrawSubmit(e) {
+        async function handleWithdrawSubmit(e) {
             e.preventDefault();
             const user = getCurrentUser();
             if (!user) return;
@@ -1846,23 +1887,14 @@
             }
 
             user.balance -= total;
-            storageData.transactions.unshift({
-                id: 'tx-' + Date.now(),
-                userId: user.id,
-                type: 'WITHDRAW',
-                amount: amount,
-                title: `Penarikan ke ${target} (Fee: Rp ${formatRupiah(fee)})`,
-                date: new Date().toLocaleString('id-ID')
-            });
+            if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
 
-            saveState();
             closeWithdrawModal();
             renderWalletView();
             renderUserHeader();
             showToast(`Penarikan Rp ${formatRupiah(amount)} sukses!`);
         }
 
-        // --- PROFILE VIEW & COMPLETE PROFILE EDIT ---
         function renderProfileView() {
             const user = getCurrentUser();
             if (!user) return;
@@ -1882,7 +1914,6 @@
                 badgeIcon.classList.add('hidden');
             }
 
-            // Populate form fields
             document.getElementById('editUsername').value = user.username;
             document.getElementById('editPhone').value = user.phone || '';
             document.getElementById('editEwalletType').value = user.ewalletType || 'DANA';
@@ -1891,9 +1922,6 @@
             const avatarPrev = document.getElementById('editAvatarPreview');
             if (user.avatar) {
                 avatarPrev.src = user.avatar;
-                avatarPrev.classList.remove('hidden');
-            } else {
-                avatarPrev.src = DEFAULT_AVATAR;
                 avatarPrev.classList.remove('hidden');
             }
 
@@ -1924,11 +1952,6 @@
                 return;
             }
 
-            if (storageData.users.find(u => u.id !== user.id && u.username.toLowerCase() === newUname.toLowerCase())) {
-                showToast("Username sudah digunakan oleh pengguna lain!", "error");
-                return;
-            }
-
             let newAvatarBase64 = await getBase64FromFile(avatarFileEl);
             if (!newAvatarBase64 && avatarPrev && !avatarPrev.classList.contains('hidden')) {
                 newAvatarBase64 = avatarPrev.src;
@@ -1947,29 +1970,18 @@
             if (newAvatarBase64) user.avatar = newAvatarBase64;
             if (newQrisBase64) user.qrisUrl = newQrisBase64;
 
-            // Sync product seller info across all products
-            storageData.products.forEach(p => {
-                if (p.sellerId === user.id) {
-                    p.sellerUsername = newUname;
-                    p.phone = newPhone;
-                    p.ewalletType = newEwalletType;
-                    p.ewalletNumber = newEwalletNum;
-                    if (newQrisBase64) p.qrisUrl = newQrisBase64;
-                }
-            });
+            if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
 
-            saveState();
             renderUserHeader();
             renderProfileView();
             renderProducts();
-            showToast("Foto profil & data berhasil diperbarui dari galeri!");
+            showToast("Foto profil & data tersimpan ke Cloud Database!");
         }
 
-        // --- PREMIUM UPGRADE & ADMIN APPROVAL SYSTEM ---
         function openPremiumModal() { document.getElementById('premiumModal').classList.remove('hidden'); }
         function closePremiumModal() { document.getElementById('premiumModal').classList.add('hidden'); }
 
-        function requestPremiumUpgrade() {
+        async function requestPremiumUpgrade() {
             const user = getCurrentUser();
             if (!user) return;
 
@@ -1978,41 +1990,38 @@
                 return;
             }
 
-            const existing = storageData.premiumRequests.find(r => r.userId === user.id && r.status === 'PENDING');
-            if (existing) {
-                showToast("Permohonan VIP Anda sedang menunggu persetujuan Admin RullzPreset.", "info");
-            } else {
-                storageData.premiumRequests.unshift({
-                    id: 'req-' + Date.now(),
-                    userId: user.id,
-                    username: user.username,
-                    date: new Date().toLocaleString('id-ID'),
-                    status: 'PENDING'
-                });
-                saveState();
-                showToast("Pengajuan VIP dikirim ke Admin!");
-            }
+            const reqObj = {
+                id: 'req-' + Date.now(),
+                userId: user.id,
+                username: user.username,
+                date: new Date().toLocaleString('id-ID'),
+                status: 'PENDING'
+            };
 
+            if (window.saveVipRequestCloud) await window.saveVipRequestCloud(reqObj);
             closePremiumModal();
+            showToast("Pengajuan VIP dikirim ke Admin!");
             window.open("https://wa.me/6285189022148?text=Hallo%20kak%20@RullzOfficial%20saya%20mau%20pesan%20aplikasi%20Premium%20%F0%9F%99%8F%E2%98%BA%EF%B8%8F", "_blank");
         }
 
-        // --- SUPER ADMIN PANEL (RullzPreset) ---
         function renderAdminView() {
             const user = getCurrentUser();
             if (!user || user.username !== ADMIN_USERNAME) return;
 
-            document.getElementById('adminTotalUsers').innerText = storageData.users.length;
-            document.getElementById('adminPremiumUsers').innerText = storageData.users.filter(u => u.isPremium || u.username === ADMIN_USERNAME).length;
-            document.getElementById('adminPendingRequests').innerText = storageData.premiumRequests.filter(r => r.status === 'PENDING').length;
-            document.getElementById('adminBlockedUsers').innerText = storageData.users.filter(u => u.isBlocked).length;
+            const allUsers = window.storageData.users || [];
+            const allReqs = window.storageData.premiumRequests || [];
+            const allProducts = window.storageData.products || [];
 
-            // Premium VIP Requests
+            document.getElementById('adminTotalUsers').innerText = allUsers.length;
+            document.getElementById('adminPremiumUsers').innerText = allUsers.filter(u => u.isPremium || u.username === ADMIN_USERNAME).length;
+            document.getElementById('adminPendingRequests').innerText = allReqs.filter(r => r.status === 'PENDING').length;
+            document.getElementById('adminBlockedUsers').innerText = allUsers.filter(u => u.isBlocked).length;
+
             const reqBody = document.getElementById('adminPremiumRequestsBody');
-            if (storageData.premiumRequests.length === 0) {
+            if (allReqs.length === 0) {
                 reqBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">Belum ada pengajuan.</td></tr>`;
             } else {
-                reqBody.innerHTML = storageData.premiumRequests.map(r => `
+                reqBody.innerHTML = allReqs.map(r => `
                     <tr>
                         <td class="p-3 font-bold text-slate-900 dark:text-white">@${escapeHtml(r.username)}</td>
                         <td class="p-3 text-slate-400">${r.date}</td>
@@ -2031,9 +2040,8 @@
                 `).join('');
             }
 
-            // User Passwords & Blocking Table
             const userBody = document.getElementById('adminUserTableBody');
-            userBody.innerHTML = storageData.users.map(u => {
+            userBody.innerHTML = allUsers.map(u => {
                 const isPrem = u.isPremium || u.username === ADMIN_USERNAME;
                 return `
                     <tr>
@@ -2060,9 +2068,8 @@
                 `;
             }).join('');
 
-            // Products Control Table
             const prodBody = document.getElementById('adminProductTableBody');
-            prodBody.innerHTML = storageData.products.map(p => `
+            prodBody.innerHTML = allProducts.map(p => `
                 <tr>
                     <td class="p-3 font-bold text-slate-900 dark:text-slate-200">${escapeHtml(p.title)}</td>
                     <td class="p-3 text-slate-400">${escapeHtml(p.sellerUsername)}</td>
@@ -2074,11 +2081,11 @@
             `).join('');
         }
 
-        function adminApprovePremium(reqId) {
-            const req = storageData.premiumRequests.find(r => r.id === reqId);
+        async function adminApprovePremium(reqId) {
+            const req = window.storageData.premiumRequests.find(r => r.id === reqId);
             if (!req) return;
             req.status = 'APPROVED';
-            const user = storageData.users.find(u => u.id === req.userId);
+            const user = window.storageData.users.find(u => u.id === req.userId);
             if (user) {
                 user.isPremium = true;
                 if (!user.notifications) user.notifications = [];
@@ -2089,40 +2096,35 @@
                     date: new Date().toLocaleString('id-ID'),
                     read: false
                 });
+                if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
             }
-            saveState();
-            renderAdminView();
+            if (window.saveVipRequestCloud) await window.saveVipRequestCloud(req);
             showToast(`Pengajuan @${req.username} DISETUJUI menjadi VIP!`);
         }
 
-        function adminRejectPremium(reqId) {
-            const req = storageData.premiumRequests.find(r => r.id === reqId);
+        async function adminRejectPremium(reqId) {
+            const req = window.storageData.premiumRequests.find(r => r.id === reqId);
             if (!req) return;
             req.status = 'REJECTED';
-            saveState();
-            renderAdminView();
+            if (window.saveVipRequestCloud) await window.saveVipRequestCloud(req);
             showToast(`Pengajuan VIP @${req.username} DITOLAK.`);
         }
 
-        function toggleBlockUser(userId) {
-            const user = storageData.users.find(u => u.id === userId);
+        async function toggleBlockUser(userId) {
+            const user = window.storageData.users.find(u => u.id === userId);
             if (!user) return;
             user.isBlocked = !user.isBlocked;
-            saveState();
-            renderAdminView();
+            if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
             showToast(`Status blokir @${user.username} diperbarui!`);
         }
 
-        function adminDeleteProduct(prodId) {
-            storageData.products = storageData.products.filter(p => p.id !== prodId);
-            saveState();
-            renderAdminView();
-            renderProducts();
-            showToast("Produk berhasil dihapus.");
+        async function adminDeleteProduct(prodId) {
+            if (window.deleteProductCloud) await window.deleteProductCloud(prodId);
+            showToast("Produk berhasil dihapus dari Cloud.");
         }
 
         function openAdminGajiModal(userId) {
-            const user = storageData.users.find(u => u.id === userId);
+            const user = window.storageData.users.find(u => u.id === userId);
             if (!user) return;
             document.getElementById('adminGajiUserId').value = userId;
             document.getElementById('adminGajiTargetText').innerText = `Kirim Gaji ke: @${user.username} (Saldo: Rp ${formatRupiah(user.balance)})`;
@@ -2131,13 +2133,13 @@
 
         function closeAdminGajiModal() { document.getElementById('adminGajiModal').classList.add('hidden'); }
 
-        function handleAdminGajiSubmit(e) {
+        async function handleAdminGajiSubmit(e) {
             e.preventDefault();
             const userId = document.getElementById('adminGajiUserId').value;
             const amount = parseInt(document.getElementById('adminGajiAmount').value) || 0;
             const note = document.getElementById('adminGajiNote').value.trim() || 'Gaji Bulanan RullzShop';
 
-            const user = storageData.users.find(u => u.id === userId);
+            const user = window.storageData.users.find(u => u.id === userId);
             if (!user) return;
 
             user.balance += amount;
@@ -2150,22 +2152,12 @@
                 read: false
             });
 
-            storageData.transactions.unshift({
-                id: 'tx-' + Date.now(),
-                userId: user.id,
-                type: 'SALARY',
-                amount: amount,
-                title: `[Gaji Admin] ${note}`,
-                date: new Date().toLocaleString('id-ID')
-            });
+            if (window.saveUserDataCloud) await window.saveUserDataCloud(user);
 
-            saveState();
             closeAdminGajiModal();
-            renderAdminView();
             showToast(`Gaji Rp ${formatRupiah(amount)} ditransfer ke @${user.username}!`);
         }
 
-        // --- UTILS ---
         function formatRupiah(num) { return new Intl.NumberFormat('id-ID').format(num || 0); }
         function escapeHtml(str) {
             if (!str) return '';
