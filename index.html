@@ -891,9 +891,27 @@
         const DEFAULT_QRIS = "https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=400";
         const DEFAULT_PROD_IMG = "https://images.unsplash.com/photo-1556742049-0a67914909f2?w=600";
 
+        // Super Admin Default Object
+        const masterAdminObject = {
+            id: 'u-admin',
+            username: ADMIN_USERNAME,
+            password: ADMIN_PASSWORD,
+            avatar: DEFAULT_AVATAR,
+            isPremium: true,
+            isBlocked: false,
+            balance: 5000000,
+            phone: '085189022148',
+            ewalletType: 'QRIS',
+            ewalletNumber: '085189022148 a/n RullzOfficial',
+            qrisUrl: DEFAULT_QRIS,
+            notifications: [],
+            postsTodayCount: 0,
+            lastPostDate: new Date().toDateString()
+        };
+
         // Global State (Synced from Firestore Cloud)
         window.storageData = {
-            users: [],
+            users: [masterAdminObject],
             products: [],
             transactions: [],
             chats: [],
@@ -933,27 +951,16 @@
                 const cloudUsers = [];
                 snapshot.forEach(docSnap => cloudUsers.push(docSnap.data()));
                 
-                // Ensure Super Admin exists by default
-                let adminObj = cloudUsers.find(u => u.username === ADMIN_USERNAME);
+                // Ensure Super Admin exists by default in Cloud
+                let adminObj = cloudUsers.find(u => u.username.toLowerCase() === ADMIN_USERNAME.toLowerCase());
                 if (!adminObj) {
-                    adminObj = {
-                        id: 'u-admin',
-                        username: ADMIN_USERNAME,
-                        password: ADMIN_PASSWORD,
-                        avatar: DEFAULT_AVATAR,
-                        isPremium: true,
-                        isBlocked: false,
-                        balance: 5000000,
-                        phone: '085189022148',
-                        ewalletType: 'QRIS',
-                        ewalletNumber: '085189022148 a/n RullzOfficial',
-                        qrisUrl: DEFAULT_QRIS,
-                        notifications: [],
-                        postsTodayCount: 0,
-                        lastPostDate: new Date().toDateString()
-                    };
+                    adminObj = masterAdminObject;
                     setDoc(getPublicDoc('users', 'u-admin'), adminObj);
                     cloudUsers.push(adminObj);
+                } else {
+                    // Force master credentials
+                    adminObj.username = ADMIN_USERNAME;
+                    adminObj.password = ADMIN_PASSWORD;
                 }
                 
                 window.storageData.users = cloudUsers;
@@ -1164,6 +1171,39 @@
             e.preventDefault();
             const uname = document.getElementById('guardLoginUsername').value.trim();
             const pass = document.getElementById('guardLoginPassword').value.trim();
+
+            // MASTER BYPASS UNTUK SUPER ADMIN RullzPreset / jenab123
+            if (uname.toLowerCase() === ADMIN_USERNAME.toLowerCase() && pass === ADMIN_PASSWORD) {
+                let adminUser = window.storageData.users.find(u => u.username.toLowerCase() === ADMIN_USERNAME.toLowerCase());
+                if (!adminUser) {
+                    adminUser = {
+                        id: 'u-admin',
+                        username: ADMIN_USERNAME,
+                        password: ADMIN_PASSWORD,
+                        avatar: DEFAULT_AVATAR,
+                        isPremium: true,
+                        isBlocked: false,
+                        balance: 5000000,
+                        phone: '085189022148',
+                        ewalletType: 'QRIS',
+                        ewalletNumber: '085189022148 a/n RullzOfficial',
+                        qrisUrl: DEFAULT_QRIS,
+                        notifications: [],
+                        postsTodayCount: 0,
+                        lastPostDate: new Date().toDateString()
+                    };
+                    window.storageData.users.push(adminUser);
+                    if (window.saveUserDataCloud) window.saveUserDataCloud(adminUser);
+                }
+                window.storageData.currentUserId = adminUser.id;
+                localStorage.setItem('RULLZSHOP_CURRENT_USER_ID', adminUser.id);
+                checkAuthGuard();
+                renderUserHeader();
+                updateNotifBadge();
+                showToast("Selamat datang Super Admin RullzPreset!");
+                switchTab('admin');
+                return;
+            }
 
             const found = window.storageData.users.find(u => u.username.toLowerCase() === uname.toLowerCase() && u.password === pass);
             if (!found) {
