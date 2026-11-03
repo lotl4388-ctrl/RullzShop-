@@ -6,70 +6,95 @@
 <title>RullzShop — Marketplace Digital</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--p:#FF3D71;--p2:#FF8C42;--gold:#FFD700;--bg:#F5F7FA;--card:#fff;--txt:#0F172A;--mut:#64748B;--line:#E2E8F0;--ok:#10B981;--warn:#F59E0B;--bad:#EF4444;--grad:linear-gradient(135deg,#FF3D71 0%,#FF8C42 100%);--grad-dark:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
+:root{
+  --bg:#F4F7FB; --card:#fff; --txt:#1E1E24; --mut:#71717A; --line:#E4E4E7;
+  --input-bg:#fff; --input-txt:#1E1E24; --chat-bg:#F4F7FB; --chat-theirs:#fff;
+  --p:#E100FF; --p2:#FF7300; --p3:#7F00FF; --accent:#00D2FF; --gold:#FFD700;
+  --ok:#10B981; --warn:#F59E0B; --bad:#EF4444;
+  --grad:linear-gradient(135deg, #7F00FF 0%, #E100FF 40%, #FF7300 100%);
+  --grad-dark:linear-gradient(135deg, #1E1E24 0%, #2D2D35 100%);
+}
+body.dark-mode {
+  --bg:#121212; --card:#1E1E1E; --txt:#F8FAFC; --mut:#A1A1AA; --line:#333333;
+  --input-bg:#2D2D35; --input-txt:#F8FAFC; --chat-bg:#121212; --chat-theirs:#2D2D35;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 img{max-width:100%;display:block}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-input,select,textarea{font-family:inherit;font-size:14px;width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--txt);outline:none;transition:.2s}
-input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(255,61,113,.12)}
+input,select,textarea{font-family:inherit;font-size:14px;width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:14px;background:var(--input-bg);color:var(--input-txt);outline:none;transition:.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(225,0,255,.12)}
 textarea{resize:vertical;min-height:80px}
-label{display:block;font-size:12.5px;font-weight:700;color:#475569;margin:14px 0 6px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--mut);margin:14px 0 6px}
 .muted{color:var(--mut);font-size:12px}
 .hidden{display:none!important}
+
 #splash{position:fixed;inset:0;background:var(--grad-dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s}
 #splash.fade{opacity:0;pointer-events:none}
 .splash-logo{font-size:46px;font-weight:900;letter-spacing:-2px;color:#fff;animation:bounceIn .8s ease}
 .splash-logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .splash-sub{color:rgba(255,255,255,.5);font-size:13px;margin-top:8px;letter-spacing:2px}
-.splash-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,61,113,.35),transparent 70%);filter:blur(40px);animation:pulse 2s ease infinite}
+.splash-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(225,0,255,.35),transparent 70%);filter:blur(40px);animation:pulse 2s ease infinite}
 @keyframes bounceIn{0%{opacity:0;transform:scale(.6)}70%{transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 
 #authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--grad);position:relative;overflow:hidden}
-#authScreen::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.1);top:-100px;right:-100px}
-.auth-card{width:100%;max-width:400px;background:rgba(255,255,255,.98);border-radius:28px;padding:32px 26px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;z-index:1}
-.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px;text-align:center}
+.auth-card{width:100%;max-width:400px;background:var(--card);border-radius:28px;padding:32px 26px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;z-index:1}
+.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px;text-align:center;color:var(--txt)}
 .logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .tagline{text-align:center;color:var(--mut);font-size:12.5px;margin:6px 0 24px;line-height:1.5}
-.tabs{display:flex;background:#F1F5F9;border-radius:15px;padding:4px;margin-bottom:18px}
+.tabs{display:flex;background:var(--bg);border-radius:15px;padding:4px;margin-bottom:18px}
 .tab{flex:1;padding:11px;border-radius:12px;font-size:14px;font-weight:800;color:var(--mut);transition:.25s}
-.tab.active{background:#fff;color:var(--p);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.tab.active{background:var(--card);color:var(--p);box-shadow:0 3px 10px rgba(0,0,0,.08)}
 .auth-card input{margin-bottom:11px}
-.btn-primary{width:100%;padding:14px;border-radius:15px;font-weight:800;font-size:15px;color:#fff;background:var(--grad);box-shadow:0 10px 24px rgba(255,61,113,.35);transition:.15s}
+.btn-primary{width:100%;padding:14px;border-radius:15px;font-weight:800;font-size:15px;color:#fff;background:var(--grad);box-shadow:0 10px 24px rgba(225,0,255,.35);transition:.15s}
 .btn-primary:active{transform:scale(.97)}
 .btn-primary:disabled{opacity:.5}
-.btn-outline{width:100%;padding:13px;border-radius:15px;font-weight:700;font-size:14px;color:var(--p);border:1.5px solid var(--p);background:#fff}
+.btn-outline{width:100%;padding:13px;border-radius:15px;font-weight:700;font-size:14px;color:var(--p);border:1.5px solid var(--p);background:var(--card)}
 .hint{font-size:11.5px;color:var(--mut);text-align:center;margin-top:14px;line-height:1.6}
 
 #app{display:flex;flex-direction:column;min-height:100vh;max-width:560px;margin:0 auto;background:var(--bg);padding-bottom:84px}
-.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--grad);color:#fff;box-shadow:0 4px 20px rgba(255,61,113,.25)}
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--grad);color:#fff;box-shadow:0 4px 20px rgba(127,0,255,.25)}
 .brand{font-size:21px;font-weight:900;letter-spacing:-.8px;color:#fff}
 .brand span{color:rgba(255,255,255,.75)}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.icon-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:17px}
+.topbar-right{display:flex;align-items:center;gap:6px}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:17px;transition:.2s;position:relative}
+.icon-btn:active{transform:scale(.9)}
 main{padding:14px;flex:1}
-.card{background:#fff;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.sec-title{font-size:16px;font-weight:900;margin:4px 2px 12px}
-.bottomnav{position:fixed;bottom:0;left:0;right:0;max-width:560px;margin:0 auto;display:flex;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--line);padding:8px 4px 12px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,.04)}
+.card{background:var(--card);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid var(--line)}
+.sec-title{font-size:16px;font-weight:900;margin:4px 2px 12px;color:var(--txt)}
+
+.bottomnav{position:fixed;bottom:0;left:0;right:0;max-width:560px;margin:0 auto;display:flex;background:var(--card);border-top:1px solid var(--line);padding:8px 4px 12px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,.04)}
 .bottomnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--mut);padding:4px 0;position:relative;transition:.2s}
 .bottomnav button .ico{font-size:20px;line-height:1;transition:.2s}
 .bottomnav button.active{color:var(--p)}
 .bottomnav button.active .ico{transform:translateY(-2px) scale(1.1)}
-.nav-badge{position:absolute;top:0;right:calc(50% - 20px);min-width:16px;height:16px;border-radius:9px;background:var(--bad);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.nav-badge{position:absolute;top:0;right:calc(50% - 20px);min-width:16px;height:16px;border-radius:9px;background:var(--accent);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px}
 
-.searchbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:13px 16px;box-shadow:0 2px 12px rgba(0,0,0,.05);margin-bottom:16px}
+.searchbar{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:13px 16px;box-shadow:0 2px 12px rgba(0,0,0,.05);margin-bottom:16px;border:1px solid var(--line)}
 .searchbar input{border:none;padding:0;background:transparent;box-shadow:none!important;font-size:14px}
+.filter-tabs{display:flex;gap:8px;margin-bottom:14px}
+.filter-tabs button{flex:1;padding:10px;border-radius:12px;font-size:12px;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--mut);transition:.2s}
+.filter-tabs button.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+.ad-container{border-radius:20px;overflow:hidden;margin-bottom:18px;box-shadow:0 10px 25px rgba(225,0,255,.15);background:var(--grad);position:relative}
+.ad-media{width:100%;height:auto;max-height:300px;object-fit:cover;display:block}
+.ad-fallback{padding:18px 20px;color:#fff}
+.ad-fallback h2{font-size:16px;font-weight:900;margin-bottom:6px;text-shadow:0 2px 4px rgba(0,0,0,.15)}
+.ad-fallback p{font-size:12.5px;line-height:1.5;font-weight:500;margin-bottom:8px;opacity:0.95}
+.ad-fallback .tags{display:flex;flex-wrap:wrap;gap:6px}
+.ad-fallback .tags span{background:rgba(255,255,255,.25);backdrop-filter:blur(5px);padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:700}
+
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pcard{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:.2s}
+.pcard{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:.2s;position:relative;border:1px solid var(--line)}
 .pcard:active{transform:scale(.97)}
-.pcard .thumb{width:100%;aspect-ratio:1/1;object-fit:cover;background:linear-gradient(135deg,#FFE4EC,#FFF0E0);display:flex;align-items:center;justify-content:center;font-size:36px;color:#FFB0C6}
+.pcard .thumb{width:100%;aspect-ratio:1/1;object-fit:cover;background:linear-gradient(135deg,#F3E8FF,#FFE4EC);display:flex;align-items:center;justify-content:center;font-size:36px;color:#D8B4FE}
 .pcard .body{padding:10px 11px 12px}
-.pcard .nm{font-size:12.5px;font-weight:600;line-height:1.35;height:34px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.pcard .nm{font-size:12.5px;font-weight:600;line-height:1.35;height:34px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;color:var(--txt)}
 .pcard .pr{font-size:15px;font-weight:900;color:var(--p);margin-top:5px}
 .pcard .sl{font-size:10.5px;color:var(--mut);margin-top:3px;display:flex;align-items:center;gap:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.verified{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:9px;font-weight:900;flex-shrink:0}
+.wish-btn{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:14px;backdrop-filter:blur(4px);z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.verified{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:900;flex-shrink:0}
 .empty{text-align:center;padding:60px 20px;color:var(--mut)}
-.empty .big{font-size:52px;margin-bottom:14px;opacity:.4}
 
 .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800}
 .badge.prem{background:linear-gradient(135deg,#FFD700,#FFA500);color:#5A3D00}
@@ -77,60 +102,53 @@ main{padding:14px;flex:1}
 .badge.ok{background:#D1FAE5;color:#065F46}
 .badge.warn{background:#FEF3C7;color:#92400E}
 .badge.bad{background:#FEE2E2;color:#991B1B}
-.tag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:800;background:var(--p);color:#fff}
+.tag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:800;background:var(--accent);color:#fff}
 .row{display:flex;align-items:center;gap:11px}
 .divider{height:1px;background:var(--line);margin:14px 0}
 .list-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .list-item:last-child{border-bottom:none}
-.avatar{border-radius:50%;object-fit:cover;flex-shrink:0;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.avatar{border-radius:50%;object-fit:cover;flex-shrink:0;border:2.5px solid var(--line)}
 
 #modal{position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 #modal.show{display:flex}
-.modal-card{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;padding:22px 20px 30px;animation:slideup .3s cubic-bezier(.16,1,.3,1)}
+.modal-card{background:var(--card);color:var(--txt);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:28px 28px 0 0;padding:22px 20px 30px;animation:slideup .3s cubic-bezier(.16,1,.3,1)}
 @keyframes slideup{from{transform:translateY(80px);opacity:.7}to{transform:none;opacity:1}}
 .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.modal-head h3{font-size:17px;font-weight:900}
-.close-x{width:34px;height:34px;border-radius:50%;background:#F1F5F9;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-head h3{font-size:17px;font-weight:900;color:var(--txt)}
+.close-x{width:34px;height:34px;border-radius:50%;background:var(--bg);color:var(--txt);font-size:16px;display:flex;align-items:center;justify-content:center}
 
-#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:#0F172A;color:#fff;padding:13px 22px;border-radius:15px;font-size:13px;font-weight:600;z-index:300;opacity:0;pointer-events:none;transition:.25s;max-width:88%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:var(--txt);color:var(--bg);padding:13px 22px;border-radius:15px;font-size:13px;font-weight:600;z-index:300;opacity:0;pointer-events:none;transition:.25s;max-width:88%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-.chat-wrap{position:fixed;inset:0;background:#fff;z-index:80;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
-.chat-header{display:flex;align-items:center;gap:11px;padding:14px 16px;background:var(--grad);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.1)}
-.chat-header .back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.chat-wrap{position:fixed;inset:0;background:var(--bg);z-index:80;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
+.chat-header{display:flex;align-items:center;gap:11px;padding:14px 16px;background:var(--grad);color:#fff}
+.chat-header .back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
 .chat-header .who{flex:1;min-width:0}
-.chat-header .who .nm{font-size:14px;font-weight:800;display:flex;align-items:center;gap:5px}
-.chat-header .who .st{font-size:10.5px;opacity:.8;margin-top:1px}
-.chat-body{flex:1;overflow-y:auto;padding:16px;background:#F8FAFC;display:flex;flex-direction:column;gap:8px}
-.msg{max-width:78%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.45;word-wrap:break-word;position:relative;animation:msgIn .2s ease}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.chat-header .who .nm{font-size:14px;font-weight:800;color:#fff}
+.chat-body{flex:1;overflow-y:auto;padding:16px;background:var(--chat-bg);display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.45;word-wrap:break-word;position:relative}
 .msg.mine{align-self:flex-end;background:var(--grad);color:#fff;border-bottom-right-radius:6px}
-.msg.theirs{align-self:flex-start;background:#fff;color:var(--txt);border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg.theirs{align-self:flex-start;background:var(--chat-theirs);color:var(--txt);border:1px solid var(--line);border-bottom-left-radius:6px}
 .msg .time{font-size:9.5px;opacity:.6;margin-top:3px;display:block;text-align:right}
-.chat-input-bar{display:flex;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid var(--line);padding-bottom:calc(10px + env(safe-area-inset-bottom))}
-.chat-input-bar input{flex:1;border-radius:22px;padding:11px 16px;margin:0}
-.chat-input-bar button{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;font-size:17px;flex-shrink:0}
+.msg img{max-width:100%;border-radius:10px;margin-bottom:6px;border:2px solid rgba(255,255,255,.3)}
+.msg.theirs img{border-color:var(--line)}
+.chat-input-bar{display:flex;gap:8px;padding:10px 12px;background:var(--card);border-top:1px solid var(--line);padding-bottom:calc(10px + env(safe-area-inset-bottom));align-items:center}
+.chat-input-bar .img-btn{width:44px;height:44px;border-radius:50%;background:var(--bg);color:var(--txt);font-size:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.chat-input-bar input{flex:1;border-radius:22px;padding:11px 16px;margin:0;background:var(--bg);border:none}
+.chat-input-bar button.send{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;font-size:17px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mut);padding:40px}
 
 .chat-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .chat-item:last-child{border-bottom:none}
 .chat-item .ci-info{flex:1;min-width:0}
 .chat-item .ci-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.chat-item .ci-name{font-size:13.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-item .ci-name{font-size:13.5px;font-weight:800;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chat-item .ci-time{font-size:10.5px;color:var(--mut);flex-shrink:0}
 .chat-item .ci-last{font-size:12px;color:var(--mut);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.chat-item .ci-unread{min-width:18px;height:18px;border-radius:9px;background:var(--p);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.chat-item .ci-unread{min-width:18px;height:18px;border-radius:9px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
 
 .preview{width:120px;height:120px;object-fit:cover;border-radius:16px;margin-top:10px;display:none;border:1.5px solid var(--line)}
-.wcard{display:flex;align-items:center;gap:13px;padding:15px;border-radius:16px;background:#fff;border:1.5px solid var(--line);margin-bottom:10px;transition:.15s}
-.wcard:active{transform:scale(.98)}
-.wcard .logo-w{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0}
-.wcard .info{flex:1;min-width:0}
-.wcard .info .nm{font-size:13.5px;font-weight:800}
-.wcard .info .num{font-size:12px;color:var(--mut);margin-top:2px}
-
-.plan{background:linear-gradient(150deg,#0F172A,#1E293B);color:#fff;border-radius:22px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
-.plan::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,215,0,.08);top:-60px;right:-40px}
+.plan{background:var(--grad-dark);color:#fff;border-radius:22px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
 .plan h2{font-size:20px;margin-bottom:3px;position:relative}
 .plan .price{font-size:32px;font-weight:900;color:var(--gold);margin:10px 0 2px;position:relative}
 .plan .price small{font-size:13px;font-weight:600;color:#94A3B8}
@@ -138,6 +156,15 @@ main{padding:14px;flex:1}
 .benefit .ck{color:#4ADE80;font-weight:900;flex-shrink:0}
 .benefit.no .ck{color:#F87171}
 .btn-gold{width:100%;padding:15px;border-radius:15px;font-weight:900;font-size:15px;color:#3D2A00;background:linear-gradient(135deg,#FFD700,#FFA500);box-shadow:0 10px 24px rgba(255,180,0,.35);margin-top:14px}
+
+/* ULASAN & RATING */
+.review-item{padding:12px;border-bottom:1px solid var(--line);font-size:12.5px}
+.review-item:last-child{border-bottom:none}
+.stars-display{color:var(--gold);font-size:16px;letter-spacing:2px;margin-bottom:4px}
+/* VOUCHER */
+.voucher-input{display:flex;gap:6px;margin-bottom:12px}
+.voucher-input input{flex:1;padding:10px;font-size:12.5px}
+.voucher-input button{padding:0 16px;background:var(--p);color:#fff;border-radius:12px;font-weight:800;font-size:12px}
 </style>
 </head>
 <body>
@@ -178,6 +205,10 @@ main{padding:14px;flex:1}
     <div class="brand" onclick="go('home')">Rullz<span>Shop</span></div>
     <div class="topbar-right">
       <span id="topPremium"></span>
+      <button class="icon-btn" onclick="showNotifications()" style="position:relative">
+        🔔<span id="notifDot" class="hidden" style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--bad);border-radius:50%;border:2px solid #fff"></span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
       <button class="icon-btn" onclick="go('profile')">👤</button>
     </div>
   </header>
@@ -195,9 +226,8 @@ main{padding:14px;flex:1}
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, query, where, orderBy, onSnapshot, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, query, where, orderBy, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
-// Firebase Config (Project Lance)
 const firebaseConfig = {
   apiKey: "AIzaSyA_G_PE01-iTlI_9ox3FBLxtJ1qJ98gIQw",
   authDomain: "rullzshop-5bc1f.firebaseapp.com",
@@ -212,29 +242,50 @@ let currentUser = null;
 let products = [];
 let myOrders = [];
 let myChats = [];
-let unsubProducts = null, unsubOrders = null, unsubChats = null, unsubMessages = null;
+let ads = []; 
+let allVouchers = [];
+let currentReviews = [];
+let activeProductIdForReview = null;
+
+let unsubProducts = null, unsubOrders = null, unsubChats = null, unsubMessages = null, unsubAds = null, unsubAllUsers = null, unsubVouchers = null, unsubReviews = null;
 let currentView = 'home';
 let searchQuery = '';
 let tmpImg = '';
 let orderTab = 'buyer';
 let activeChat = null;
+let homeFilter = 'all';
+let appliedVoucher = null;
 
 const EWALLETS = [
-  {name:'DANA', color:'#118EEA', icon:'💙'},
-  {name:'OVO', color:'#4C3494', icon:'💜'},
-  {name:'GoPay', color:'#00AA13', icon:'💚'},
-  {name:'ShopeePay', color:'#EE4D2D', icon:'🧡'},
+  {name:'DANA', color:'#118EEA', icon:'💙'}, {name:'OVO', color:'#4C3494', icon:'💜'},
+  {name:'GoPay', color:'#00AA13', icon:'💚'}, {name:'ShopeePay', color:'#EE4D2D', icon:'🧡'},
   {name:'LinkAja', color:'#E82529', icon:'❤️'}
 ];
 const WA_PREMIUM = 'https://wa.me/6285189022148?text=Hallo%20kak%20@RullzOfficial%20saya%20mau%20pesan%20aplikasi%20Premium%20%F0%9F%99%8F%E2%98%BA%EF%B8%8F';
 const FREE_POST_LIMIT = 10;
 const ADMIN_USER = 'rullzpreset';
 
-/* ================= UTIL ================= */
+/* ================= UTIL & THEME ================= */
 function esc(s){ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function rp(n){ return 'Rp'+Number(n||0).toLocaleString('id-ID'); }
 function dateFmt(t){ if(!t) return '-'; const d = t.toDate ? t.toDate() : new Date(t); return d.toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('rullzTheme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    document.getElementById('themeToggleBtn').textContent = '☀️';
+  } else {
+    document.body.classList.remove('dark-mode');
+    document.getElementById('themeToggleBtn').textContent = '🌙';
+  }
+}
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('rullzTheme', isDark ? 'dark' : 'light');
+  document.getElementById('themeToggleBtn').textContent = isDark ? '☀️' : '🌙';
+}
 
 let toastTimer=null;
 function toast(msg){
@@ -267,30 +318,26 @@ function avatarHTML(u,size){
   return `<div class="avatar" style="width:${size}px;height:${size}px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:${Math.round(size*0.42)}px">${ch}</div>`;
 }
 
-/* ================= BOOT ================= */
+/* ================= BOOT & AUTH ================= */
 function boot(){
+  initTheme();
   const splash = document.getElementById('splash');
   const auth = document.getElementById('authScreen');
-
   try{
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
-  }catch(e){
-    alert('Firebase Error: '+e.message);
-    return;
-  }
+  }catch(e){ alert('Firebase Error: '+e.message); return; }
 
   setTimeout(async ()=>{
     splash.classList.add('fade');
     setTimeout(()=>splash.style.display='none',500);
-
     const saved = localStorage.getItem('rullzUserId');
     if(saved){
       try {
         const snap = await getDoc(doc(db,'users',saved));
         if(snap.exists()){
           const data = snap.data();
-          if(!data.blocked){ currentUser = {id:saved,...data}; enterApp(); return; }
+          if(!data.blocked){ currentUser = {id:saved,...data}; if(!currentUser.wishlist) currentUser.wishlist=[]; enterApp(); return; }
           else { localStorage.removeItem('rullzUserId'); }
         } else { localStorage.removeItem('rullzUserId'); }
       } catch(e) { console.log(e); }
@@ -299,7 +346,6 @@ function boot(){
   }, 1200);
 }
 
-/* ================= AUTH ================= */
 function switchAuth(mode){
   document.getElementById('tabLogin').classList.toggle('active',mode==='login');
   document.getElementById('tabRegister').classList.toggle('active',mode==='register');
@@ -311,66 +357,42 @@ async function doLogin(){
   const btn = document.getElementById('btnLogin');
   const uname = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
-  
   if(!uname||!pass) return toast('Isi username dan password');
   const unameLower = uname.toLowerCase();
-  
   btn.disabled = true; btn.textContent = 'Memuat...';
   const resetBtn = setTimeout(() => { btn.disabled = false; btn.textContent = 'Masuk'; }, 6000);
 
   try{
-    // BACKDOOR ADMIN
     if(unameLower === ADMIN_USER && pass === 'jenab123') {
         const adminRef = doc(db, 'users', ADMIN_USER);
         const adminSnap = await getDoc(adminRef);
         if(!adminSnap.exists()) {
-            const newAdmin = {
-                username: 'RullzPreset', usernameLower: ADMIN_USER, password: 'jenab123',
-                avatar: '', blocked: false, isAdmin: true, isPremium: true,
-                premiumUntil: Date.now()+3650*86400000,
-                phone: '', ewalletType: 'DANA', ewalletNumber: '',
-                postCount: 0, postDate: '', createdAt: Date.now()
-            };
+            const newAdmin = { username: 'RullzPreset', usernameLower: ADMIN_USER, password: 'jenab123', avatar: '', blocked: false, isAdmin: true, isPremium: true, premiumUntil: Date.now()+3650*86400000, phone: '', ewalletType: 'DANA', ewalletNumber: '', postCount: 0, postDate: '', createdAt: Date.now(), wishlist: [] };
             await setDoc(adminRef, newAdmin);
             currentUser = {id: ADMIN_USER, ...newAdmin};
         } else {
             currentUser = {id: ADMIN_USER, ...adminSnap.data()};
+            if(!currentUser.wishlist) currentUser.wishlist=[];
         }
         localStorage.setItem('rullzUserId', ADMIN_USER);
-        clearTimeout(resetBtn);
-        enterApp();
-        toast('👑 Admin berhasil masuk!');
-        return;
+        clearTimeout(resetBtn); enterApp(); toast('👑 Admin berhasil masuk!'); return;
     }
-
     const userRef = doc(db, 'users', unameLower);
     const snap = await getDoc(userRef);
-    
     if(!snap.exists()){ toast('❌ Akun tidak ditemukan. Silakan Daftar dulu.'); return; }
-    
     const data = snap.data();
     if(data.password !== pass){ toast('❌ Password salah'); return; }
     if(data.blocked){ toast('🚫 Akun diblokir admin'); return; }
-    
     currentUser = {id: unameLower, ...data};
+    if(!currentUser.wishlist) currentUser.wishlist=[];
     localStorage.setItem('rullzUserId', unameLower);
     document.getElementById('loginPass').value='';
-    
-    clearTimeout(resetBtn);
-    enterApp();
-    toast('👋 Halo, '+data.username);
-    
+    clearTimeout(resetBtn); enterApp(); toast('👋 Halo, '+data.username);
   }catch(e){
-    console.error(e);
     if(e.message.toLowerCase().includes('permission') || e.message.toLowerCase().includes('insufficient') || e.code === 'permission-denied') {
-        alert("⚠️ AKSES DATABASE DITOLAK!\n\nKamu belum mengatur Firestore Database ke 'Test Mode'.\n\nCara memperbaiki:\n1. Buka console.firebase.google.com\n2. Klik menu Build > Firestore Database\n3. Klik tab 'Rules'\n4. Ganti isinya menjadi:\nallow read, write: if true;\n5. Klik Publish.");
-    } else {
-        toast('❌ Error: '+e.message);
-    }
-  }finally{
-    clearTimeout(resetBtn);
-    btn.disabled = false; btn.textContent = 'Masuk';
-  }
+        alert("⚠️ AKSES DATABASE DITOLAK!\n\nPastikan Firestore Database berstatus Test Mode.");
+    } else { toast('❌ Error: '+e.message); }
+  }finally{ clearTimeout(resetBtn); btn.disabled = false; btn.textContent = 'Masuk'; }
 }
 
 async function doRegister(){
@@ -378,7 +400,6 @@ async function doRegister(){
   const uname = document.getElementById('regUser').value.trim();
   const pass = document.getElementById('regPass').value;
   const pass2 = document.getElementById('regPass2').value;
-  
   if(uname.length<3) return toast('Username minimal 3 karakter');
   if(/\s/.test(uname)) return toast('Username tidak boleh spasi');
   if(!/^[a-zA-Z0-9._]+$/.test(uname)) return toast('Hanya huruf, angka, titik, underscore');
@@ -388,63 +409,37 @@ async function doRegister(){
   const unameLower = uname.toLowerCase();
   btn.disabled=true; btn.textContent='Membuat...';
   const resetBtn = setTimeout(() => { btn.disabled = false; btn.textContent = 'Buat Akun'; }, 6000);
-
   try{
     if(unameLower === ADMIN_USER) return toast('Username ini dilindungi sistem');
-
     const userRef = doc(db, 'users', unameLower);
     const snap = await getDoc(userRef);
     if(snap.exists()){ toast('Username sudah dipakai'); return; }
-
-    const newUser = {
-      username: uname, usernameLower: unameLower, password: pass,
-      avatar: '', blocked: false, isAdmin: false, isPremium: false,
-      premiumUntil: 0,
-      phone: '', ewalletType: 'DANA', ewalletNumber: '',
-      postCount: 0, postDate: '', createdAt: Date.now()
-    };
-    
+    const newUser = { username: uname, usernameLower: unameLower, password: pass, avatar: '', blocked: false, isAdmin: false, isPremium: false, premiumUntil: 0, phone: '', ewalletType: 'DANA', ewalletNumber: '', postCount: 0, postDate: '', createdAt: Date.now(), wishlist: [] };
     await setDoc(userRef, newUser);
     currentUser = {id: unameLower, ...newUser};
     localStorage.setItem('rullzUserId', unameLower);
-    
-    document.getElementById('regUser').value='';
-    document.getElementById('regPass').value='';
-    document.getElementById('regPass2').value='';
-    
-    clearTimeout(resetBtn);
-    enterApp();
-    toast('🎉 Akun berhasil dibuat!');
-    
+    document.getElementById('regUser').value=''; document.getElementById('regPass').value=''; document.getElementById('regPass2').value='';
+    clearTimeout(resetBtn); enterApp(); toast('🎉 Akun berhasil dibuat!');
   }catch(e){
-    console.error(e);
     if(e.message.toLowerCase().includes('permission') || e.message.toLowerCase().includes('insufficient') || e.code === 'permission-denied') {
-        alert("⚠️ AKSES DATABASE DITOLAK!\n\nKamu belum mengatur Firestore Database ke 'Test Mode'.\n\nCara memperbaiki:\n1. Buka console.firebase.google.com\n2. Klik menu Build > Firestore Database\n3. Klik tab 'Rules'\n4. Ganti isinya menjadi:\nallow read, write: if true;\n5. Klik Publish.");
-    } else {
-        toast('❌ Error: '+e.message);
-    }
-  }finally{
-    clearTimeout(resetBtn);
-    btn.disabled=false; btn.textContent='Buat Akun';
-  }
+        alert("⚠️ AKSES DATABASE DITOLAK!\n\nPastikan Firestore Database berstatus Test Mode.");
+    } else { toast('❌ Error: '+e.message); }
+  }finally{ clearTimeout(resetBtn); btn.disabled=false; btn.textContent='Buat Akun'; }
 }
 
 function logout(){
   closeModal();
-  if(unsubProducts) unsubProducts();
-  if(unsubOrders) unsubOrders();
-  if(unsubChats) unsubChats();
-  if(unsubMessages) unsubMessages();
-  currentUser = null; products = []; myOrders = []; myChats = [];
+  if(unsubProducts) unsubProducts(); if(unsubOrders) unsubOrders();
+  if(unsubChats) unsubChats(); if(unsubMessages) unsubMessages();
+  if(unsubAds) unsubAds(); if(unsubVouchers) unsubVouchers(); if(unsubReviews) unsubReviews();
+  currentUser = null; products = []; myOrders = []; myChats = []; ads = []; allVouchers = []; currentReviews = [];
   localStorage.removeItem('rullzUserId');
   document.getElementById('app').classList.add('hidden');
   document.getElementById('authScreen').classList.remove('hidden');
   switchAuth('login');
 }
 
-function isPremium(u){
-  return !!(u && u.isPremium && u.premiumUntil && u.premiumUntil > Date.now());
-}
+function isPremium(u){ return !!(u && u.isPremium && u.premiumUntil && u.premiumUntil > Date.now()); }
 
 /* ================= ENTER APP ================= */
 function enterApp(){
@@ -452,23 +447,24 @@ function enterApp(){
     document.getElementById('authScreen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
     startListeners();
-    currentView = 'home';
-    render();
-  } catch(e) {
-    console.error("Gagal masuk ke aplikasi:", e);
-    toast("Terjadi kesalahan sistem saat memuat aplikasi.");
-  }
+    currentView = 'home'; homeFilter = 'all'; render();
+  } catch(e) { console.error(e); toast("Terjadi kesalahan sistem."); }
 }
 
 function startListeners(){
-  unsubProducts = onSnapshot(
-    query(collection(db,'products'), orderBy('createdAt','desc')),
-    snap => {
-      products = snap.docs.map(d=>({id:d.id,...d.data()}));
-      if(currentView==='home') renderGrid();
-    },
+  unsubProducts = onSnapshot(query(collection(db,'products'), orderBy('createdAt','desc')),
+    snap => { products = snap.docs.map(d=>({id:d.id,...d.data()})); if(currentView==='home') renderGrid(); },
     err => console.error("Products error:", err)
   );
+
+  unsubAds = onSnapshot(query(collection(db,'ads'), orderBy('createdAt','desc')),
+    snap => { ads = snap.docs.map(d=>({id:d.id,...d.data()})); if(currentView==='home') renderAdBanner(); },
+    err => console.error("Ads error:", err)
+  );
+
+  unsubVouchers = onSnapshot(collection(db,'vouchers'), snap => {
+    allVouchers = snap.docs.map(d => ({id:d.id, ...d.data()}));
+  });
 
   const qBuy = query(collection(db,'orders'), where('buyerId','==',currentUser.id));
   const qSell = query(collection(db,'orders'), where('sellerId','==',currentUser.id));
@@ -476,27 +472,36 @@ function startListeners(){
   
   onSnapshot(qBuy, s=>{ 
     buyerOrders=s.docs.map(d=>({id:d.id,...d.data()})); 
-    myOrders=[...buyerOrders,...sellerOrders]; 
-    if(currentView==='orders') render(); 
-  }, err=>console.error("Orders buyer error:",err));
+    myOrders=[...buyerOrders,...sellerOrders]; if(currentView==='orders') render(); 
+    updateNotifDot();
+  }, err=>console.error(err));
   
   unsubOrders = onSnapshot(qSell, s=>{ 
     sellerOrders=s.docs.map(d=>({id:d.id,...d.data()})); 
-    myOrders=[...buyerOrders,...sellerOrders]; 
-    if(currentView==='orders') render(); 
-  }, err=>console.error("Orders seller error:",err));
+    myOrders=[...buyerOrders,...sellerOrders]; if(currentView==='orders') render(); 
+    updateNotifDot();
+  }, err=>console.error(err));
 
-  unsubChats = onSnapshot(
-    query(collection(db,'chats'), where('participants','array-contains',currentUser.id)),
+  unsubChats = onSnapshot(query(collection(db,'chats'), where('participants','array-contains',currentUser.id)),
     snap => {
       myChats = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.lastTime||0)-(a.lastTime||0));
       const unread = myChats.reduce((s,c)=>{ const u = (c.unread||{})[currentUser.id]||0; return s+u; },0);
       const badge = document.getElementById('chatBadge');
       if(badge) badge.innerHTML = unread>0 ? `<span class="nav-badge">${unread>99?'99+':unread}</span>` : '';
       if(currentView==='chat') render();
-    },
-    err => console.error("Chats error:", err)
+      updateNotifDot();
+    }, err => console.error("Chats error:", err)
   );
+}
+
+function updateNotifDot() {
+  const unreadChats = myChats.reduce((s,c)=> s + ((c.unread||{})[currentUser.id]||0), 0);
+  const pendingSellerOrders = myOrders.filter(o => o.sellerId === currentUser.id && o.status === 'Diproses Penjual').length;
+  const dot = document.getElementById('notifDot');
+  if(dot) {
+    if(unreadChats > 0 || pendingSellerOrders > 0) dot.classList.remove('hidden');
+    else dot.classList.add('hidden');
+  }
 }
 
 /* ================= NAV ================= */
@@ -522,38 +527,88 @@ function render(){
   else if(currentView==='profile') main.innerHTML = viewProfile();
   else if(currentView==='admin') main.innerHTML = viewAdmin();
 
-  if(currentView==='home') renderGrid();
+  if(currentView==='home') { renderAdBanner(); renderGrid(); }
+  updateNotifDot();
 }
 
-/* ================= HOME ================= */
+/* ================= NOTIFIKASI ================= */
+function showNotifications() {
+  const unreadChats = myChats.reduce((s,c)=> s + ((c.unread||{})[currentUser.id]||0), 0);
+  const pendingSellerOrders = myOrders.filter(o => o.sellerId === currentUser.id && o.status === 'Diproses Penjual').length;
+  
+  let html = `<div class="modal-head"><h3>🔔 Notifikasi</h3><button class="close-x" onclick="closeModal()">✕</button></div>`;
+  if(unreadChats === 0 && pendingSellerOrders === 0) {
+    html += `<div class="empty"><div class="big">📭</div><h3>Tidak ada notifikasi baru</h3><p class="muted">Semua pesan dan pesanan sudah kamu baca.</p></div>`;
+  } else {
+    html += `<div style="display:flex;flex-direction:column;gap:10px">`;
+    if(unreadChats > 0) {
+      html += `<div class="card" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="closeModal();go('chat')">
+        <div style="font-size:24px">💬</div>
+        <div style="flex:1"><div style="font-weight:800;font-size:13px;color:var(--txt)">Pesan Belum Dibaca</div><div class="muted">Kamu punya ${unreadChats} pesan baru</div></div>
+      </div>`;
+    }
+    if(pendingSellerOrders > 0) {
+      html += `<div class="card" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="closeModal();go('orders')">
+        <div style="font-size:24px">📦</div>
+        <div style="flex:1"><div style="font-weight:800;font-size:13px;color:var(--txt)">Pesanan Masuk</div><div class="muted">Ada ${pendingSellerOrders} pesanan menunggu diproses</div></div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  openModal(html);
+}
+
+/* ================= HOME & WISHLIST ================= */
 function viewHome(){
   return `
     <div class="searchbar">
       <span style="font-size:16px">🔍</span>
       <input id="searchInput" placeholder="Cari produk atau penjual..." oninput="window.updateSearch(this.value)">
     </div>
-    <div class="sec-title">🛍️ Semua Produk</div>
+    <div id="adContainer"></div>
+    <div class="filter-tabs">
+      <button class="${homeFilter==='all'?'active':''}" onclick="window.setFilter('all')">🛍️ Semua Produk</button>
+      <button class="${homeFilter==='wishlist'?'active':''}" onclick="window.setFilter('wishlist')">❤️ Favorit Saya</button>
+    </div>
     <div id="productGrid" class="grid"></div>
   `;
+}
+
+function renderAdBanner(){
+  const container = document.getElementById('adContainer');
+  if(!container) return;
+  if(ads.length > 0){
+    const ad = ads[0]; 
+    container.innerHTML = `<div class="ad-container"><img src="${ad.media}" class="ad-media" alt="Iklan"></div>`;
+  } else {
+    container.innerHTML = `<div class="ad-container"><div class="ad-fallback"><h2>🔥 YUK, GABUNG DI RULLZSHOP! 🔥</h2><p>🛍️ Lagi cari produk digital dengan harga menarik? Saatnya belanja di RullzShop!</p><div class="tags"><span>✨ Banyak pilihan</span><span>💎 Harga bersahabat</span><span>⚡ Transaksi praktis</span><span>🤝 Terpercaya</span></div></div></div>`;
+  }
 }
 
 function renderGrid(){
   const grid = document.getElementById('productGrid');
   if(!grid) return;
   const q = (searchQuery||'').toLowerCase().trim();
-  const list = products.filter(p=>{
+  let list = products.filter(p=>{
     if(!q) return true;
     return (p.name+' '+(p.desc||'')+' '+p.sellerName).toLowerCase().includes(q);
   });
+
+  if(homeFilter === 'wishlist'){
+    const myWish = currentUser.wishlist || [];
+    list = list.filter(p => myWish.includes(p.id));
+  }
+
   if(list.length===0){
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="big">📦</div>
-      <h3>${q?'Produk tidak ditemukan':'Belum ada produk'}</h3>
-      <p class="muted" style="margin-top:8px">${q?'Coba kata lain.':'Jadilah penjual pertama!'}</p></div>`;
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="big" style="font-size:40px">${homeFilter==='wishlist'?'💔':'📦'}</div><h3>${q?'Produk tidak ditemukan':(homeFilter==='wishlist'?'Belum ada produk favorit':'Belum ada produk')}</h3><p class="muted" style="margin-top:8px">${q?'Coba kata lain.':(homeFilter==='wishlist'?'Tekan ikon hati di produk untuk menyimpannya.':'Jadilah penjual pertama!')}</p></div>`;
     return;
   }
+
   grid.innerHTML = list.map(p=>{
     const thumb = p.image ? `<img class="thumb" src="${p.image}" alt="">` : `<div class="thumb">🖼️</div>`;
+    const isWished = (currentUser.wishlist || []).includes(p.id);
     return `<div class="pcard" onclick="openProduct('${p.id}')">
+      <button class="wish-btn" onclick="event.stopPropagation(); window.toggleWishlist('${p.id}')">${isWished?'❤️':'🤍'}</button>
       ${thumb}
       <div class="body">
         <div class="nm">${esc(p.name)}</div>
@@ -564,96 +619,220 @@ function renderGrid(){
   }).join('');
 }
 
-/* ================= PRODUCT DETAIL ================= */
+async function toggleWishlist(productId){
+  let wl = currentUser.wishlist || [];
+  if(wl.includes(productId)){ wl = wl.filter(id => id !== productId); toast('💔 Dihapus dari Favorit'); }
+  else { wl.push(productId); toast('❤️ Disimpan ke Favorit'); }
+  currentUser.wishlist = wl; renderGrid();
+  try { await updateDoc(doc(db,'users',currentUser.id), {wishlist: wl}); } catch(e) { console.error(e); }
+}
+
+/* ================= PRODUCT DETAIL, REVIEW & SHARE ================= */
 function openProduct(id){
   const p = products.find(x=>x.id===id);
   if(!p) return toast('Produk tidak ada');
   const mine = p.sellerId === currentUser.id;
+  
   openModal(`
-    <div class="modal-head"><h3>Detail Produk</h3><button class="close-x" onclick="closeModal()">✕</button></div>
-    ${p.image?`<img src="${p.image}" style="width:100%;border-radius:18px;margin-bottom:14px;max-height:300px;object-fit:cover">`
-    :`<div style="width:100%;height:180px;border-radius:18px;background:linear-gradient(135deg,#FFE4EC,#FFF0E0);display:flex;align-items:center;justify-content:center;font-size:50px;margin-bottom:14px">🖼️</div>`}
-    <h2 style="font-size:20px;line-height:1.3">${esc(p.name)}</h2>
-    <div style="font-size:26px;font-weight:900;color:var(--p);margin:8px 0 14px">${rp(p.price)}</div>
-    <div class="row" style="padding:12px;background:#F8FAFC;border-radius:15px">
-      ${avatarHTML(p.sellerAvatar?{username:p.sellerName,avatar:p.sellerAvatar}:{username:p.sellerName},42)}
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:800;font-size:13.5px">${esc(p.sellerName)} ${p.sellerPremium?'<span class="verified">✔</span>':''}</div>
-        <div class="muted">Penjual</div>
+    <div class="modal-head"><h3>Detail Produk</h3>
+      <div style="display:flex;gap:6px">
+        <button class="close-x" onclick="window.shareProduct('${p.id}')" style="color:var(--accent);font-size:15px">📤</button>
+        <button class="close-x" onclick="closeModal()">✕</button>
       </div>
     </div>
+    ${p.image?`<img src="${p.image}" style="width:100%;border-radius:18px;margin-bottom:14px;max-height:300px;object-fit:cover">`
+    :`<div style="width:100%;height:180px;border-radius:18px;background:linear-gradient(135deg,#F3E8FF,#FFE4EC);display:flex;align-items:center;justify-content:center;font-size:50px;margin-bottom:14px">🖼️</div>`}
+    <h2 style="font-size:20px;line-height:1.3;color:var(--txt)">${esc(p.name)}</h2>
+    <div style="font-size:26px;font-weight:900;color:var(--p);margin:8px 0 14px">${rp(p.price)}</div>
+    
+    <div style="display:flex;gap:10px;margin-bottom:14px">
+      <div class="row" style="flex:1;padding:12px;background:var(--bg);border-radius:15px">
+        ${avatarHTML(p.sellerAvatar?{username:p.sellerName,avatar:p.sellerAvatar}:{username:p.sellerName},42)}
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:13.5px;color:var(--txt)">${esc(p.sellerName)} ${p.sellerPremium?'<span class="verified">✔</span>':''}</div>
+          <div class="muted">Penjual</div>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-top:16px">
-      <div style="font-size:12.5px;font-weight:800;color:#475569;margin-bottom:6px">Deskripsi</div>
-      <p style="font-size:13.5px;line-height:1.65;white-space:pre-wrap;color:#334155">${esc(p.desc||'-')}</p>
+      <div style="font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:6px">Deskripsi</div>
+      <p style="font-size:13.5px;line-height:1.65;white-space:pre-wrap;color:var(--txt)">${esc(p.desc||'-')}</p>
     </div>
     <div class="divider"></div>
-    <div style="font-size:12.5px;font-weight:800;color:#475569;margin-bottom:8px">💳 Pembayaran Penjual</div>
-    <div style="background:#F8FAFC;border-radius:15px;padding:14px;font-size:13px;line-height:1.9">
+    <div style="font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:8px">💳 Pembayaran Penjual</div>
+    <div style="background:var(--bg);border-radius:15px;padding:14px;font-size:13px;line-height:1.9;color:var(--txt)">
       <div>📱 <b>${esc(p.ewalletType||'-')}</b></div>
       <div>🔢 <b>${esc(p.ewalletNumber||'-')}</b></div>
       <div>☎️ <b>${esc(p.phone||'-')}</b></div>
     </div>
-    ${p.qr?`<div style="margin-top:12px;text-align:center"><div class="muted" style="margin-bottom:8px">QR Pembayaran</div>
-      <img src="${p.qr}" style="max-width:200px;margin:0 auto;border-radius:15px;border:1.5px solid var(--line)"></div>`:''}
+    
+    <div id="reviewSection" style="margin-top:20px">
+      <div class="sec-title" style="font-size:14px;margin-bottom:10px">⭐ Ulasan Pembeli</div>
+      <div id="reviewList" class="muted">Memuat ulasan...</div>
+      <button class="btn-outline" style="margin-top:12px;padding:10px;font-size:13px" onclick="window.openReviewForm('${p.id}')">✍️ Tulis Ulasan</button>
+    </div>
+
     <div style="margin-top:20px;display:flex;gap:9px">
       ${mine?`<button class="btn-outline" onclick="deleteProduct('${p.id}')" style="color:var(--bad);border-color:var(--bad)">🗑️ Hapus Produk</button>`
-      :`<button class="btn-outline" style="flex:1" onclick="openChatWith('${p.sellerId}','${p.id}')">💬 Chat Penjual</button>
+      :`<button class="btn-outline" style="flex:1" onclick="openChatWith('${p.sellerId}','${p.id}')">💬 Chat</button>
         <button class="btn-primary" style="flex:1" onclick="openBuy('${p.id}')">🛒 Beli</button>`}
     </div>
   `);
+  loadReviews(id);
+}
+
+function shareProduct(id) {
+  const p = products.find(x=>x.id===id); if(!p) return;
+  const text = `Ayo cek produk *${p.name}* seharga ${rp(p.price)} di RullzShop! 🛍️🔥\n\nBelanja produk digital aman & terpercaya di sini: ${window.location.href}`;
+  if (navigator.share) { navigator.share({ title: p.name, text: text, url: window.location.href }).catch(()=>{}); } 
+  else { navigator.clipboard.writeText(text); toast('📋 Teks disalin, silakan bagikan ke WA/Sosmed!'); }
 }
 
 function deleteProduct(id){
   const p = products.find(x=>x.id===id); if(!p) return;
   if(!confirm('Hapus produk "'+p.name+'"?')) return;
-  deleteDoc(doc(db,'products',id)).then(()=>{ closeModal(); toast('🗑️ Produk dihapus'); })
-  .catch(e=>toast('Error: '+e.message));
+  deleteDoc(doc(db,'products',id)).then(()=>{ closeModal(); toast('🗑️ Produk dihapus'); }).catch(e=>toast('Error: '+e.message));
 }
 
-/* ================= BUY ================= */
+/* ================= ULASAN ================= */
+async function loadReviews(productId) {
+  const listEl = document.getElementById('reviewList');
+  if(!listEl) return;
+  if(unsubReviews) unsubReviews();
+  unsubReviews = onSnapshot(query(collection(db,'reviews'), where('productId','==',productId)), snap => {
+    const revs = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt - a.createdAt);
+    if(revs.length === 0) {
+      listEl.innerHTML = `<div class="muted" style="text-align:center;padding:10px">Belum ada ulasan untuk produk ini.</div>`;
+      return;
+    }
+    listEl.innerHTML = revs.map(r => {
+      let stars = ''; for(let i=1; i<=5; i++) stars += i <= r.rating ? '★' : '☆';
+      return `<div class="review-item">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <div style="font-weight:800;color:var(--txt)">${esc(r.buyerName)}</div>
+          <div class="stars-display">${stars}</div>
+        </div>
+        <div style="color:var(--mut);font-size:11.5px">${dateFmt(r.createdAt)}</div>
+        <div style="margin-top:6px;color:var(--txt)">${esc(r.comment)}</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function openReviewForm(productId) {
+  openModal(`
+    <div class="modal-head"><h3>✍️ Tulis Ulasan</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <label>Beri Rating (1-5 Bintang)</label>
+    <div style="display:flex;gap:10px;font-size:30px;justify-content:center;margin-bottom:14px" id="starRating">
+      ${[1,2,3,4,5].map(i => `<span onclick="window.setRating(${i})" id="star-${i}" style="cursor:pointer;color:var(--mut)">★</span>`).join('')}
+    </div>
+    <input type="hidden" id="revRating" value="0">
+    <label>Komentar / Ulasan</label>
+    <textarea id="revText" placeholder="Bagaimana kualitas produk ini?"></textarea>
+    <button class="btn-primary" style="margin-top:16px" onclick="window.submitReview('${productId}')">Kirim Ulasan</button>
+  `);
+}
+
+function setRating(rating) {
+  document.getElementById('revRating').value = rating;
+  for(let i=1; i<=5; i++) {
+    document.getElementById(`star-${i}`).style.color = i <= rating ? 'var(--gold)' : 'var(--mut)';
+  }
+}
+
+async function submitReview(productId) {
+  const rating = parseInt(document.getElementById('revRating').value);
+  const comment = document.getElementById('revText').value.trim();
+  if(rating === 0) return toast('Pilih rating bintang dulu');
+  if(!comment) return toast('Tulis komentar ulasan');
+  try {
+    await addDoc(collection(db,'reviews'), {
+      productId, rating, comment, buyerId: currentUser.id, buyerName: currentUser.username, createdAt: Date.now()
+    });
+    closeModal(); toast('✅ Ulasan berhasil dikirim!');
+  } catch(e) { toast('Gagal kirim ulasan: '+e.message); }
+}
+
+/* ================= BUY & VOUCHER ================= */
 function openBuy(id){
   const p = products.find(x=>x.id===id); if(!p) return;
   if(p.sellerId===currentUser.id) return toast('Ini produkmu');
+  appliedVoucher = null; // Reset voucher setiap buka modal
 
   openModal(`
     <div class="modal-head"><h3>Buat Pesanan</h3><button class="close-x" onclick="closeModal()">✕</button></div>
-    <div class="row" style="padding:12px;background:#F8FAFC;border-radius:15px;margin-bottom:14px">
+    <div class="row" style="padding:12px;background:var(--bg);border-radius:15px;margin-bottom:14px">
       ${p.image?`<img src="${p.image}" style="width:58px;height:58px;border-radius:13px;object-fit:cover">`
-      :`<div style="width:58px;height:58px;border-radius:13px;background:#FFE4EC;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>`}
+      :`<div style="width:58px;height:58px;border-radius:13px;background:#F3E8FF;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>`}
       <div style="flex:1;min-width:0">
-        <div style="font-size:13.5px;font-weight:800;line-height:1.35">${esc(p.name)}</div>
-        <div style="font-size:17px;font-weight:900;color:var(--p);margin-top:3px">${rp(p.price)}</div>
+        <div style="font-size:13.5px;font-weight:800;line-height:1.35;color:var(--txt)">${esc(p.name)}</div>
+        <div style="font-size:17px;font-weight:900;color:var(--p);margin-top:3px" id="priceDisplay">${rp(p.price)}</div>
       </div>
     </div>
+    
+    <div class="voucher-input">
+      <input type="text" id="voucherCode" placeholder="Punya kode voucher?" style="text-transform:uppercase">
+      <button onclick="window.applyVoucher('${p.id}')">Pakai</button>
+    </div>
+    <div id="voucherStatus" class="muted" style="margin-bottom:10px"></div>
+
     <div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:15px;padding:14px;font-size:12.5px;line-height:1.7;color:#9A3412;margin-bottom:14px">
       💡 <b>Alur Pembayaran:</b><br>
       1. Transfer langsung ke <b>${esc(p.ewalletType)}</b> penjual: <b>${esc(p.ewalletNumber)}</b><br>
       2. Setelah transfer, klik tombol <b>"Saya Sudah Bayar"</b> di pesanan<br>
       3. Chat penjual untuk konfirmasi & kirim bukti transfer
     </div>
+    
     <label>Catatan (opsional)</label>
     <textarea id="orderNote" placeholder="Contoh: Kirim lewat WA ya kak"></textarea>
     <button class="btn-primary" style="margin-top:16px" onclick="confirmOrder('${p.id}')">Buat Pesanan</button>
   `);
 }
 
+function applyVoucher(productId) {
+  const code = document.getElementById('voucherCode').value.trim().toUpperCase();
+  const p = products.find(x=>x.id===productId);
+  if(!code) return;
+  
+  const v = allVouchers.find(v => v.code === code && v.isActive);
+  if(!v) { document.getElementById('voucherStatus').innerHTML = `<span style="color:var(--bad)">❌ Kode voucher tidak valid / kadaluarsa.</span>`; return; }
+  if(p.price < v.minSpend) { document.getElementById('voucherStatus').innerHTML = `<span style="color:var(--bad)">❌ Minimal belanja ${rp(v.minSpend)} untuk pakai voucher ini.</span>`; return; }
+
+  let discount = v.discountAmount;
+  let finalPrice = p.price - discount;
+  if(finalPrice < 0) finalPrice = 0;
+
+  appliedVoucher = { code: v.code, discount, finalPrice };
+  document.getElementById('priceDisplay').innerHTML = `<span style="text-decoration:line-through;font-size:12px;color:var(--mut);margin-right:6px">${rp(p.price)}</span> ${rp(finalPrice)}`;
+  document.getElementById('voucherStatus').innerHTML = `<span style="color:var(--ok)">✅ Voucher berhasil dipakai! Potongan ${rp(discount)}</span>`;
+}
+
 async function confirmOrder(productId){
   const p = products.find(x=>x.id===productId); if(!p) return;
   const note = (document.getElementById('orderNote')?.value||'').trim();
+  
+  let finalPrice = p.price;
+  let discountStr = '';
+  if(appliedVoucher) {
+    finalPrice = appliedVoucher.finalPrice;
+    discountStr = ` (Diskon ${rp(appliedVoucher.discount)} via ${appliedVoucher.code})`;
+  }
+
   try{
     const orderData = {
-      productId: p.id, productName: p.name, productPrice: p.price, productImage: p.image || '',
+      productId: p.id, productName: p.name, originalPrice: p.price, productPrice: finalPrice, productImage: p.image || '',
       buyerId: currentUser.id, buyerName: currentUser.username, buyerAvatar: currentUser.avatar || '',
       sellerId: p.sellerId, sellerName: p.sellerName,
       sellerEwalletType: p.ewalletType || '', sellerEwalletNumber: p.ewalletNumber || '', sellerPhone: p.phone || '',
       note, status: 'Menunggu Pembayaran', resi: '', createdAt: Date.now(),
-      timeline: [{status:'Menunggu Pembayaran', time:Date.now(), note:'Pesanan dibuat'}]
+      timeline: [{status:'Menunggu Pembayaran', time:Date.now(), note:'Pesanan dibuat' + discountStr}]
     };
     await addDoc(collection(db,'orders'), orderData);
     const chatId = [currentUser.id, p.sellerId].sort().join('_');
     await ensureChat(chatId, currentUser.id, p.sellerId);
     await addDoc(collection(db,'chats',chatId,'messages'), {
-      from: currentUser.id, text: `Halo, saya baru pesan *${p.name}* (${rp(p.price)}). Mohon info pembayaran ya 🙏`, time: Date.now()
+      from: currentUser.id, text: `Halo, saya baru pesan *${p.name}* (${rp(finalPrice)}). Mohon info pembayaran ya 🙏`, time: Date.now()
     });
     await updateDoc(doc(db,'chats',chatId), { lastMessage: `Halo, saya baru pesan ${p.name}`, lastTime: Date.now(), lastFrom: currentUser.id });
     closeModal(); currentView='orders'; orderTab='buyer'; render();
@@ -673,8 +852,7 @@ function viewOrders(){
       <button class="tab ${orderTab==='seller'?'active':''}" onclick="window.setOrderTab('seller')">🏪 Penjualan (${sellerOrders.length})</button>
     </div>
     ${list.length===0
-      ? `<div class="empty"><div class="big">📦</div><h3>Belum ada pesanan</h3>
-        <p class="muted" style="margin-top:8px">${orderTab==='buyer'?'Yuk belanja di beranda.':'Produkmu belum dibeli.'}</p></div>`
+      ? `<div class="empty"><div class="big">📦</div><h3>Belum ada pesanan</h3><p class="muted" style="margin-top:8px">${orderTab==='buyer'?'Yuk belanja di beranda.':'Produkmu belum dibeli.'}</p></div>`
       : list.map(o=>orderCard(o,orderTab)).join('')}
   `;
 }
@@ -703,9 +881,9 @@ function orderCard(o, role){
     <div class="row" style="align-items:flex-start">
       ${o.productImage
         ? `<img src="${o.productImage}" style="width:60px;height:60px;border-radius:13px;object-fit:cover;flex-shrink:0">`
-        : `<div style="width:60px;height:60px;border-radius:13px;background:#FFE4EC;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🖼️</div>`}
+        : `<div style="width:60px;height:60px;border-radius:13px;background:#F3E8FF;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🖼️</div>`}
       <div style="flex:1;min-width:0">
-        <div style="font-size:13.5px;font-weight:800;line-height:1.35">${esc(o.productName)}</div>
+        <div style="font-size:13.5px;font-weight:800;line-height:1.35;color:var(--txt)">${esc(o.productName)}</div>
         <div style="font-size:16px;font-weight:900;color:var(--p);margin-top:4px">${rp(o.productPrice)}</div>
         <div class="muted" style="margin-top:3px">${isBuyer?'Penjual: '+esc(o.sellerName):'Pembeli: '+esc(o.buyerName)}</div>
       </div>
@@ -723,9 +901,7 @@ function markPaid(id){
   if(!confirm('Konfirmasi sudah membayar?')) return;
   const order = myOrders.find(o=>o.id===id);
   const timeline = [...(order.timeline||[]), {status:'Diproses Penjual', time:Date.now(), note:'Pembeli sudah bayar'}];
-  updateDoc(doc(db,'orders',id), {status:'Diproses Penjual', timeline})
-    .then(()=>toast('✅ Pembayaran dikonfirmasi'))
-    .catch(e=>toast('Error: '+e.message));
+  updateDoc(doc(db,'orders',id), {status:'Diproses Penjual', timeline}).then(()=>toast('✅ Pembayaran dikonfirmasi')).catch(e=>toast('Error: '+e.message));
 }
 
 function openShip(id){
@@ -740,49 +916,33 @@ function doShip(id){
   if(!resi) return toast('Isi keterangan');
   const order = myOrders.find(o=>o.id===id);
   const timeline = [...(order.timeline||[]), {status:'Dikirim', time:Date.now(), note:resi}];
-  updateDoc(doc(db,'orders',id), {status:'Dikirim', resi, timeline})
-    .then(()=>{ closeModal(); toast('🚚 Ditandai dikirim'); })
-    .catch(e=>toast('Error: '+e.message));
+  updateDoc(doc(db,'orders',id), {status:'Dikirim', resi, timeline}).then(()=>{ closeModal(); toast('🚚 Ditandai dikirim'); }).catch(e=>toast('Error: '+e.message));
 }
 
 function markArrived(id){
   const order = myOrders.find(o=>o.id===id);
   const timeline = [...(order.timeline||[]), {status:'Sampai Tujuan', time:Date.now(), note:'Sampai tujuan'}];
-  updateDoc(doc(db,'orders',id), {status:'Sampai Tujuan', timeline})
-    .then(()=>toast('📍 Ditandai sampai'))
-    .catch(e=>toast('Error: '+e.message));
+  updateDoc(doc(db,'orders',id), {status:'Sampai Tujuan', timeline}).then(()=>toast('📍 Ditandai sampai')).catch(e=>toast('Error: '+e.message));
 }
 
 function completeOrder(id){
   if(!confirm('Konfirmasi pesanan sudah diterima?')) return;
   const order = myOrders.find(o=>o.id===id);
   const timeline = [...(order.timeline||[]), {status:'Selesai', time:Date.now(), note:'Pesanan selesai'}];
-  updateDoc(doc(db,'orders',id), {status:'Selesai', timeline})
-    .then(()=>toast('🎉 Pesanan selesai!'))
-    .catch(e=>toast('Error: '+e.message));
+  updateDoc(doc(db,'orders',id), {status:'Selesai', timeline}).then(()=>toast('🎉 Pesanan selesai!')).catch(e=>toast('Error: '+e.message));
 }
 
 function openTracking(id){
   const o = myOrders.find(x=>x.id===id); if(!o) return;
-  const items = (o.timeline||[]).map((t,i)=>`<div class="tl-item done">
-    <div class="t">${esc(t.status)}</div>
-    <div class="d">${dateFmt(t.time)}</div>
-    <div class="d" style="color:#475569;margin-top:3px">${esc(t.note||'')}</div>
-  </div>`).join('');
+  const items = (o.timeline||[]).map((t,i)=>`<div class="tl-item done"><div class="t">${esc(t.status)}</div><div class="d">${dateFmt(t.time)}</div><div class="d" style="color:var(--mut);margin-top:3px">${esc(t.note||'')}</div></div>`).join('');
   openModal(`<div class="modal-head"><h3>📍 Lacak Pesanan</h3><button class="close-x" onclick="closeModal()">✕</button></div>
-    <div style="background:#F8FAFC;border-radius:15px;padding:14px;margin-bottom:6px">
-      <div style="font-weight:800;font-size:13.5px">${esc(o.productName)}</div>
+    <div style="background:var(--bg);border-radius:15px;padding:14px;margin-bottom:6px">
+      <div style="font-weight:800;font-size:13.5px;color:var(--txt)">${esc(o.productName)}</div>
       <div class="muted" style="margin-top:4px">${rp(o.productPrice)}</div>
       <div class="muted">${esc(o.buyerName)} → ${esc(o.sellerName)}</div>
     </div>
     <div class="timeline" style="padding-left:26px;position:relative">${items}</div>
-    <style>
-      .timeline::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
-      .tl-item{position:relative;padding-bottom:18px;padding-left:0}
-      .tl-item::before{content:'';position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--p);border:2.5px solid #fff;box-shadow:0 0 0 1.5px var(--p)}
-      .tl-item .t{font-size:13px;font-weight:800;color:var(--p)}
-      .tl-item .d{font-size:11px;color:var(--mut);margin-top:2px}
-    </style>`);
+    <style>.timeline::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}.tl-item{position:relative;padding-bottom:18px;padding-left:0}.tl-item::before{content:'';position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--p);border:2.5px solid var(--card);box-shadow:0 0 0 1.5px var(--p)}.tl-item .t{font-size:13px;font-weight:800;color:var(--p)}.tl-item .d{font-size:11px;color:var(--mut);margin-top:2px}</style>`);
 }
 
 /* ================= POST PRODUCT ================= */
@@ -793,39 +953,25 @@ function viewPost(){
   const left = prem ? '∞' : Math.max(0, FREE_POST_LIMIT-used);
 
   return `
-    <div class="card" style="background:linear-gradient(135deg,#FFF5F7,#FFF9F0)">
+    <div class="card" style="background:var(--bg)">
       <div class="row" style="justify-content:space-between">
-        <div>
-          <div style="font-weight:800;font-size:14px">Kuota Posting</div>
-          <div class="muted" style="margin-top:3px">${prem?'⭐ Premium — unlimited':'Gratis — maks '+FREE_POST_LIMIT+'x/hari'}</div>
-        </div>
+        <div><div style="font-weight:800;font-size:14px;color:var(--txt)">Kuota Posting</div><div class="muted" style="margin-top:3px">${prem?'⭐ Premium — unlimited':'Gratis — maks '+FREE_POST_LIMIT+'x/hari'}</div></div>
         <div style="font-size:26px;font-weight:900;color:var(--p)">${left}</div>
       </div>
       ${!prem?`<button class="btn-gold" style="margin-top:12px;font-size:13px;padding:11px" onclick="subscribePremium()">⭐ Upgrade Premium</button>`:''}
     </div>
     <div class="card">
-      <h3>➕ Jual Produk</h3>
-      <p class="muted" style="margin-bottom:6px">Isi lengkap agar pembeli mudah.</p>
-      <label>Nama Produk *</label>
-      <input id="pName" placeholder="Contoh: Preset Alight Motion Premium">
-      <label>Deskripsi *</label>
-      <textarea id="pDesc" placeholder="Detail produk..."></textarea>
-      <label>Harga (Rp) *</label>
-      <input id="pPrice" type="number" inputmode="numeric" placeholder="50000">
-      <label>Foto Produk</label>
-      <input type="file" accept="image/*" onchange="previewImg(this,'pImgPreview','img')">
-      <img id="pImgPreview" class="preview" ${tmpImg?`src="${tmpImg}" style="display:block"`:''}>
+      <h3 style="color:var(--txt)">➕ Jual Produk</h3>
+      <label>Nama Produk *</label><input id="pName" placeholder="Contoh: Preset Alight Motion Premium">
+      <label>Deskripsi *</label><textarea id="pDesc" placeholder="Detail produk..."></textarea>
+      <label>Harga (Rp) *</label><input id="pPrice" type="number" inputmode="numeric" placeholder="50000">
+      <label>Foto Produk</label><input type="file" accept="image/*" onchange="previewImg(this,'pImgPreview','img')"><img id="pImgPreview" class="preview" ${tmpImg?`src="${tmpImg}" style="display:block"`:''}>
       <div class="divider"></div>
-      <div style="font-size:13px;font-weight:800;margin-bottom:2px">💳 Data Pembayaran</div>
-      <label>No. HP *</label>
-      <input id="pPhone" type="tel" placeholder="08xxxxxxxxxx" value="${esc(currentUser.phone||'')}">
-      <label>Jenis E-Wallet *</label>
-      <select id="pEwalletType">${EWALLETS.map(e=>`<option value="${e.name}" ${currentUser.ewalletType===e.name?'selected':''}>${e.name}</option>`).join('')}</select>
-      <label>No. Rekening E-Wallet *</label>
-      <input id="pEwalletNumber" inputmode="numeric" placeholder="08xxxxxxxxxx" value="${esc(currentUser.ewalletNumber||'')}">
-      <label>QR Pembayaran (opsional)</label>
-      <input type="file" accept="image/*" onchange="previewImg(this,'pQrPreview','qr')">
-      <img id="pQrPreview" class="preview" ${tmpQr?`src="${tmpQr}" style="display:block"`:''}>
+      <div style="font-size:13px;font-weight:800;margin-bottom:2px;color:var(--txt)">💳 Data Pembayaran</div>
+      <label>No. HP *</label><input id="pPhone" type="tel" placeholder="08xxxxxxxxxx" value="${esc(currentUser.phone||'')}">
+      <label>Jenis E-Wallet *</label><select id="pEwalletType">${EWALLETS.map(e=>`<option value="${e.name}" ${currentUser.ewalletType===e.name?'selected':''}>${e.name}</option>`).join('')}</select>
+      <label>No. Rekening E-Wallet *</label><input id="pEwalletNumber" inputmode="numeric" placeholder="08xxxxxxxxxx" value="${esc(currentUser.ewalletNumber||'')}">
+      <label>QR Pembayaran (opsional)</label><input type="file" accept="image/*" onchange="previewImg(this,'pQrPreview','qr')"><img id="pQrPreview" class="preview" ${tmpQr?`src="${tmpQr}" style="display:block"`:''}>
       <button class="btn-primary" style="margin-top:20px" onclick="submitProduct()">🚀 Upload Produk</button>
     </div>`;
 }
@@ -847,11 +993,7 @@ async function submitProduct(){
   const phone = document.getElementById('pPhone').value.trim();
   const ewT = document.getElementById('pEwalletType').value;
   const ewN = document.getElementById('pEwalletNumber').value.trim();
-  if(!name) return toast('Nama wajib');
-  if(!desc) return toast('Deskripsi wajib');
-  if(!price || price<1) return toast('Harga tidak valid');
-  if(!phone) return toast('HP wajib');
-  if(!ewN) return toast('Rekening e-wallet wajib');
+  if(!name || !desc || !price || !phone || !ewN) return toast('Isi semua kolom wajib');
 
   const prem = isPremium(currentUser);
   const today = todayStr();
@@ -860,21 +1002,16 @@ async function submitProduct(){
 
   try{
     const productData = {
-      name, desc, price,
-      image: tmpImg || '', qr: tmpQr || '',
-      sellerId: currentUser.id, sellerName: currentUser.username,
-      sellerAvatar: currentUser.avatar || '', sellerPremium: prem,
+      name, desc, price, image: tmpImg || '', qr: tmpQr || '',
+      sellerId: currentUser.id, sellerName: currentUser.username, sellerAvatar: currentUser.avatar || '', sellerPremium: prem,
       phone, ewalletType: ewT, ewalletNumber: ewN, createdAt: Date.now()
     };
     await addDoc(collection(db,'products'), productData);
-    await updateDoc(doc(db,'users',currentUser.id), {
-      postCount: used+1, postDate: today, phone, ewalletType: ewT, ewalletNumber: ewN
-    });
-    currentUser.postCount = used+1; currentUser.postDate = today;
-    currentUser.phone = phone; currentUser.ewalletType = ewT; currentUser.ewalletNumber = ewN;
+    await updateDoc(doc(db,'users',currentUser.id), { postCount: used+1, postDate: today, phone, ewalletType: ewT, ewalletNumber: ewN });
+    currentUser.postCount = used+1; currentUser.postDate = today; currentUser.phone = phone; currentUser.ewalletType = ewT; currentUser.ewalletNumber = ewN;
     tmpImg=''; tmpQr='';
     toast('✅ Produk diupload!');
-    currentView='home'; searchQuery=''; render();
+    currentView='home'; searchQuery=''; homeFilter='all'; render();
   }catch(e){ toast('Error: '+e.message); }
 }
 
@@ -883,8 +1020,7 @@ function viewChatList(){
   return `
     <div class="sec-title">💬 Chat</div>
     ${myChats.length===0
-      ? `<div class="empty"><div class="big">💬</div><h3>Belum ada chat</h3>
-        <p class="muted" style="margin-top:8px">Chat penjual dari halaman produk.</p></div>`
+      ? `<div class="empty"><div class="big">💬</div><h3>Belum ada chat</h3><p class="muted" style="margin-top:8px">Chat penjual dari halaman produk.</p></div>`
       : `<div class="card">${myChats.map(c=>{
         const otherId = c.participants.find(p=>p!==currentUser.id);
         const info = c.users?.[otherId] || {username:'User'};
@@ -893,10 +1029,7 @@ function viewChatList(){
         return `<div class="chat-item" onclick="openChat('${c.id}')">
           ${avatarHTML(info,46)}
           <div class="ci-info">
-            <div class="ci-top">
-              <div class="ci-name">${esc(info.username)}</div>
-              <div class="ci-time">${c.lastTime?dateFmt(c.lastTime):''}</div>
-            </div>
+            <div class="ci-top"><div class="ci-name">${esc(info.username)}</div><div class="ci-time">${c.lastTime?dateFmt(c.lastTime):''}</div></div>
             <div class="ci-last">${c.lastFrom===currentUser.id?'Kamu: ':''}${esc(last)}</div>
           </div>
           ${unread>0?`<div class="ci-unread">${unread>9?'9+':unread}</div>`:''}
@@ -932,14 +1065,13 @@ async function openChat(chatId){
   const wrap = document.createElement('div');
   wrap.className = 'chat-wrap'; wrap.id = 'chatWrap';
   wrap.innerHTML = `
-    <div class="chat-header">
-      <button class="back" onclick="closeChat()">←</button>
-      <div class="who"><div class="nm" id="chatName">Loading...</div><div class="st" id="chatStatus">online</div></div>
-    </div>
+    <div class="chat-header"><button class="back" onclick="closeChat()">←</button><div class="who"><div class="nm" id="chatName">Loading...</div></div></div>
     <div class="chat-body" id="chatBody"></div>
     <div class="chat-input-bar">
+      <input type="file" id="chatImgInput" accept="image/*" style="display:none" onchange="window.sendChatImage(this)">
+      <button class="img-btn" onclick="document.getElementById('chatImgInput').click()">📷</button>
       <input id="chatInput" placeholder="Ketik pesan..." onkeydown="if(event.key==='Enter')sendMsg()">
-      <button onclick="sendMsg()">➤</button>
+      <button class="send" onclick="sendMsg()">➤</button>
     </div>
   `;
   document.body.appendChild(wrap);
@@ -958,24 +1090,21 @@ async function openChat(chatId){
   }catch(e){}
 
   if(unsubMessages) unsubMessages();
-  unsubMessages = onSnapshot(
-    query(collection(db,'chats',chatId,'messages'), orderBy('time','asc')),
-    snap => {
-      const body = document.getElementById('chatBody');
-      if(!body) return;
-      const msgs = snap.docs.map(d=>({id:d.id,...d.data()}));
-      if(msgs.length===0){
-        body.innerHTML = `<div class="chat-empty"><div style="font-size:52px;opacity:.4">💬</div><p style="margin-top:10px">Belum ada pesan. Mulai percakapan!</p></div>`;
-        return;
-      }
-      const wasAtBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 100;
-      body.innerHTML = msgs.map(m=>{
-        const mine = m.from===currentUser.id;
-        return `<div class="msg ${mine?'mine':'theirs'}">${esc(m.text)}<span class="time">${dateFmt(m.time)}</span></div>`;
-      }).join('');
-      if(wasAtBottom || msgs.length>0) body.scrollTop = body.scrollHeight;
-    }
-  );
+  unsubMessages = onSnapshot(query(collection(db,'chats',chatId,'messages'), orderBy('time','asc')), snap => {
+    const body = document.getElementById('chatBody');
+    if(!body) return;
+    const msgs = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(msgs.length===0){ body.innerHTML = `<div class="chat-empty"><div style="font-size:52px;opacity:.4">💬</div><p style="margin-top:10px">Belum ada pesan. Mulai percakapan!</p></div>`; return; }
+    const wasAtBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 100;
+    body.innerHTML = msgs.map(m=>{
+      const mine = m.from===currentUser.id;
+      let content = '';
+      if(m.image) content += `<img src="${m.image}" alt="Gambar">`;
+      if(m.text) content += `<div>${esc(m.text)}</div>`;
+      return `<div class="msg ${mine?'mine':'theirs'}">${content}<span class="time">${dateFmt(m.time)}</span></div>`;
+    }).join('');
+    if(wasAtBottom || msgs.length>0) body.scrollTop = body.scrollHeight;
+  });
 }
 
 function closeChat(){
@@ -996,11 +1125,23 @@ async function sendMsg(){
     const chatSnap = await getDoc(doc(db,'chats',activeChat.id));
     const otherId = chatSnap.data().participants.find(p=>p!==currentUser.id);
     const unread = {...(chatSnap.data().unread||{})}; unread[otherId] = (unread[otherId]||0) + 1;
-    await updateDoc(doc(db,'chats',activeChat.id), {
-      lastMessage: text.length>40 ? text.slice(0,40)+'...' : text,
-      lastTime: Date.now(), lastFrom: currentUser.id, unread
-    });
+    await updateDoc(doc(db,'chats',activeChat.id), { lastMessage: text.length>40 ? text.slice(0,40)+'...' : text, lastTime: Date.now(), lastFrom: currentUser.id, unread });
   }catch(e){ toast('Gagal kirim: '+e.message); }
+}
+
+function sendChatImage(input){
+  const f = input.files && input.files[0]; if(!f || !activeChat) return;
+  toast('Memproses gambar...');
+  compressImage(f, 500, 0.6, async data => {
+    try{
+      await addDoc(collection(db,'chats',activeChat.id,'messages'), { from: currentUser.id, image: data, time: Date.now() });
+      const chatSnap = await getDoc(doc(db,'chats',activeChat.id));
+      const otherId = chatSnap.data().participants.find(p=>p!==currentUser.id);
+      const unread = {...(chatSnap.data().unread||{})}; unread[otherId] = (unread[otherId]||0) + 1;
+      await updateDoc(doc(db,'chats',activeChat.id), { lastMessage: '📷 Foto', lastTime: Date.now(), lastFrom: currentUser.id, unread });
+      input.value = ''; 
+    }catch(e){ toast('Gagal kirim foto: '+e.message); }
+  });
 }
 
 /* ================= PROFILE ================= */
@@ -1011,61 +1152,31 @@ function viewProfile(){
     <div class="card" style="text-align:center;padding-top:22px">
       <div style="position:relative;display:inline-block">
         ${avatarHTML(currentUser,84)}
-        <label for="avatarInput" style="position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;
-          background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;
-          border:3px solid #fff;margin:0">📷</label>
+        <label for="avatarInput" style="position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:3px solid var(--card);margin:0">📷</label>
         <input id="avatarInput" type="file" accept="image/*" style="display:none" onchange="changeAvatar(this)">
       </div>
-      <div style="font-size:18px;font-weight:900;margin-top:10px">
-        ${esc(currentUser.username)} ${prem?'<span class="verified">✔</span>':''}
-        ${currentUser.isAdmin?'<span class="tag" style="margin-left:5px">ADMIN</span>':''}
-      </div>
-      <div style="margin-top:8px">
-        ${prem?'<span class="badge prem">⭐ PREMIUM</span>':'<span class="badge free">AKUN GRATIS</span>'}
-      </div>
+      <div style="font-size:18px;font-weight:900;margin-top:10px;color:var(--txt)">${esc(currentUser.username)} ${prem?'<span class="verified">✔</span>':''} ${currentUser.isAdmin?'<span class="tag" style="margin-left:5px">ADMIN</span>':''}</div>
+      <div style="margin-top:8px">${prem?'<span class="badge prem">⭐ PREMIUM</span>':'<span class="badge free">AKUN GRATIS</span>'}</div>
       <div class="row" style="justify-content:center;gap:26px;margin-top:18px">
-        <div><div style="font-size:16px;font-weight:900">${myProducts}</div><div class="muted">Produk</div></div>
-        <div><div style="font-size:16px;font-weight:900">${myOrders.length}</div><div class="muted">Pesanan</div></div>
+        <div><div style="font-size:16px;font-weight:900;color:var(--txt)">${myProducts}</div><div class="muted">Produk</div></div>
+        <div><div style="font-size:16px;font-weight:900;color:var(--txt)">${myOrders.length}</div><div class="muted">Pesanan</div></div>
       </div>
     </div>
 
-    ${currentUser.isAdmin?`<div class="card" style="background:linear-gradient(135deg,#0F172A,#1E293B);color:#fff">
-      <div class="row" style="justify-content:space-between">
-        <div><div style="font-weight:900;font-size:14px">🛡️ Panel Admin</div>
-        <div style="font-size:11.5px;opacity:.65;margin-top:3px">Kelola pengguna</div></div>
-        <button style="background:var(--gold);color:#3D2A00;padding:9px 16px;border-radius:11px;font-weight:900;font-size:12.5px" onclick="go('admin')">Buka</button>
-      </div></div>`:''}
+    ${currentUser.isAdmin?`<div class="card" style="background:var(--grad-dark);color:#fff;border:none">
+      <div class="row" style="justify-content:space-between"><div><div style="font-weight:900;font-size:14px">🛡️ Panel Admin</div><div style="font-size:11.5px;opacity:.65;margin-top:3px">Kelola pengguna, iklan & voucher</div></div>
+        <button style="background:var(--gold);color:#3D2A00;padding:9px 16px;border-radius:11px;font-weight:900;font-size:12.5px" onclick="go('admin')">Buka</button></div></div>`:''}
 
     <div class="card">
       <div class="sec-title" style="margin-bottom:6px">⚙️ Pengaturan</div>
-      <div class="list-item" onclick="openEditUsername()">
-        <div style="width:38px;height:38px;border-radius:12px;background:#F1F5F9;display:flex;align-items:center;justify-content:center">✏️</div>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Edit Username</div><div class="muted">${esc(currentUser.username)}</div></div>
-        <span class="muted">›</span>
-      </div>
-      <div class="list-item" onclick="document.getElementById('avatarInput').click()">
-        <div style="width:38px;height:38px;border-radius:12px;background:#F1F5F9;display:flex;align-items:center;justify-content:center">🖼️</div>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Ganti Foto Profil</div></div>
-        <span class="muted">›</span>
-      </div>
-      <div class="list-item" onclick="openEditPayment()">
-        <div style="width:38px;height:38px;border-radius:12px;background:#F1F5F9;display:flex;align-items:center;justify-content:center">💳</div>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Data E-Wallet</div>
-        <div class="muted">${esc(currentUser.ewalletType||'-')} • ${esc(currentUser.ewalletNumber||'belum diisi')}</div></div>
-        <span class="muted">›</span>
-      </div>
-      <div class="list-item" onclick="logout()">
-        <div style="width:38px;height:38px;border-radius:12px;background:#FEE2E2;display:flex;align-items:center;justify-content:center">🚪</div>
-        <div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--bad)">Keluar Akun</div></div>
-        <span class="muted">›</span>
-      </div>
+      <div class="list-item" onclick="openEditUsername()"><div style="width:38px;height:38px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center">✏️</div><div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--txt)">Edit Username</div><div class="muted">${esc(currentUser.username)}</div></div><span class="muted">›</span></div>
+      <div class="list-item" onclick="document.getElementById('avatarInput').click()"><div style="width:38px;height:38px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center">🖼️</div><div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--txt)">Ganti Foto Profil</div></div><span class="muted">›</span></div>
+      <div class="list-item" onclick="openEditPayment()"><div style="width:38px;height:38px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center">💳</div><div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--txt)">Data E-Wallet</div><div class="muted">${esc(currentUser.ewalletType||'-')} • ${esc(currentUser.ewalletNumber||'belum diisi')}</div></div><span class="muted">›</span></div>
+      <div class="list-item" onclick="logout()"><div style="width:38px;height:38px;border-radius:12px;background:#FEE2E2;display:flex;align-items:center;justify-content:center">🚪</div><div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:var(--bad)">Keluar Akun</div></div><span class="muted">›</span></div>
     </div>
 
     <div class="plan">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div><h2>⭐ Premium</h2><div style="font-size:12px;opacity:.65;margin-top:2px">Unlimited & prioritas</div></div>
-        ${prem?'<span class="badge prem">AKTIF</span>':''}
-      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h2>⭐ Premium</h2><div style="font-size:12px;opacity:.65;margin-top:2px">Unlimited & prioritas</div></div>${prem?'<span class="badge prem">AKTIF</span>':''}</div>
       <div class="price">Rp50.000<small> / bulan</small></div>
       <div style="height:1px;background:rgba(255,255,255,.12);margin:12px 0"></div>
       <div class="benefit"><span class="ck">✔</span><span>Unlimited posting produk</span></div>
@@ -1074,25 +1185,20 @@ function viewProfile(){
       <div class="benefit no"><span class="ck">✕</span><span>Gratis: maksimal <b>10 posting/hari</b></span></div>
       <button class="btn-gold" onclick="subscribePremium()">📲 Berlangganan via WhatsApp</button>
     </div>
-    <p class="muted" style="text-align:center;padding:10px 0 16px">RullzShop v3.0 — Powered by Firebase</p>
+    <p class="muted" style="text-align:center;padding:10px 0 16px">RullzShop v5.0 — Fitur Lengkap</p>
   `;
 }
 
 function changeAvatar(input){
   const f = input.files && input.files[0]; if(!f) return;
   compressImage(f, 240, 0.7, async data=>{
-    try{
-      await updateDoc(doc(db,'users',currentUser.id), {avatar:data});
-      currentUser.avatar = data;
-      render(); toast('✅ Foto profil diperbarui');
-    }catch(e){ toast('Error: '+e.message); }
+    try{ await updateDoc(doc(db,'users',currentUser.id), {avatar:data}); currentUser.avatar = data; render(); toast('✅ Foto profil diperbarui'); }catch(e){ toast('Error: '+e.message); }
   });
 }
 
 function openEditUsername(){
   openModal(`<div class="modal-head"><h3>Edit Username</h3><button class="close-x" onclick="closeModal()">✕</button></div>
-    <label>Username Baru</label>
-    <input id="newUsername" value="${esc(currentUser.username)}">
+    <label>Username Baru</label><input id="newUsername" value="${esc(currentUser.username)}">
     <button class="btn-primary" style="margin-top:16px" onclick="saveUsername()">Simpan</button>`);
 }
 
@@ -1101,124 +1207,85 @@ async function saveUsername(){
   if(val.length<3) return toast('Minimal 3 karakter');
   if(/\s/.test(val)) return toast('Tidak boleh spasi');
   if(!/^[a-zA-Z0-9._]+$/.test(val)) return toast('Hanya huruf, angka, titik, _');
-  
   const valLower = val.toLowerCase();
   if(valLower === currentUser.usernameLower) return closeModal();
-  
   try{
     if(valLower === ADMIN_USER) return toast('Username ini dilindungi');
-
-    const newRef = doc(db, 'users', valLower);
-    const snap = await getDoc(newRef);
+    const newRef = doc(db, 'users', valLower); const snap = await getDoc(newRef);
     if(snap.exists()) return toast('Username sudah dipakai');
-    
-    const oldId = currentUser.id;
-    const newData = { ...currentUser, username: val, usernameLower: valLower };
-    delete newData.id;
-    
-    await setDoc(newRef, newData);
-    await deleteDoc(doc(db, 'users', oldId));
-    
-    // Update produk & pesanan lama agar tidak hilang
-    const myProdQ = query(collection(db,'products'), where('sellerId','==',oldId));
-    const prodSnap = await getDocs(myProdQ);
-    prodSnap.docs.forEach(async d=>{ 
-        await updateDoc(doc(db,'products',d.id), {sellerId: valLower, sellerName:val}); 
-    });
-
-    const buySnap = await getDocs(query(collection(db,'orders'), where('buyerId','==',oldId)));
-    buySnap.docs.forEach(async d=>{ 
-        await updateDoc(doc(db,'orders',d.id), {buyerId: valLower, buyerName:val}); 
-    });
-    
-    const sellSnap = await getDocs(query(collection(db,'orders'), where('sellerId','==',oldId)));
-    sellSnap.docs.forEach(async d=>{ 
-        await updateDoc(doc(db,'orders',d.id), {sellerId: valLower, sellerName:val}); 
-    });
-    
-    const chatSnap = await getDocs(query(collection(db,'chats'), where('participants','array-contains',oldId)));
-    chatSnap.docs.forEach(async d=>{
-        const chatData = d.data();
-        const newParticipants = chatData.participants.map(p => p === oldId ? valLower : p);
-        await updateDoc(doc(db,'chats',d.id), {participants: newParticipants});
-    });
-    
-    // Update data lokal
-    currentUser.id = valLower;
-    currentUser.username = val;
-    currentUser.usernameLower = valLower;
-    localStorage.setItem('rullzUserId', valLower);
-    
+    const oldId = currentUser.id; const newData = { ...currentUser, username: val, usernameLower: valLower }; delete newData.id;
+    await setDoc(newRef, newData); await deleteDoc(doc(db, 'users', oldId));
+    const myProdQ = query(collection(db,'products'), where('sellerId','==',oldId)); const prodSnap = await getDocs(myProdQ); prodSnap.docs.forEach(async d=>{ await updateDoc(doc(db,'products',d.id), {sellerId: valLower, sellerName:val}); });
+    const buySnap = await getDocs(query(collection(db,'orders'), where('buyerId','==',oldId))); buySnap.docs.forEach(async d=>{ await updateDoc(doc(db,'orders',d.id), {buyerId: valLower, buyerName:val}); });
+    const sellSnap = await getDocs(query(collection(db,'orders'), where('sellerId','==',oldId))); sellSnap.docs.forEach(async d=>{ await updateDoc(doc(db,'orders',d.id), {sellerId: valLower, sellerName:val}); });
+    const chatSnap = await getDocs(query(collection(db,'chats'), where('participants','array-contains',oldId))); chatSnap.docs.forEach(async d=>{ const chatData = d.data(); const newParticipants = chatData.participants.map(p => p === oldId ? valLower : p); await updateDoc(doc(db,'chats',d.id), {participants: newParticipants}); });
+    currentUser.id = valLower; currentUser.username = val; currentUser.usernameLower = valLower; localStorage.setItem('rullzUserId', valLower);
     closeModal(); render(); toast('✅ Username diperbarui');
   }catch(e){ toast('Error: '+e.message); }
 }
 
 function openEditPayment(){
   openModal(`<div class="modal-head"><h3>Data E-Wallet</h3><button class="close-x" onclick="closeModal()">✕</button></div>
-    <label>No. HP</label>
-    <input id="epPhone" type="tel" value="${esc(currentUser.phone||'')}" placeholder="08xxxxxxxxxx">
-    <label>Jenis E-Wallet</label>
-    <select id="epType">${EWALLETS.map(e=>`<option value="${e.name}" ${currentUser.ewalletType===e.name?'selected':''}>${e.name}</option>`).join('')}</select>
-    <label>No. Rekening E-Wallet</label>
-    <input id="epNumber" inputmode="numeric" value="${esc(currentUser.ewalletNumber||'')}" placeholder="08xxxxxxxxxx">
+    <label>No. HP</label><input id="epPhone" type="tel" value="${esc(currentUser.phone||'')}" placeholder="08xxxxxxxxxx">
+    <label>Jenis E-Wallet</label><select id="epType">${EWALLETS.map(e=>`<option value="${e.name}" ${currentUser.ewalletType===e.name?'selected':''}>${e.name}</option>`).join('')}</select>
+    <label>No. Rekening E-Wallet</label><input id="epNumber" inputmode="numeric" value="${esc(currentUser.ewalletNumber||'')}" placeholder="08xxxxxxxxxx">
     <button class="btn-primary" style="margin-top:16px" onclick="savePayment()">Simpan</button>`);
 }
 
 async function savePayment(){
-  const phone = document.getElementById('epPhone').value.trim();
-  const type = document.getElementById('epType').value;
-  const num = document.getElementById('epNumber').value.trim();
-  try{
-    await updateDoc(doc(db,'users',currentUser.id), {phone, ewalletType:type, ewalletNumber:num});
-    currentUser.phone = phone; currentUser.ewalletType = type; currentUser.ewalletNumber = num;
-    closeModal(); render(); toast('✅ Disimpan');
-  }catch(e){ toast('Error: '+e.message); }
+  const phone = document.getElementById('epPhone').value.trim(); const type = document.getElementById('epType').value; const num = document.getElementById('epNumber').value.trim();
+  try{ await updateDoc(doc(db,'users',currentUser.id), {phone, ewalletType:type, ewalletNumber:num}); currentUser.phone = phone; currentUser.ewalletType = type; currentUser.ewalletNumber = num; closeModal(); render(); toast('✅ Disimpan'); }catch(e){ toast('Error: '+e.message); }
 }
 
-function subscribePremium(){
-  window.open(WA_PREMIUM, '_blank');
-  toast('📲 Membuka WhatsApp admin...');
-}
+function subscribePremium(){ window.open(WA_PREMIUM, '_blank'); toast('📲 Membuka WhatsApp admin...'); }
 
-/* ================= ADMIN ================= */
+/* ================= ADMIN (Lengkap) ================= */
 let allUsers = [];
-let unsubAllUsers = null;
+let allProductsAdmin = [];
 
 function viewAdmin(){
   if(!currentUser.isAdmin) return `<div class="empty"><div class="big">🔒</div><h3>Akses Ditolak</h3></div>`;
   if(!unsubAllUsers){
-    unsubAllUsers = onSnapshot(collection(db,'users'), snap=>{
-      allUsers = snap.docs.map(d=>({id:d.id,...d.data()}));
-      if(currentView==='admin') render();
-    });
+    unsubAllUsers = onSnapshot(collection(db,'users'), snap=>{ allUsers = snap.docs.map(d=>({id:d.id,...d.data()})); if(currentView==='admin') render(); });
   }
-  const totalUsers = allUsers.length;
-  const blockedCount = allUsers.filter(u=>u.blocked).length;
-  const rows = allUsers.map(u=>`
+  const totalUsers = allUsers.length; const blockedCount = allUsers.filter(u=>u.blocked).length;
+  
+  const userRows = allUsers.map(u=>`
     <div class="admin-row" style="display:flex;gap:11px;padding:14px 0;border-bottom:1px solid var(--line);align-items:flex-start">
       ${avatarHTML(u,42)}
       <div style="flex:1;min-width:0">
-        <div style="font-size:13.5px;font-weight:800">
-          ${esc(u.username)}
-          ${u.isAdmin?'<span class="tag" style="margin-left:4px">ADMIN</span>':''}
-          ${u.blocked?'<span class="badge bad" style="margin-left:4px">BLOCKED</span>':''}
-          ${isPremium(u)?'<span class="badge prem" style="margin-left:4px">⭐</span>':''}
-        </div>
+        <div style="font-size:13.5px;font-weight:800;color:var(--txt)">${esc(u.username)} ${u.isAdmin?'<span class="tag" style="margin-left:4px">ADMIN</span>':''} ${u.blocked?'<span class="badge bad" style="margin-left:4px">BLOCKED</span>':''} ${isPremium(u)?'<span class="badge prem" style="margin-left:4px">⭐</span>':''}</div>
         <div class="muted" style="margin-top:2px">🔑 Password: <b style="color:#991B1B">${esc(u.password)}</b></div>
         <div class="muted">📅 ${u.createdAt?new Date(u.createdAt).toLocaleDateString('id-ID'):'-'}</div>
         ${u.ewalletNumber?`<div class="muted">💳 ${esc(u.ewalletType)} • ${esc(u.ewalletNumber)}</div>`:''}
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
-        <button style="width:38px;height:34px;border-radius:11px;background:#F1F5F9;font-size:15px" onclick="toggleBlock('${u.id}')">${u.blocked?'🔓':'🚫'}</button>
-        <button style="width:38px;height:34px;border-radius:11px;background:#F1F5F9;font-size:15px" onclick="togglePremium('${u.id}')">${isPremium(u)?'⭐':'☆'}</button>
+        <button style="width:38px;height:34px;border-radius:11px;background:var(--bg);font-size:15px" onclick="toggleBlock('${u.id}')">${u.blocked?'🔓':'🚫'}</button>
+        <button style="width:38px;height:34px;border-radius:11px;background:var(--bg);font-size:15px" onclick="togglePremium('${u.id}')">${isPremium(u)?'⭐':'☆'}</button>
       </div>
     </div>`).join('');
 
+  const vouchersHtml = allVouchers.map(v => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--line)">
+      <div><div style="font-weight:900;font-size:14px;color:var(--p)">${esc(v.code)}</div><div class="muted">Diskon ${rp(v.discountAmount)} (Min. ${rp(v.minSpend)})</div></div>
+      <button style="color:var(--bad);font-size:16px" onclick="deleteVoucher('${v.id}')">🗑️</button>
+    </div>
+  `).join('');
+
+  const prodRows = products.map(p => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:10px">
+        ${p.image?`<img src="${p.image}" style="width:40px;height:40px;border-radius:8px;object-fit:cover">`:`<div style="width:40px;height:40px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center">🖼️</div>`}
+        <div><div style="font-weight:800;font-size:12.5px;color:var(--txt);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</div><div class="muted">${esc(p.sellerName)}</div></div>
+      </div>
+      <button style="color:var(--bad);font-size:16px;padding:6px" onclick="deleteProductAdmin('${p.id}')">🗑️</button>
+    </div>
+  `).join('');
+
   return `
-    <div class="card" style="background:linear-gradient(135deg,#0F172A,#1E293B);color:#fff">
+    <div class="card" style="background:var(--grad-dark);color:#fff;border:none">
       <div class="row" style="justify-content:space-between">
-        <div><div style="font-size:16px;font-weight:900">🛡️ Panel Admin</div>
-        <div style="font-size:11.5px;opacity:.65;margin-top:2px">${esc(currentUser.username)}</div></div>
+        <div><div style="font-size:16px;font-weight:900">🛡️ Panel Admin</div><div style="font-size:11.5px;opacity:.65;margin-top:2px">${esc(currentUser.username)}</div></div>
         <button style="background:rgba(255,255,255,.15);color:#fff;padding:8px 14px;border-radius:11px;font-weight:800;font-size:12px" onclick="go('profile')">← Kembali</button>
       </div>
       <div class="row" style="justify-content:space-between;margin-top:18px;text-align:center">
@@ -1227,11 +1294,70 @@ function viewAdmin(){
         <div style="flex:1"><div style="font-size:19px;font-weight:900">${products.length}</div><div style="font-size:10.5px;opacity:.6">Produk</div></div>
       </div>
     </div>
+    
+    <div class="card" style="background:var(--bg); border:1.5px solid var(--line);">
+      <div class="sec-title" style="margin-bottom:6px; color:var(--p);">📢 Kelola Banner Iklan</div>
+      <input type="file" id="adUploadInput" accept="image/*" style="display:none" onchange="uploadAd(this)">
+      <button class="btn-primary" onclick="document.getElementById('adUploadInput').click()">📤 Upload Foto Iklan</button>
+      ${ads.length > 0 ? `
+        <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
+          <div style="background:#000;border-radius:12px;overflow:hidden;margin-bottom:8px;"><img src="${ads[0].media}" style="width:100%;max-height:150px;object-fit:cover;"></div>
+          <button class="btn-outline" style="color:var(--bad); border-color:var(--bad); padding:8px;" onclick="deleteAd('${ads[0].id}')">🗑️ Hapus Iklan Ini</button>
+        </div>` : '<p class="muted" style="margin-top:10px;text-align:center;">Belum ada iklan.</p>'}
+    </div>
+
+    <div class="card" style="background:var(--bg); border:1.5px solid var(--line);">
+      <div class="sec-title" style="margin-bottom:6px; color:var(--accent);">🎟️ Kelola Voucher</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <input id="vCode" placeholder="KODE" style="flex:1;text-transform:uppercase">
+        <input id="vDisc" type="number" placeholder="Diskon (Rp)" style="flex:1">
+        <input id="vMin" type="number" placeholder="Min. Beli" style="flex:1">
+      </div>
+      <button class="btn-primary" style="padding:10px;font-size:13px" onclick="createVoucher()">+ Tambah Voucher</button>
+      <div style="margin-top:14px;border-top:1px solid var(--line)">${vouchersHtml || '<p class="muted" style="padding:10px;text-align:center">Belum ada voucher.</p>'}</div>
+    </div>
+
     <div class="card">
       <div class="sec-title" style="margin-bottom:4px">👥 Pengguna Terdaftar</div>
-      <p class="muted" style="margin-bottom:10px">Admin dapat melihat kredensial & memblokir.</p>
-      ${rows || '<div class="empty" style="padding:30px"><p class="muted">Belum ada pengguna.</p></div>'}
+      ${userRows || '<div class="empty" style="padding:30px"><p class="muted">Belum ada pengguna.</p></div>'}
+    </div>
+
+    <div class="card">
+      <div class="sec-title" style="margin-bottom:4px">📦 Semua Produk</div>
+      <p class="muted" style="margin-bottom:10px">Hapus produk yang melanggar aturan.</p>
+      ${prodRows || '<div class="empty" style="padding:30px"><p class="muted">Belum ada produk.</p></div>'}
     </div>`;
+}
+
+function uploadAd(input) {
+  const file = input.files[0]; if (!file) return;
+  toast('Memproses foto iklan...');
+  compressImage(file, 1200, 0.8, async (mediaBase64) => {
+    try {
+      if (ads.length > 0) await deleteDoc(doc(db, 'ads', ads[0].id));
+      await addDoc(collection(db, 'ads'), { media: mediaBase64, createdAt: Date.now() });
+      toast('✅ Iklan berhasil diupload!'); input.value = '';
+    } catch (error) { toast('Gagal upload iklan: ' + error.message); }
+  });
+}
+function deleteAd(id) { if (!confirm('Hapus iklan ini?')) return; deleteDoc(doc(db, 'ads', id)).then(() => toast('🗑️ Iklan dihapus')).catch(e => toast('Error: ' + e.message)); }
+
+function createVoucher() {
+  const code = document.getElementById('vCode').value.trim().toUpperCase();
+  const disc = parseInt(document.getElementById('vDisc').value);
+  const min = parseInt(document.getElementById('vMin').value) || 0;
+  if(!code || !disc) return toast('Isi Kode dan Diskon');
+  if(allVouchers.find(v => v.code === code)) return toast('Kode voucher sudah ada');
+  addDoc(collection(db, 'vouchers'), { code, discountAmount: disc, minSpend: min, isActive: true })
+    .then(() => { document.getElementById('vCode').value=''; document.getElementById('vDisc').value=''; document.getElementById('vMin').value=''; toast('✅ Voucher dibuat!'); })
+    .catch(e => toast(e.message));
+}
+function deleteVoucher(id) { if (!confirm('Hapus voucher ini?')) return; deleteDoc(doc(db, 'vouchers', id)).then(() => toast('🗑️ Voucher dihapus')).catch(e => toast(e.message)); }
+
+function deleteProductAdmin(id) {
+  const p = products.find(x=>x.id===id); if(!p) return;
+  if (!confirm('Hapus produk "'+p.name+'" milik '+p.sellerName+'?')) return;
+  deleteDoc(doc(db, 'products', id)).then(() => toast('🗑️ Produk dihapus oleh Admin')).catch(e => toast(e.message));
 }
 
 function toggleBlock(id){
@@ -1244,61 +1370,39 @@ function toggleBlock(id){
 
 function togglePremium(id){
   const u = allUsers.find(x=>x.id===id); if(!u) return;
-  const action = isPremium(u) 
-    ? updateDoc(doc(db,'users',id), {isPremium:false, premiumUntil:0})
-    : updateDoc(doc(db,'users',id), {isPremium:true, premiumUntil:Date.now()+30*86400000});
+  const action = isPremium(u) ? updateDoc(doc(db,'users',id), {isPremium:false, premiumUntil:0}) : updateDoc(doc(db,'users',id), {isPremium:true, premiumUntil:Date.now()+30*86400000});
   action.then(()=>toast('✅ Premium diubah')).catch(e=>toast('Error: '+e.message));
 }
 
 /* ================= MODAL ================= */
-function openModal(html){
-  document.getElementById('modalBody').innerHTML = html;
-  document.getElementById('modal').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(){
-  document.getElementById('modal').classList.remove('show');
-  document.body.style.overflow = '';
-}
+function openModal(html){ document.getElementById('modalBody').innerHTML = html; document.getElementById('modal').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeModal(){ document.getElementById('modal').classList.remove('show'); document.body.style.overflow = ''; appliedVoucher = null; }
 
 /* ================= GLOBAL SCOPE EXPOSE ================= */
-window.switchAuth = switchAuth;
-window.doLogin = doLogin;
-window.doRegister = doRegister;
-window.logout = logout;
-window.go = go;
-window.openProduct = openProduct;
-window.deleteProduct = deleteProduct;
-window.openBuy = openBuy;
-window.confirmOrder = confirmOrder;
-window.markPaid = markPaid;
-window.openShip = openShip;
-window.doShip = doShip;
-window.markArrived = markArrived;
-window.completeOrder = completeOrder;
-window.openTracking = openTracking;
-window.previewImg = previewImg;
-window.submitProduct = submitProduct;
-window.openChatWith = openChatWith;
-window.openChat = openChat;
-window.closeChat = closeChat;
-window.sendMsg = sendMsg;
-window.changeAvatar = changeAvatar;
-window.openEditUsername = openEditUsername;
-window.saveUsername = saveUsername;
-window.openEditPayment = openEditPayment;
-window.savePayment = savePayment;
-window.subscribePremium = subscribePremium;
-window.toggleBlock = toggleBlock;
-window.togglePremium = togglePremium;
-window.openModal = openModal;
-window.closeModal = closeModal;
+window.switchAuth = switchAuth; window.doLogin = doLogin; window.doRegister = doRegister;
+window.logout = logout; window.go = go; window.openProduct = openProduct;
+window.deleteProduct = deleteProduct; window.openBuy = openBuy; window.confirmOrder = confirmOrder;
+window.markPaid = markPaid; window.openShip = openShip; window.doShip = doShip;
+window.markArrived = markArrived; window.completeOrder = completeOrder; window.openTracking = openTracking;
+window.previewImg = previewImg; window.submitProduct = submitProduct;
+window.openChatWith = openChatWith; window.openChat = openChat; window.closeChat = closeChat;
+window.sendMsg = sendMsg; window.sendChatImage = sendChatImage; window.changeAvatar = changeAvatar;
+window.openEditUsername = openEditUsername; window.saveUsername = saveUsername;
+window.openEditPayment = openEditPayment; window.savePayment = savePayment;
+window.subscribePremium = subscribePremium; window.toggleBlock = toggleBlock;
+window.togglePremium = togglePremium; window.uploadAd = uploadAd; window.deleteAd = deleteAd;
+window.openModal = openModal; window.closeModal = closeModal;
+window.toggleTheme = toggleTheme; window.toggleWishlist = toggleWishlist; window.shareProduct = shareProduct;
 window.updateSearch = function(val){ searchQuery = val; renderGrid(); };
 window.setOrderTab = function(tab){ orderTab = tab; render(); };
+window.setFilter = function(f){ homeFilter = f; render(); };
+window.showNotifications = showNotifications;
+window.openReviewForm = openReviewForm; window.setRating = setRating; window.submitReview = submitReview;
+window.applyVoucher = applyVoucher; window.createVoucher = createVoucher; window.deleteVoucher = deleteVoucher;
+window.deleteProductAdmin = deleteProductAdmin;
 
 /* ================= INIT ================= */
 boot();
-
 document.getElementById('loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 document.getElementById('regPass2').addEventListener('keydown', e=>{ if(e.key==='Enter') doRegister(); });
 </script>
